@@ -1,0 +1,138 @@
+\documentclass[11pt,english,letterpaper,oneside]{article}
+\usepackage{amsmath,amssymb,amsfonts,amsthm,enumerate,enumitem}
+\usepackage{mathpazo}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx,microtype}
+\usepackage{textcomp}
+\usepackage[T1]{fontenc}
+\DisableLigatures[f]{encoding=T1}
+\usepackage[skip=2pt]{caption}
+\usepackage{hyperref}
+\usepackage{setspace,array,float}
+\usepackage{bm,upgreek}
+\usepackage[compact]{titlesec}
+\usepackage[none]{hyphenat}
+\setlength{\parskip}{0.25cm}
+\setlength{\parindent}{0cm}
+\usepackage{natbib}
+\setcitestyle{citesep={;},aysep={}}
+\usepackage{babel}
+\usepackage{datetime}
+\frenchspacing
+\usepackage[table]{xcolor}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+
+\makeatletter
+\g@addto@macro\normalsize{%
+  \setlength\belowdisplayskip{15pt}
+  \setlength\belowdisplayshortskip{10pt}
+}
+\makeatother
+
+\renewcommand{\familydefault}{ppl}
+
+\newcommand{\ppgtk}{\textit{PPGtk}}
+\newcommand{\code}[1]{\hspace{15pt} \texttt{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\pagestyle{empty}
+
+\vspace*{1.5in}
+\begin{center}
+
+	{\huge \ppgtk: the polyploid pop-gen toolkit}
+	\vspace{0.5in}
+	
+	Written and maintained by Paul Blischak
+	
+	E-mail: \href{mailto:blischak.4@osu.edu}{blischak.4@osu.edu}
+	
+	Source code: \url{https://github.com/pblischak/ppgtk}
+	
+	Online docs: \url{http://pblischak.github.io/ppgtk}
+	
+\end{center}
+
+\vspace{4in}
+
+{\small \textit{\copyright{} 2016 by Paul Blischak. This software is provided ``as is'' without warranty of any kind. In no event shall the author be held responsible for any damage resulting from the use of this software. The program package, including source codes, executables, and documentation, is distributed free of charge. This software is covered under version 3 of the GNU GPL (General Public License).}}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\clearpage
+\pagestyle{plain}
+\setcounter{page}{1}
+
+\ppgtk{} is a set of tools written in C++ for analyzing high-throughput sequencing data in polyploids. It was designed for research in non-model polyploids (i.e., no reference genome), and provides a number of functions for conducting population genomics analyses in these taxa.
+
+\section{Installation}
+
+Installing \ppgtk{} follows the typical workflow for Unix-based operating systems using a Makefile and the commands \texttt{`make \&\& sudo make install'}. 
+
+\subsection{Obtaining \ppgtk}
+
+A ``bleeding edge'' version of the source code for \ppgtk{} can be cloned from GitHub using:
+
+\code{\$ git clone https://github.com/pblischak/ppgtk.git}
+
+from the command line. You can also download the latest stable release from GitHub by following the \textbf{Releases} link in the \ppgtk{} repository.
+
+\code{\$ cd ppgtk-v1.0.0}
+
+\code{[R]> dat <- read.table("tot-reads.txt")}
+
+\subsection{Boost C++ Libraries}
+
+\citep{boostCPP}
+
+\subsection{OpenMP}
+
+\citep{openMP}
+
+\subsection{Compiling the executable}
+
+To enable parallelization with OpenMP, you will need to change the \texttt{OPENMP} variable in the Makefile to \texttt{yes}, like so:
+
+\code{OPENMP ?= yes}
+
+If you installed Boost in \texttt{/usr/local/bin}, then the paths to the header files and libraries should already be correctly specified in the Makefile. If you installed it somewhere else, then you will need to change the \texttt{BOOST\_LIB} and \texttt{BOOST\_INC} variables to point to where it was installed.
+
+If you are on a Mac, type:
+
+\code{\$ make darwin}
+
+If you are on a Linux computer, type:
+
+\code{\$ make linux}
+
+\section{Getting Started}
+
+\code{\$ ppgtk -n 100 -l 2000 -p 4 -t total.txt -r reference.txt -q}
+
+\texttt{total.txt}:
+
+\begin{verbatim}
+24	39	12	0	63	0	33	45	. . .
+20	33	21	0	0	78	27	11	. . .
+.
+.
+.
+7	4	80	22	26	22	18	4	. . .
+\end{verbatim}
+
+\newpage
+
+\bibliographystyle{plain}
+\bibliography{ppgtk}
+
+
+
+\end{document}

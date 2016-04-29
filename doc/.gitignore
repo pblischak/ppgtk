@@ -1,0 +1,7 @@
+.DS_Store
+ppgtk.*
+!ppgtk.tex
+!ppgtk.bib
+!ppgtk.pdf
+*~
+.*~
