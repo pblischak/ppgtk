@@ -23,10 +23,10 @@ ifeq ($(strip $(OPENMP)), yes)
 	CXXFLAGS += -fopenmp
 endif
 
-.PHONY : all linux darwin clean install uninstall docs
+.PHONY : all linux darwin clean install uninstall
 
 all :
-	@echo "Use 'make linux' on a Linux machine, or 'make darwin' on a Mac."
+	@printf "\nUse 'make linux' on a Linux machine, or 'make darwin' on a Mac.\n\n"
 
 linux : $(OBJ)
 	$(CXX) $(CXXFLAGS) -L${BOOST_LIB} -Wl,-R${BOOST_LIB} $(LDFLAGS) -o $(EXE) $^
