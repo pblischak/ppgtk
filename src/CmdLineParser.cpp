@@ -31,7 +31,7 @@ CmdLineParser::CmdLineParser(int arg_count, char **arg_var){
     ("reference_reads,r", po::value<std::string>(&refFile)->required(), "REQUIRED: file name with reference read counts.")
     ("seed,s", po::value<long int>(&seed), "random number seed.")
     ("quiet,q", "Turn off printing run information to stdout.")
-    ("print", "Print all saved MCMC samples to file in Boost format. NB: don't use for model selection as it is much more computationally expensive.");
+    ("print", "Print updates to screen.");
 
     po::variables_map vm;
     try{
@@ -68,7 +68,7 @@ CmdLineParser::CmdLineParser(int arg_count, char **arg_var){
     // catch any errors in boost argument parsing.
     catch(po::error& e){
       std::cout << "\nerror: " << e.what() << std::endl;
-      std::cout << "\n\n" << "Usage: ./ppgtk -n #taxa -l #loci -k K_value -p ploidy_level" << std::endl;
+      std::cout << "\n\n" << "Usage: ./ppgtk -n #taxa -l #loci -p ploidy_level -t total_reads.txt -r ref_reads.txt" << std::endl;
       std::cout << "\nFor additional options type: ./pgpsi -h\n" << std::endl;
       exit(EXIT_FAILURE);
     }

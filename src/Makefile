@@ -1,9 +1,7 @@
 # Makefile for compiling PPGtk with Boost and OpenMP
-# Modified from the Makefile for EEMS (https://github.com/dipetkov/eems)
-# and SVDquartets (http://www.stat.osu.edu/~lkubatko/software/SVDquartets/).
 
-# Set this to `no` if you don't have OpenMP.
-OPENMP ?= yes
+# Set this to `yes` if you have OpenMP.
+OPENMP ?= no
 
 # Set this to where you have Boost installed
 BOOST_LIB = /usr/local/lib
@@ -13,7 +11,7 @@ EXE = ppgtk
 OBJ = CmdLineParser.o DataParser.o MbRandom.o main.o
 
 CXX = g++
-CXXFLAGS = -I${BOOST_INC} -O3 -DNDEBUG -std=c++11
+CXXFLAGS = -I${BOOST_INC} -O3 -g -std=c++11
 LDFLAGS = \
 	-lboost_system \
 	-lboost_program_options \
@@ -23,19 +21,19 @@ ifeq ($(strip $(OPENMP)), yes)
 	CXXFLAGS += -fopenmp
 endif
 
-.PHONY : all linux darwin clean install uninstall
+.PHONY : clean install uninstall
 
-all :
-	@printf "\nUse 'make linux' on a Linux machine, or 'make darwin' on a Mac.\n\n"
+#all :
+	#@printf "\nUse 'make linux' on a Linux machine, or 'make darwin' on a Mac.\n\n"
 
-linux : $(OBJ)
-	$(CXX) $(CXXFLAGS) -L${BOOST_LIB} -Wl,-R${BOOST_LIB} $(LDFLAGS) -o $(EXE) $^
-	@mv $(EXE) ../bin
-	@printf "\nTo install ppgtk system-wide run: sudo make install\n\n"
+#linux : $(OBJ)
+#	$(CXX) $(CXXFLAGS) -L${BOOST_LIB} -Wl,-R${BOOST_LIB} $(LDFLAGS) -o $(EXE) $^
+#	@mv $(EXE) ../bin
+#	@printf "\nTo install ppgtk system-wide run: sudo make install\n\n"
 
-darwin : $(OBJ)
-	@mkdir ../bin
-	$(CXX) $(CXXFLAGS) -L${BOOST_LIB} $(LDFLAGS) -o $(EXE) $^
+$(EXE) : $(OBJ)
+	@test -d ../bin || mkdir -p ../bin
+	$(CXX) $(CXXFLAGS) -L${BOOST_LIB} -o $(EXE) $^ $(LDFLAGS)
 	@mv $(EXE) ../bin
 	@printf "\nTo install ppgtk system-wide run: sudo make install\n\n"
 
@@ -44,7 +42,7 @@ $(OBJ) : %.o: %.cpp
 
 clean :
 	@printf "\n Removing object (*.o) files from src/ and executable files from bin/...\n\n"
-	@rm -ir $(OBJ) ../bin
+	@rm -r $(OBJ) ../bin
 
 install :
 	@printf "\nCopying ppgtk to /usr/local/bin...\n\n"
