@@ -29,6 +29,7 @@ CmdLineParser::CmdLineParser(int arg_count, char **arg_var){
     ("ploidy_level,p", po::value<int>(&ploidy)->required(), "REQUIRED: the ploidy level of the individuals.")
     ("total_reads,t", po::value<std::string>(&totFile)->required(), "REQUIRED: file name with total read counts.")
     ("reference_reads,r", po::value<std::string>(&refFile)->required(), "REQUIRED: file name with reference read counts.")
+    ("error_rates,e", po::value<std::string>(&errFile)->required(), "REQUIRED: file name containing per locus read error rates.")
     ("seed,s", po::value<long int>(&seed), "random number seed.")
     ("quiet,q", "Turn off printing run information to stdout.")
     ("print", "Print updates to screen.");

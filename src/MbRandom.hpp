@@ -1,3 +1,5 @@
+// Modified by Paul Blischak (PDB) for PPGtk starting April 2016.
+
 /*!
  * \file
  * In this file we declare a class for random variables. It contains one
@@ -125,6 +127,11 @@ class MbRandom {
                         // DLR modifications
                        int   sampleInteger(int min, int max);
 
+             // Added by PDB
+             inline double   lnBinomPdf(int size, int x, double prob);
+             inline double   lnBetaBinomPdf(int size, int x, double a, double b);
+
+
     private:
                             /* private functions */
                     double   beta(double a, double b);                                                                 /*!< calculates the beta function                                                   */
@@ -142,7 +149,10 @@ class MbRandom {
                     double   rndGamma1(double s);                                                                      /*!< function used when calculating gamma random variable                           */
                     double   rndGamma2(double s);                                                                      /*!< function used when calculating gamma random variable                           */
 
-                            /* private data */
+                    // added by PDB
+                    double   lnChoose(int n, int k);
+
+                             /* private data */
                   long int   seed;                                                                                     /*!< seed values for the random number generator                                    */
                       bool   initializedFacTable;                                                                      /*!< a boolean which is false if the log factorial table has not been initialized   */
                     double   facTable[1024];                                                                           /*!< a table containing the log of the factorial up to 1024                         */
@@ -563,6 +573,14 @@ inline double MbRandom::poissonQuantile(double lambda, double p) {
     }
     //cout << "Poisson quantile warning" << endl;
     return xmax;
+}
+
+inline double MbRandom::lnBinomPdf(int size, int x, double prob){
+  return lnChoose(size, x) + (x * log(prob)) + ((size - x) * log(1 - prob));
+}
+
+inline double MbRandom::lnBetaBinomPdf(int size, int x, double a, double b){
+  return lnChoose(size, x) + (log(beta((double)x + a, (double)(size - x) + b)) - log(beta(a, b)));
 }
 
 #endif

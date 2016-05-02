@@ -1,5 +1,6 @@
 // System headers
 #include <iostream>
+#include <iomanip>
 #include <cstdlib>
 
 // Boost headers
@@ -10,9 +11,12 @@
 #endif
 
 // Local headers
-#include "main.hpp"
+#include "MbRandom.hpp"
 #include "CmdLineParser.hpp"
 #include "DataParser.hpp"
+#include "Frequency.hpp"
+#include "Genotype.hpp"
+#include "main.hpp"
 
 MbRandom *r = new MbRandom;
 
@@ -31,17 +35,30 @@ int main(int argc, char **argv){
 
     DataParser data;
 
-    data.getReadData(cmd.totFile, cmd.refFile, cmd.nInd, cmd.nLoci);
+    data.getReadData(cmd.totFile, cmd.refFile, cmd.errFile, cmd.nInd, cmd.nLoci);
 
     data.printMat(cmd.nInd, cmd.nLoci);
 
-    double s = 5.0;
-    double t = 2.0;
 
-    # pragma omp parallel for ordered
-    for(unsigned i = 0; i < 10; i++){
-      #pragma omp ordered
-      std::cout << i << "\t" << r->gammaRv(s, t) << "\n";
+    std::cout << "\n";
+    for(int l = 0; l < cmd.nInd; l++){
+      std::cout << std::setw(10) << std::setprecision(10) << data.err[l] << "\t";
+    }
+    std::cout << "\n";
+
+
+    Genotype G(cmd.nInd, cmd.nLoci, cmd.ploidy, data.totMat, data.refMat, data.err);
+
+    Frequency P(cmd.nLoci);
+    P.writeFrequency(cmd.nInd);
+    P.getLogLiks(G.logLiks, cmd.nInd, cmd.nLoci, cmd.ploidy);
+
+
+
+    std::cout << "\n\nAllele frequencies...\n";
+
+    for(int l = 0; l < P.vals.size(); l++){
+      std::cout << P.vals[l] << "\n";
     }
 
     delete r;

@@ -1,3 +1,5 @@
+// Modified by Paul Blischak (PDB) for PPGtk starting April 2016.
+
 /*!
  * \file
  * This file contains the implementation of MbRandom, a
@@ -1544,6 +1546,21 @@ double MbRandom::lnFactorial(int n) {
     double  n1, r;
     n1 = n;  r  = 1.0 / n1;
     return (n1 + 0.5) * log(n1) - n1 + C0 + r*(C1 + r*r*C3);
+}
+
+/*
+
+  lnChoose
+  Returns the log of "n choose k", where n and k are integers and k < n.
+
+*/
+
+double MbRandom::lnChoose(int n, int k){
+  if(k <= n){
+    return lnFactorial(n) - (lnFactorial(k) + lnFactorial(n - k));
+  } else {
+    exit(1);
+  }
 }
 
 /*

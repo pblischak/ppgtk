@@ -8,7 +8,8 @@ BOOST_LIB = /usr/local/lib
 BOOST_INC = /usr/local/include
 
 EXE = ppgtk
-OBJ = CmdLineParser.o DataParser.o MbRandom.o main.o
+OBJ = CmdLineParser.o DataParser.o MbRandom.o Frequency.o Genotype.o main.o
+TXT_FILES = frequencies.txt
 
 CXX = g++
 CXXFLAGS = -I${BOOST_INC} -O3 -g -std=c++11
@@ -42,7 +43,7 @@ $(OBJ) : %.o: %.cpp
 
 clean :
 	@printf "\n Removing object (*.o) files from src/ and executable files from bin/...\n\n"
-	@rm -r $(OBJ) ../bin
+	@rm -ir $(OBJ) $(TXT_FILES) ../bin
 
 install :
 	@printf "\nCopying ppgtk to /usr/local/bin...\n\n"
