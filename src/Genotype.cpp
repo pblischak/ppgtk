@@ -1,5 +1,7 @@
 // System headers
 #include <vector>
+//#include <iostream>
+//#include <iomanip>
 
 // Boost headers
 
@@ -11,7 +13,7 @@
 
 Genotype::Genotype(int ind, int loci, int ploidy, std::vector<int> &tot, std::vector<int> &ref, std::vector<double> &err){
 
-  double gEpsilon, lnVal;
+  double gEpsilon, val;
   int pos_il;
 
   for(int i = 0; i < ind; i++){
@@ -22,10 +24,10 @@ Genotype::Genotype(int ind, int loci, int ploidy, std::vector<int> &tot, std::ve
         gEpsilon = (a / (double) ploidy) * (1 - err[l]) + (1 - (a / (double) ploidy)) * err[l];
 
         if(tot[pos_il] != 0){
-          lnVal = r->lnBetaPdf(tot[pos_il], ref[pos_il], gEpsilon);
-          logLiks.push_back(lnVal);
+          val = r->binomPdf(tot[pos_il], ref[pos_il], gEpsilon);
+          liks.push_back(val);
         } else {
-          logLiks.push_back(-999);
+          liks.push_back(-9999.0);
         }
 
       }

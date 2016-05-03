@@ -33,6 +33,8 @@ int main(int argc, char **argv){
       r->setSeed(cmd.seed);
     }
 
+    int zero = 0;
+
     DataParser data;
 
     data.getReadData(cmd.totFile, cmd.refFile, cmd.errFile, cmd.nInd, cmd.nLoci);
@@ -41,7 +43,7 @@ int main(int argc, char **argv){
 
 
     std::cout << "\n";
-    for(int l = 0; l < cmd.nInd; l++){
+    for(int l = 0; l < cmd.nLoci; l++){
       std::cout << std::setw(10) << std::setprecision(10) << data.err[l] << "\t";
     }
     std::cout << "\n";
@@ -50,15 +52,15 @@ int main(int argc, char **argv){
     Genotype G(cmd.nInd, cmd.nLoci, cmd.ploidy, data.totMat, data.refMat, data.err);
 
     Frequency P(cmd.nLoci);
-    P.writeFrequency(cmd.nInd);
-    P.getLogLiks(G.logLiks, cmd.nInd, cmd.nLoci, cmd.ploidy);
+    P.writeFrequency(zero);
+    P.getLogLiks(G.liks, cmd.nInd, cmd.nLoci, cmd.ploidy);
 
-
-
-    std::cout << "\n\nAllele frequencies...\n";
-
-    for(int l = 0; l < P.vals.size(); l++){
-      std::cout << P.vals[l] << "\n";
+    for(int m = 1; m <= cmd.mcmc_gen; m++){
+      P.mhUpdate(G.liks, cmd.nInd, cmd.nLoci, cmd.ploidy);
+      P.writeFrequency(m);
+      if(m % cmd.thin == 0){
+        P.printMeanAcceptRatio();
+      }
     }
 
     delete r;

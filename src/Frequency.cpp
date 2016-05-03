@@ -19,14 +19,14 @@ namespace brent = boost::math::tools;
 Frequency::Frequency(int &loci){
 
   outFile = "frequencies.txt";
-  tune = 0.1;
+  tune = 0.008;
   nRow = loci;
   size = loci;
   currLogLiks.resize(loci, 0.0);
   nAccepted.resize(loci, 0);
   nProposals.resize(loci, 0);
   acceptRatio.resize(loci, 0.0);
-  double ran, alpha = 0.5, beta = 0.5;
+  double ran, aa = 0.5, bb = 0.5;
 
   for(int l = 0; l < loci; l++){
     ran = r->uniformRv();
@@ -35,36 +35,39 @@ Frequency::Frequency(int &loci){
 
 }
 
-void Frequency::getLogLiks(std::vector<double> &gLogLiks, int ind, int loci, int ploidy){
+void Frequency::getLogLiks(std::vector<double> &gLiks, int ind, int loci, int ploidy){
+
+  double tmpLik;
 
   for(int i = 0; i < ind; i++){
     for(int l = 0; l < loci; l++){
       for(int a = 0; a <= ploidy; a++){
 
-        if(gLogLiks[i*loci*ploidy + l*ploidy + a] != -999){
-          currLogLiks[l] += gLogLiks[i*loci*ploidy + l*ploidy + a] + r->lnBinomPdf(ploidy, a, vals[l]) + r->lnBetaPdf(alpha, beta, vals[l]);
+        if(gLiks[i*loci*ploidy + l*ploidy + a] != -9999.0){
+          tmpLik += gLiks[i*loci*ploidy + l*ploidy + a] * r->binomPdf(ploidy, a, vals[l]);
         } else {
           continue;
         }
-        
+
       }
+      currLogLiks[l] += log(tmpLik);
     }
   }
 
 }
 
-void Frequency::mhUpdate(std::vector<double> &gLogLiks, int ind, int loci, int ploidy){
+void Frequency::mhUpdate(std::vector<double> &gLiks, int ind, int loci, int ploidy){
 
   std::vector<double> newLogLiks(currLogLiks.size());
   std::vector<double> newVals(vals.size(), -1);
-  double lnMetropRatio, lnU;
+  double lnMetropRatio, lnU, tmpBinom, tmpBeta, tmpLik;
 
   for(int l = 0; l < vals.size(); l++){
 
     // propose  new values using normal RV centered at current val with s.d. equal to sqrt(tune).
     // Keep making proposals if the proposed new values is outside the range [0,1].
     while(newVals[l] < 0 || newVals[l] > 1){
-      newVals[l] = r->normalRv(vals[l], sqrt(tune));
+      newVals[l] = r->normalRv(vals[l], tune);
     }
 
   }
@@ -72,13 +75,16 @@ void Frequency::mhUpdate(std::vector<double> &gLogLiks, int ind, int loci, int p
   for(int i = 0; i < ind; i++){
     for(int l = 0; l < loci; l++){
       for(int a = 0; a <= ploidy; a++){
-        newLogLiks[l] += gLogLiks[i*loci*ploidy + l*ploidy + a] + r->lnBinomPdf(ploidy, a, newVals[l]) + r->lnBetaPdf(alpha, beta, newVals[l]);
+        tmpLik += gLiks[i*loci*ploidy + l*ploidy + a] * r->binomPdf(ploidy, a, newVals[l]);
       }
+      newLogLiks[l] += log(tmpLik);
     }
   }
 
   for(int l = 0; l < loci; l++){
-    lnMetropRatio = newLogLiks[l] - currLogLiks[l];
+
+    lnMetropRatio = (newLogLiks[l] + (aa - 1)*log(newVals[l]) + (bb - 1)*log(1 - newVals[l]))
+                    - (currLogLiks[l]  + (aa - 1)*log(vals[l]) + (bb - 1)*log(1 - vals[l]));
     lnU = log(r->uniformRv());
 
     if(lnU < lnMetropRatio){

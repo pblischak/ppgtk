@@ -128,6 +128,7 @@ class MbRandom {
                        int   sampleInteger(int min, int max);
 
              // Added by PDB
+             inline double   binomPdf(int size, int x, double prob);
              inline double   lnBinomPdf(int size, int x, double prob);
              inline double   lnBetaBinomPdf(int size, int x, double a, double b);
 
@@ -573,6 +574,11 @@ inline double MbRandom::poissonQuantile(double lambda, double p) {
     }
     //cout << "Poisson quantile warning" << endl;
     return xmax;
+}
+
+inline double MbRandom::binomPdf(int size, int x, double prob){
+  double res = lnChoose(size, x) + (x * log(prob)) + ((size - x) * log(1 - prob));
+  return exp(res);
 }
 
 inline double MbRandom::lnBinomPdf(int size, int x, double prob){

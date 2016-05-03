@@ -9,7 +9,7 @@ public:
   CmdLineParser(int, char**);
   ~CmdLineParser(){};
   std::string totFile, refFile, errFile;
-  int nInd, nLoci, ploidy;
+  int nInd, nLoci, ploidy, mcmc_gen, thin;
   long int seed;
   bool quiet, print;
 };

@@ -8,8 +8,8 @@ public:
   ~Frequency(){};
 
   // Member functions
-  void getLogLiks(std::vector<double> &gLogLiks, int ind, int loci, int ploidy);
-  void mhUpdate(std::vector<double> &gLogLiks, int ind, int loci, int ploidy);
+  void getLogLiks(std::vector<double> &gLiks, int ind, int loci, int ploidy);
+  void mhUpdate(std::vector<double> &gLiks, int ind, int loci, int ploidy);
   void brentUpdate();
   void emUpdate();
   void writeFrequency(int &iter);
@@ -21,7 +21,7 @@ public:
   std::vector<double> vals;
 
 private:
-  double tune, alpha, beta;
+  double tune, aa, bb;
   int nRow, size;
   std::vector<int> nAccepted, nProposals;
   std::string outFile;

@@ -7,7 +7,7 @@ OPENMP ?= no
 BOOST_LIB = /usr/local/lib
 BOOST_INC = /usr/local/include
 
-EXE = ppgtk
+EXE = ppgtk_mhFreqs
 OBJ = CmdLineParser.o DataParser.o MbRandom.o Frequency.o Genotype.o main.o
 TXT_FILES = frequencies.txt
 
