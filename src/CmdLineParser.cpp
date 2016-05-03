@@ -29,6 +29,7 @@ CmdLineParser::CmdLineParser(int arg_count, char **arg_var){
     ("ploidy_level,p", po::value<int>(&ploidy)->required(), "REQUIRED: the ploidy level of the individuals.")
     ("mcmc_gen,m", po::value<int>(&mcmc_gen)->default_value(5000), "Number of MCMC generations.")
     ("thin", po::value<int>(&thin)->default_value(10), "How often to thin/sample the chain.")
+    ("burn_in,b", po::value<int>(&burn)->default_value(2000), "The number of burn-in generations before samples are saved.")
     ("total_reads,t", po::value<std::string>(&totFile)->required(), "REQUIRED: file name with total read counts.")
     ("reference_reads,r", po::value<std::string>(&refFile)->required(), "REQUIRED: file name with reference read counts.")
     ("error_rates,e", po::value<std::string>(&errFile)->required(), "REQUIRED: file name containing per locus read error rates.")

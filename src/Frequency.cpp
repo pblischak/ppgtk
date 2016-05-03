@@ -7,6 +7,10 @@
 // Boost headers
 #include <boost/math/tools/minima.hpp>
 
+#ifdef _OPENMP
+  #include<omp.h>
+#endif
+
 // Local headers
 #include "Frequency.hpp"
 #include "MbRandom.hpp"
@@ -72,6 +76,7 @@ void Frequency::mhUpdate(std::vector<double> &gLiks, int ind, int loci, int ploi
 
   }
 
+  #pragma omp parallel for collapse(3)
   for(int i = 0; i < ind; i++){
     for(int l = 0; l < loci; l++){
       for(int a = 0; a <= ploidy; a++){

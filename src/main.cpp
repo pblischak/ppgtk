@@ -52,13 +52,12 @@ int main(int argc, char **argv){
     Genotype G(cmd.nInd, cmd.nLoci, cmd.ploidy, data.totMat, data.refMat, data.err);
 
     Frequency P(cmd.nLoci);
-    P.writeFrequency(zero);
     P.getLogLiks(G.liks, cmd.nInd, cmd.nLoci, cmd.ploidy);
 
     for(int m = 1; m <= cmd.mcmc_gen; m++){
       P.mhUpdate(G.liks, cmd.nInd, cmd.nLoci, cmd.ploidy);
-      P.writeFrequency(m);
-      if(m % cmd.thin == 0){
+      if(m % cmd.thin == 0 && m > cmd.burn){
+        P.writeFrequency(m);
         P.printMeanAcceptRatio();
       }
     }
@@ -66,5 +65,5 @@ int main(int argc, char **argv){
     delete r;
 
     return 0;
-
+    
 }
