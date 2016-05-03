@@ -23,7 +23,7 @@ namespace brent = boost::math::tools;
 Frequency::Frequency(int &loci){
 
   outFile = "frequencies.txt";
-  tune = 0.008;
+  tune = 0.1;
   nRow = loci;
   size = loci;
   currLogLiks.resize(loci, 0.0);
@@ -45,6 +45,7 @@ void Frequency::getLogLiks(std::vector<double> &gLiks, int ind, int loci, int pl
 
   for(int i = 0; i < ind; i++){
     for(int l = 0; l < loci; l++){
+      tmpLik = 0.0;
       for(int a = 0; a <= ploidy; a++){
 
         if(gLiks[i*loci*ploidy + l*ploidy + a] != -9999.0){
@@ -64,7 +65,7 @@ void Frequency::mhUpdate(std::vector<double> &gLiks, int ind, int loci, int ploi
 
   std::vector<double> newLogLiks(currLogLiks.size());
   std::vector<double> newVals(vals.size(), -1);
-  double lnMetropRatio, lnU, tmpBinom, tmpBeta, tmpLik;
+  double lnMetropRatio, lnU, tmpLik;
 
   for(int l = 0; l < vals.size(); l++){
 
@@ -76,9 +77,9 @@ void Frequency::mhUpdate(std::vector<double> &gLiks, int ind, int loci, int ploi
 
   }
 
-  #pragma omp parallel for collapse(3)
   for(int i = 0; i < ind; i++){
     for(int l = 0; l < loci; l++){
+      tmpLik = 0.0;
       for(int a = 0; a <= ploidy; a++){
         tmpLik += gLiks[i*loci*ploidy + l*ploidy + a] * r->binomPdf(ploidy, a, newVals[l]);
       }
@@ -91,6 +92,7 @@ void Frequency::mhUpdate(std::vector<double> &gLiks, int ind, int loci, int ploi
     lnMetropRatio = (newLogLiks[l] + (aa - 1)*log(newVals[l]) + (bb - 1)*log(1 - newVals[l]))
                     - (currLogLiks[l]  + (aa - 1)*log(vals[l]) + (bb - 1)*log(1 - vals[l]));
     lnU = log(r->uniformRv());
+    std::cout << exp(lnMetropRatio) << "," << exp(lnU) << "\n";
 
     if(lnU < lnMetropRatio){
       vals[l] = newVals[l];
