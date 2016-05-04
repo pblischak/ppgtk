@@ -1,6 +1,6 @@
 // System headers
 #include <vector>
-//#include <iostream>
+#include <iostream>
 //#include <iomanip>
 
 // Boost headers
@@ -26,6 +26,7 @@ Genotype::Genotype(int ind, int loci, int ploidy, std::vector<int> &tot, std::ve
 
         if(tot[pos_il] != 0){
           val = r->binomPdf(tot[pos_il], ref[pos_il], gEpsilon);
+          //std::cout << tot[pos_il] << ", " << ref[pos_il] << ", " << val << "\n";
           liks.push_back(val);
         } else {
           liks.push_back(-9999.0);

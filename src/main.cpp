@@ -38,18 +38,14 @@ int main(int argc, char **argv){
     DataParser data;
 
     data.getReadData(cmd.totFile, cmd.refFile, cmd.errFile, cmd.nInd, cmd.nLoci);
-
-    data.printMat(cmd.nInd, cmd.nLoci);
-
-
-    std::cout << "\n";
-    for(int l = 0; l < cmd.nLoci; l++){
-      std::cout << std::setw(10) << std::setprecision(10) << data.err[l] << "\t";
-    }
-    std::cout << "\n";
-
+    //data.printMat(cmd.nInd, cmd.nLoci);
 
     Genotype G(cmd.nInd, cmd.nLoci, cmd.ploidy, data.totMat, data.refMat, data.err);
+
+    /*std::cout << G.liks.size() << "\t" << cmd.nInd * cmd.nLoci * (cmd.ploidy + 1) << "\n";
+    for(int g = 0; g < G.liks.size(); g++){
+      std::cout << G.liks[g] << "\n";
+    }*/
 
     Frequency P(cmd.nLoci);
     P.getLogLiks(G.liks, cmd.nInd, cmd.nLoci, cmd.ploidy);
@@ -65,5 +61,5 @@ int main(int argc, char **argv){
     delete r;
 
     return 0;
-    
+
 }

@@ -23,7 +23,7 @@ namespace brent = boost::math::tools;
 Frequency::Frequency(int &loci){
 
   outFile = "frequencies.txt";
-  tune = 0.1;
+  tune = 0.25;
   nRow = loci;
   size = loci;
   currLogLiks.resize(loci, 0.0);
@@ -41,7 +41,7 @@ Frequency::Frequency(int &loci){
 
 void Frequency::getLogLiks(std::vector<double> &gLiks, int ind, int loci, int ploidy){
 
-  double tmpLik;
+  double tmpVal1, tmpVal2, tmpLik;
 
   for(int i = 0; i < ind; i++){
     for(int l = 0; l < loci; l++){
@@ -49,12 +49,16 @@ void Frequency::getLogLiks(std::vector<double> &gLiks, int ind, int loci, int pl
       for(int a = 0; a <= ploidy; a++){
 
         if(gLiks[i*loci*ploidy + l*ploidy + a] != -9999.0){
-          tmpLik += gLiks[i*loci*ploidy + l*ploidy + a] * r->binomPdf(ploidy, a, vals[l]);
+          tmpVal1 = log(r->binomPdf(ploidy, a, vals[l]));
+          tmpVal2 = log(gLiks[i*loci*ploidy + l*ploidy + a]);
+          //std::cout << tmpVal1 << "," << tmpVal2 << "\t";
+          tmpLik += exp(tmpVal1 + tmpVal2);
         } else {
           continue;
         }
-
+        //std::cout << tmpLik << "\n";
       }
+      //std::cout << "----\n";
       currLogLiks[l] += log(tmpLik);
     }
   }
@@ -65,7 +69,7 @@ void Frequency::mhUpdate(std::vector<double> &gLiks, int ind, int loci, int ploi
 
   std::vector<double> newLogLiks(currLogLiks.size());
   std::vector<double> newVals(vals.size(), -1);
-  double lnMetropRatio, lnU, tmpLik;
+  double lnMetropRatio, lnU, tmpVal1, tmpVal2, tmpLik;
 
   for(int l = 0; l < vals.size(); l++){
 
@@ -81,7 +85,9 @@ void Frequency::mhUpdate(std::vector<double> &gLiks, int ind, int loci, int ploi
     for(int l = 0; l < loci; l++){
       tmpLik = 0.0;
       for(int a = 0; a <= ploidy; a++){
-        tmpLik += gLiks[i*loci*ploidy + l*ploidy + a] * r->binomPdf(ploidy, a, newVals[l]);
+        tmpVal1 = log(r->binomPdf(ploidy, a, newVals[l]));
+        tmpVal2 = log(gLiks[i*loci*ploidy + l*ploidy + a]);
+        tmpLik +=  exp(tmpVal1 + tmpVal2);
       }
       newLogLiks[l] += log(tmpLik);
     }
@@ -92,7 +98,7 @@ void Frequency::mhUpdate(std::vector<double> &gLiks, int ind, int loci, int ploi
     lnMetropRatio = (newLogLiks[l] + (aa - 1)*log(newVals[l]) + (bb - 1)*log(1 - newVals[l]))
                     - (currLogLiks[l]  + (aa - 1)*log(vals[l]) + (bb - 1)*log(1 - vals[l]));
     lnU = log(r->uniformRv());
-    std::cout << exp(lnMetropRatio) << "," << exp(lnU) << "\n";
+    //std::cout << exp(lnMetropRatio) << "," << exp(lnU) << "\n";
 
     if(lnU < lnMetropRatio){
       vals[l] = newVals[l];
@@ -141,14 +147,14 @@ void Frequency::writeFrequency(int &iter){
 
 void Frequency::printMeanAcceptRatio(){
 
-  double meanAcceptRatio = 0.0;
-
+  //double meanAcceptRatio = 0.0;
+  std::cout << "Allele frequency acceptance ratio: ";
   for(int l = 0; l < acceptRatio.size(); l++){
-    meanAcceptRatio += acceptRatio[l];
+     std::cout << acceptRatio[l] << "\t";
   }
 
-  meanAcceptRatio /= (double) acceptRatio.size();
+  //meanAcceptRatio /= (double) acceptRatio.size();
 
-  std::cout << "Allele frequency acceptance ratio (mean): " << meanAcceptRatio << "\n";
+  std::cout  << "\n";
 
 }
