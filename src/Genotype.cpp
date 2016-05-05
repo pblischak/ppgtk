@@ -33,6 +33,25 @@ Genotype::Genotype(int ind, int loci, int ploidy, std::vector<int> &tot, std::ve
         }
 
       }
+      //std::cout << "----\n";
+    }
+  }
+
+  for(int l = 0; l < loci; l++){
+    for(int i = 0; i < ind; i++){
+      pos_il = i*loci + l;
+      for(int a = 0; a <= ploidy; a++){
+
+        gEpsilon = (a / (double) ploidy) * (1 - err[l]) + (1 - (a / (double) ploidy)) * err[l];
+
+        if(tot[pos_il] != 0){
+          val = r->binomPdf(tot[pos_il], ref[pos_il], gEpsilon);
+          tLiks.push_back(val);
+        } else {
+          tLiks.push_back(-9999.0);
+        }
+
+      }
     }
   }
 

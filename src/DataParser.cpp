@@ -44,6 +44,7 @@ void DataParser::getReadData(const std::string &totFilename, const std::string &
   }
 
   checkReadMats(ind, loci);
+  t(ind, loci);
 
 }
 
@@ -58,6 +59,20 @@ void DataParser::printMat(const int &ind, const int &loci){
     }
     std::cout << "\n";
   }
+}
+
+void DataParser::t(const int a, const int b){
+
+  int pos_il;
+
+  for(int l = 0; l < a; l++){
+    for(int i = 0; i < b; i++){
+      pos_il = i*b + l;
+      tTotMat.push_back(totMat[pos_il]);
+      tRefMat.push_back(refMat[pos_il]);
+    }
+  }
+
 }
 
 void DataParser::checkReadMats(const int a, const int b){

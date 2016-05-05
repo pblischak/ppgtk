@@ -10,8 +10,10 @@ public:
   // Member functions
   void getLogLiks(std::vector<double> &gLiks, int ind, int loci, int ploidy);
   void mhUpdate(std::vector<double> &gLiks, int ind, int loci, int ploidy);
+  std::vector<double> calcLogLik(std::vector<double> &gLiks, int ind, int loci, int ploidy, double f);
+  std::vector<double> calcLogLik(std::vector<int> &tot, std::vector<int> &ref, std::vector<double> &err, int ind, int loci, int ploidy, double f);
   void brentUpdate();
-  void emUpdate();
+  std::vector<double> emUpdate(std::vector<double> &gLiks, int ind, int loci, int ploidy);
   void writeFrequency(int &iter);
   void printMeanAcceptRatio();
   void setTune(double &newTune){ tune = newTune; }
