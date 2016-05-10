@@ -33,13 +33,11 @@ int main(int argc, char **argv){
       r->setSeed(cmd.seed);
     }
 
-    int zero = 0;
-
     DataParser data;
 
     data.getReadData(cmd.totFile, cmd.refFile, cmd.errFile, cmd.nInd, cmd.nLoci);
 
-    //data.printMat(cmd.nInd, cmd.nLoci);
+
 
     Genotype G(cmd.nInd, cmd.nLoci, cmd.ploidy, data.totMat, data.refMat, data.err);
 
@@ -52,25 +50,31 @@ int main(int argc, char **argv){
     P.getLogLiks(G.liks, cmd.nInd, cmd.nLoci, cmd.ploidy);
 
     double fFreq;
-    std::vector<double> res;
+    std::vector<double> res1, res2;
     for(int ff = 1; ff <= 200; ff++){
       fFreq = (double) ff / 201.0;
-      res = P.calcLogLik(data.tTotMat, data.tRefMat, data.err, cmd.nInd, cmd.nLoci, cmd.ploidy, fFreq);
+      res1 = P.calcLogLik(data.tTotMat, data.tRefMat, data.err, cmd.nInd, cmd.nLoci, cmd.ploidy, fFreq);
+      //std::cout << "\n";
+      res2 = P.calcLogLik(G.tLiks, data.tTotMat, data.tRefMat, cmd.nInd, cmd.nLoci, cmd.ploidy, fFreq);
+      //std::cout << "\n";
+
 
       std::cout << fFreq << "\t";
-      for(int r = 0; r < res.size(); r++){
-        std::cout << res[r] << "\t";
+      for(int r = 0; r < res1.size(); r++){
+        std::cout << res1[r] + 0.5 * log(fFreq) + 0.5 * log(1 - fFreq) << "\t" << res2[r] + 0.5 * log(fFreq) + 0.5 * log(1 - fFreq) << "\t";
       }
       std::cout << "\n";
     }
 
     for(int m = 1; m <= cmd.mcmc_gen; m++){
-      //P.mhUpdate(G.liks, cmd.nInd, cmd.nLoci, cmd.ploidy);
+      //P.mhUpdate(G.tLiks, cmd.nInd, cmd.nLoci, cmd.ploidy);
       if(m % cmd.thin == 0 && m > cmd.burn){
         //P.writeFrequency(m);
         //P.printMeanAcceptRatio();
       }
     }
+
+    //data.printMat(cmd.nInd, cmd.nLoci);
 
     delete r;
 

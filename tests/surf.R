@@ -2,11 +2,16 @@ indLik <- function(r, t, e, p){
   
   vals <- rep(NA, 5)
   
+  #cat(r,"\t",t,"\n")
+  
   for(a in 0:4){
    gEpsilon = (a / 4) * (1 - e) + (1 - a / 4) * e
    vals[a+1] = dbinom(r, t, gEpsilon, log=T) + dbinom(a, 4, p, log=T)
+   #cat(t,"\t",r,"\t",dbinom(r, t, gEpsilon, log=T),"\n")
   }
+  #cat("----\n")
   
+  #cat(sum(exp(vals)),"\n")
   return(exp(vals))
   
 }

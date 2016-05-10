@@ -65,8 +65,8 @@ void DataParser::t(const int a, const int b){
 
   int pos_il;
 
-  for(int l = 0; l < a; l++){
-    for(int i = 0; i < b; i++){
+  for(int l = 0; l < b; l++){
+    for(int i = 0; i < a; i++){
       pos_il = i*b + l;
       tTotMat.push_back(totMat[pos_il]);
       tRefMat.push_back(refMat[pos_il]);

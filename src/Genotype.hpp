@@ -7,6 +7,9 @@ public:
   ~Genotype(){};
   std::vector<double> liks, tLiks; // genotype likelihoods: ind x locus x allele,
                                    // and transposed likelihoods: locus x ind x allele
+
+private:
+  void t(const int ii, const int ll, const int pp);
 };
 
 #endif

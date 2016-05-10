@@ -1,11 +1,12 @@
 // System headers
 #include <vector>
+#include <algorithm>
 #include <string>
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 
 // Boost headers
-#include <boost/math/tools/minima.hpp>
 
 #ifdef _OPENMP
   #include<omp.h>
@@ -18,7 +19,6 @@
 
 //
 
-namespace brent = boost::math::tools;
 
 Frequency::Frequency(int &loci){
 
@@ -69,49 +69,81 @@ void Frequency::getLogLiks(std::vector<double> &gLiks, int ind, int loci, int pl
 
 }
 
-std::vector<double> Frequency::calcLogLik(std::vector<double> &gLiks, int ind, int loci, int ploidy, double f){
-  std::vector<double> logLiks(loci, 0);
-  double tmpVal1 = 0.0, tmpVal2 = 0.0, indLik;
+std::vector<double> Frequency::calcLogLik(std::vector<double> &gLiks, std::vector<int> &tot, std::vector<int> &ref, int ind, int loci, int ploidy, double f){
+
+  std::vector<double> logLiks(loci, 0), indLikVec(ploidy + 1, 0);
+  double indLik;
 
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
-      indLik = 0.0;
       for(int a = 0; a <= ploidy; a++){
 
         /*tmpVal1 = log(gLiks[l*ind*ploidy + i*ploidy + a]);
         tmpVal2 = r->lnBinomPdf(ploidy, a, f);
         indLik += exp(tmpVal1 + tmpVal2);*/
-        indLik += exp(log(gLiks[l*ind*ploidy + i*ploidy + a]) + r->lnBinomPdf(ploidy, a, f));
+        indLikVec[a] = exp(gLiks[l*ind*(ploidy+1) + i*(ploidy+1) + a] + r->lnBinomPdf(ploidy, a, f));
+        if(l == 0){
+          //std::cout << l*ind*ploidy + i*ploidy + a << " " << tot[l*ind + i] << "\t"
+          //<< ref[l*ind + i] << "\t" << gLiks[l*ind*ploidy + i*ploidy + a] << "\n";
+        }
 
       }
+
+      if(l == 0){
+        //std::cout << "----\n";
+      }
+
+      indLik = std::accumulate(indLikVec.begin(), indLikVec.end(), 0.0);
       logLiks[l] += log(indLik);
+
     }
   }
 
   return logLiks;
+
 }
 
 std::vector<double> Frequency::calcLogLik(std::vector<int> &tot, std::vector<int> &ref, std::vector<double> &err, int ind, int loci, int ploidy, double f){
 
   double gEpsilon, indLik;
-  std::vector<double> logLiks(loci, 0);
+  std::vector<double> logLiks(loci, 0), indLikVec(ploidy + 1, 0);
 
     for(int l = 0; l < loci; l++){
       for(int i = 0; i < ind; i++){
-        indLik = 0.0;
+
+        /*if(l == 0){
+          std::cout << tot[l*ind + i] << "\t" << ref[l*ind + i] << "\n";
+        }*/
+
         for(int a = 0; a <= ploidy; a++){
 
-          gEpsilon = (a / ploidy) * (1 - err[l]) + (1 - (a / ploidy)) * err[l];
+          gEpsilon = (a / (double) ploidy) * (1 - err[l]) + (1 - (a / (double) ploidy)) * err[l];
 
-          indLik += exp(r->lnBinomPdf(tot[l*ind + i], ref[l*ind + i], gEpsilon) +
-                        r->lnBinomPdf(ploidy, a, f));
+          indLikVec[a] = exp(r->lnBinomPdf(tot[l*ind + i], ref[l*ind + i], gEpsilon) +
+                             r->lnBinomPdf(ploidy, a, f));
+
+          //std::cout << r->lnBinomPdf(tot[l*ind + i], ref[l*ind + i], gEpsilon) << "\t";
+
+
+          /*if(l == 0){
+            std::cout << std::setw(10) << std::setprecision(10) << log(indLikVec[a]) << "\t" << r->lnBinomPdf(tot[l*ind + i], ref[l*ind + i], gEpsilon) << "\t" << r->lnBinomPdf(ploidy, a, f) << "\n";
+          }*/
+
 
         }
+
+        indLik = std::accumulate(indLikVec.begin(), indLikVec.end(), 0.0);
+
+        /*if(l == 0){
+          std::cout <<std::setw(10) << std::setprecision(10) << indLik << "\n";
+        }*/
+
         logLiks[l] += log(indLik);
+
       }
     }
 
-    return logLiks ;
+    return logLiks;
 }
 
 void Frequency::mhUpdate(std::vector<double> &gLiks, int ind, int loci, int ploidy){
