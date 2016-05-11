@@ -15,6 +15,7 @@
 #include "CmdLineParser.hpp"
 #include "DataParser.hpp"
 #include "Frequency.hpp"
+#include "Phi.hpp"
 #include "Genotype.hpp"
 #include "main.hpp"
 
@@ -47,6 +48,7 @@ int main(int argc, char **argv){
     }*/
 
     Frequency P(cmd.nLoci);
+    Phi F(cmd.nLoci);
     P.getLogLiks(G.tLiks, cmd.nInd, cmd.nLoci, cmd.ploidy);
 
     /*double fFreq;
@@ -67,10 +69,17 @@ int main(int argc, char **argv){
     }*/
 
     for(int m = 1; m <= cmd.mcmc_gen; m++){
+
       P.mhUpdate(G.tLiks, cmd.nInd, cmd.nLoci, cmd.ploidy);
+      
       if(m % cmd.thin == 0 && m > cmd.burn){
+
         P.writeFrequency(m);
-        P.printMeanAcceptRatio();
+
+        if(cmd.quiet != 1){
+          P.printMeanAcceptRatio();
+        }
+
       }
     }
 

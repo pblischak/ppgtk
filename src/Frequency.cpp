@@ -250,7 +250,7 @@ void Frequency::brentUpdate(){
 */
 
 
-void Frequency::writeFrequency(int &iter){
+void Frequency::writeFrequency(const int &iter){
 
   std::ofstream outFileStream;
   outFileStream.open(outFile, std::ios::out | std::ios::app);
@@ -260,7 +260,7 @@ void Frequency::writeFrequency(int &iter){
     outFileStream << iter << "\t";
 
     for(int l = 0; l < vals.size(); l++){
-      outFileStream << vals[l] << "\t";
+      outFileStream << std::setw(8) << std::setprecision(8) << vals[l] << "\t";
     }
 
     outFileStream << "\n";

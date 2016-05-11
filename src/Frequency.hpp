@@ -14,9 +14,9 @@ public:
   std::vector<double> calcLogLik(std::vector<int> &tot, std::vector<int> &ref, std::vector<double> &err, int ind, int loci, int ploidy, double f);
   void brentUpdate();
   std::vector<double> emUpdate(std::vector<double> &gLiks, int ind, int loci, int ploidy);
-  void writeFrequency(int &iter);
+  void writeFrequency(const int &iter);
   void printMeanAcceptRatio();
-  void setTune(double &newTune){ tune = newTune; }
+  void setTune(const double &newTune){ tune = newTune; }
   void setOutFile(std::string &newOutFile){ outFile = newOutFile; }
 
   // Member variables

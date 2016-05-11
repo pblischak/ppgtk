@@ -18,12 +18,15 @@ namespace po = boost::program_options;
 CmdLineParser::CmdLineParser(int arg_count, char **arg_var){
 
   seed = -999;
+  quiet = 0;
+  print = 0;
 
   try{
     po::options_description desc("Allowed options");
     desc.add_options()
     ("help,h", "Prints help message.")
     ("version,v","Print software version information.")
+    ("model", po::value<std::string>(&model)->required(), "REQUIRED: the model to be run\n -> freqs\n -> inbreeding\n -> betaMix\n -> popAdmix")
     ("num_ind,n", po::value<int>(&nInd)->required(), "REQUIRED: the number of individuals.")
     ("num_loci,l", po::value<int>(&nLoci)->required(), "REQUIRED: the number of loci.")
     ("ploidy_level,p", po::value<int>(&ploidy)->required(), "REQUIRED: the ploidy level of the individuals.")

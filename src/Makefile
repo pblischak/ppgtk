@@ -7,8 +7,8 @@ OPENMP ?= no
 BOOST_LIB = /usr/local/lib
 BOOST_INC = /usr/local/include
 
-EXE = ppgtk_mhFreqs
-OBJ = CmdLineParser.o DataParser.o MbRandom.o Frequency.o Genotype.o main.o
+EXE = ppgtk
+OBJ = CmdLineParser.o DataParser.o MbRandom.o Frequency.o Phi.o Genotype.o main.o
 TXT_FILES = frequencies.txt
 
 CXX = g++
@@ -47,9 +47,9 @@ clean :
 
 install :
 	@printf "\nCopying ppgtk to /usr/local/bin...\n\n"
-	@cp ../bin/ppgtk /usr/local/bin
+	@cp ../bin/$(EXE) /usr/local/bin
 	@print "\nTo uninstall, type: sudo make uninstall\n\n"
 
 uninstall :
 	@printf "\nRemoving ppgtk from /usr/local/bin...\n\n"
-	@rm -i /usr/local/bin/ppgtk
+	@rm -i /usr/local/bin/$(EXE)
