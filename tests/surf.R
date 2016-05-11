@@ -19,19 +19,19 @@ indLik <- function(r, t, e, p){
 rr <- as.matrix(read.table("../example/reference.txt",header=F))
 tt <- as.matrix(read.table("../example/total.txt",header=F))
 
-dat <- polyfreqs::sim_reads(0.2, 5, 5, 4, 0.005)
+#dat <- polyfreqs::sim_reads(0.2, 5, 5, 4, 0.005)
 lik <- rep(0,25)
 surf <- rep(0,100)
 
 for(f in 1:200){
   x <- f/201
   for(i in 1:25){
-    lik[i] <- log(sum(indLik(rr[i,1], tt[i,1], 0.005, x)))
+    lik[i] <- log(sum(indLik(rr[i,2], tt[i,2], 0.005, x)))
   }
   surf[f] <- sum(lik) + 0.5 * log(x) + 0.5 * log(1-x)
 }
 
 plot(1:200/201, surf, type="l", xlab="p", ylab="-lnL")
 abline(v = which.max(surf)/201, col="blue", lty="dashed", lwd=2)
-abline(v = 0.2, col="red")
+abline(v = 0.5, col="red")
 cat(which.max(surf)/201)

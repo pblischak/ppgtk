@@ -47,9 +47,9 @@ int main(int argc, char **argv){
     }*/
 
     Frequency P(cmd.nLoci);
-    P.getLogLiks(G.liks, cmd.nInd, cmd.nLoci, cmd.ploidy);
+    P.getLogLiks(G.tLiks, cmd.nInd, cmd.nLoci, cmd.ploidy);
 
-    double fFreq;
+    /*double fFreq;
     std::vector<double> res1, res2;
     for(int ff = 1; ff <= 200; ff++){
       fFreq = (double) ff / 201.0;
@@ -59,18 +59,18 @@ int main(int argc, char **argv){
       //std::cout << "\n";
 
 
-      std::cout << fFreq << "\t";
+      //std::cout << fFreq << "\t";
       for(int r = 0; r < res1.size(); r++){
-        std::cout << res1[r] + 0.5 * log(fFreq) + 0.5 * log(1 - fFreq) << "\t" << res2[r] + 0.5 * log(fFreq) + 0.5 * log(1 - fFreq) << "\t";
+        //std::cout << res1[r] + 0.5 * log(fFreq) + 0.5 * log(1 - fFreq) << "\t" << res2[r] + 0.5 * log(fFreq) + 0.5 * log(1 - fFreq) << "\t";
       }
-      std::cout << "\n";
-    }
+      //std::cout << "\n";
+    }*/
 
     for(int m = 1; m <= cmd.mcmc_gen; m++){
-      //P.mhUpdate(G.tLiks, cmd.nInd, cmd.nLoci, cmd.ploidy);
+      P.mhUpdate(G.tLiks, cmd.nInd, cmd.nLoci, cmd.ploidy);
       if(m % cmd.thin == 0 && m > cmd.burn){
-        //P.writeFrequency(m);
-        //P.printMeanAcceptRatio();
+        P.writeFrequency(m);
+        P.printMeanAcceptRatio();
       }
     }
 

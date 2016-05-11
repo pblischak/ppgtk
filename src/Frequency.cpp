@@ -23,7 +23,7 @@
 Frequency::Frequency(int &loci){
 
   outFile = "frequencies.txt";
-  tune = 0.2;
+  tune = 0.1;
   nRow = loci;
   size = loci;
   currLogLiks.resize(loci, 0.0);
@@ -41,29 +41,20 @@ Frequency::Frequency(int &loci){
 
 void Frequency::getLogLiks(std::vector<double> &gLiks, int ind, int loci, int ploidy){
 
-  double tmpVal1, tmpVal2, tmpLik;
+  double indLik;
+  std::vector<double> indLikVec(ploidy+1, 0);
 
-  //#pragma omp parallel for collapse(3)
-  for(int i = 0; i < ind; i++){
-    for(int l = 0; l < loci; l++){
+  for(int l = 0; l < loci; l++){
+    for(int i = 0; i < ind; i++){
       for(int a = 0; a <= ploidy; a++){
 
-        if(a == 0) tmpLik = 0.0;
-
-        if(gLiks[i*loci*ploidy + l*ploidy + a] != -9999.0){
-          tmpVal1 = log(r->binomPdf(ploidy, a, vals[l]));
-          tmpVal2 = log(gLiks[i*loci*ploidy + l*ploidy + a]);
-          //std::cout << tmpVal1 << "," << tmpVal2 << "\t";
-          tmpLik += exp(tmpVal1 + tmpVal2);
-        } else {
-          continue;
-        }
-        //std::cout << tmpLik << "\n";
-
-        if(a == ploidy) currLogLiks[l] += log(tmpLik);
+        indLikVec[a] = exp(gLiks[l*ind*(ploidy+1) + i*(ploidy+1) + a] + r->lnBinomPdf(ploidy, a, vals[l]));
 
       }
-      //std::cout << "----\n";
+
+      indLik = std::accumulate(indLikVec.begin(), indLikVec.end(), 0.0);
+      currLogLiks[l] += log(indLik);
+
     }
   }
 
@@ -148,9 +139,9 @@ std::vector<double> Frequency::calcLogLik(std::vector<int> &tot, std::vector<int
 
 void Frequency::mhUpdate(std::vector<double> &gLiks, int ind, int loci, int ploidy){
 
-  std::vector<double> newLogLiks(currLogLiks.size());
+  std::vector<double> indLikVec(ploidy+1, 0), newLogLiks(currLogLiks.size());
   std::vector<double> newVals(vals.size(), -1);
-  double lnMetropRatio, lnU, tmpVal1, tmpVal2, tmpLik;
+  double lnMetropRatio, lnU, indLik;
 
   for(int l = 0; l < vals.size(); l++){
 
@@ -163,7 +154,21 @@ void Frequency::mhUpdate(std::vector<double> &gLiks, int ind, int loci, int ploi
 
   }
 
-  //#pragma omp parallel for collapse(3)
+  for(int l = 0; l < loci; l++){
+    for(int i = 0; i < ind; i++){
+      for(int a = 0; a <= ploidy; a++){
+
+        indLikVec[a] = exp(gLiks[l*ind*(ploidy+1) + i*(ploidy+1) + a] + r->lnBinomPdf(ploidy, a, newVals[l]));
+
+      }
+
+      indLik = std::accumulate(indLikVec.begin(), indLikVec.end(), 0.0);
+      newLogLiks[l] += log(indLik);
+
+    }
+  }
+
+  /*#pragma omp parallel for collapse(3)
   for(int i = 0; i < ind; i++){
     for(int l = 0; l < loci; l++){
       for(int a = 0; a <= ploidy; a++){
@@ -178,7 +183,7 @@ void Frequency::mhUpdate(std::vector<double> &gLiks, int ind, int loci, int ploi
 
       }
     }
-  }
+  }*/
 
   for(int l = 0; l < loci; l++){
 
@@ -202,6 +207,7 @@ void Frequency::mhUpdate(std::vector<double> &gLiks, int ind, int loci, int ploi
 
 }
 
+/*
 std::vector<double> Frequency::emUpdate(std::vector<double> &gLiks, int ind, int loci, int ploidy){
 
   std::vector<double> newLogLiks(currLogLiks.size()), indSum(vals.size(), 0);
@@ -241,7 +247,7 @@ std::vector<double> Frequency::emUpdate(std::vector<double> &gLiks, int ind, int
 void Frequency::brentUpdate(){
 
 }
-
+*/
 
 
 void Frequency::writeFrequency(int &iter){
