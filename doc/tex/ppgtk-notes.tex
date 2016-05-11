@@ -70,29 +70,35 @@
 The likelihood of an individuals' read data given the population allele frequency can be computed by summing over the possible genotypes:
 
 \begin{equation}
-\mathcal{L}_i(p) = P(r_i|p) = \sum_{j = 0}^{m_i} P(r_i|j)P(j|p),
+\mathcal{L}_i(p) = P(r_i|p) = \sum_{a = 0}^{m_i} P(r_i|a)P(a|p),
 \end{equation}
 
+where $P(r_i|a)$ is the genotype likelihood for genotype $a = 0,\dots,m_i$ (e.g., calculated using GATK), and 
+
 \begin{equation*}
-\text{where} \quad P(r_i|j) = \binom{t_i}{r_i}[\mathcal{G}_\epsilon(j)]^{r_i} [1 - \mathcal{G}_\epsilon(j)]^{(t_i - r_i)}, \quad \text{and} \quad P(j|p) = \binom{m_i}{j} p^j (1 - p)^{m_i - j}.
+P(a|p) = \binom{m_i}{a}p^a (1-p)^{m_i - a}.
 \end{equation*}
 
 For multiple samples, we take the product of the individual likelihoods:
 
 \begin{equation}
-\mathcal{L}(p) = \prod_i \mathcal{L}_i(p) = \prod_i \left(\sum_{j = 0}^{m_i} P(r_i|j)P(j|p)\right).
+\mathcal{L}(p) = \prod_i \mathcal{L}_i(p) = \prod_i \left(\sum_{a = 0}^{m_i} P(r_i|a)P(a|p)\right).
 \end{equation}
 
 Taking the natural log gives us the log likelihood of the population allele frequency at a single site:
 
 \begin{equation}
-\ell(p) = \log \mathcal{L}(p) = \sum_i \log \left( \sum_{j = 0}^{m_i} P(r_i|j)P(j|p)\right).
+\ell(p) = \log \mathcal{L}(p) = \sum_i \log \left( \sum_{a= 0}^{m_i} P(r_i|a)P(a|p)\right).
 \end{equation}
 
 \subsection{Metropolis-Hastings algorithm}
 
 \begin{equation}
-P(p|r) \propto P(r|p)P(p)
+P(p) \sim \text{beta}(\alpha = 0.5, \beta = 0.5).
+\end{equation}
+
+\begin{equation}
+P(p|r) \propto P(r|p)P(p) = \left(\sum_a P(r|a)P(a|p)\right)P(p)
 \end{equation}
 
 \begin{equation}
@@ -100,6 +106,36 @@ P(p|r) \propto P(r|p)P(p)
 \end{equation}
 
 \section{Inbreeding}
+
+We introduce another parameter, $\phi$, that is related to the inbreeding coefficient ($F$) through the following equation:
+
+\begin{equation}
+F = \frac{1}{1 + \phi}
+\end{equation}
+
+\subsection{The likelihood}
+
+\begin{equation}
+\mathcal{L}_i(p,\phi) = P(r_i|p,\phi) = \sum_{a=0}^{m_i} P(r_i|a)P(a|p,\phi)
+\end{equation}
+
+where $P(r_i|a)$ is the genotype likelihood for genotype $a = 0,\dots,m_i$ (e.g., calculated using GATK), and 
+
+\begin{equation*}
+P(a | p,\phi) = \binom{m_i}{a} \frac{\mathcal{B}(a + \phi{}p, m_i - a + (1 - \phi)p)}{\mathcal{B}(\phi{}p, (1-\phi)p)},
+\end{equation*}
+
+which is the probability density function for the beta-binomial distribution with $\alpha = \phi{}p$ and $\beta = (1 - \phi)p$. Here, $\mathcal{B}(\cdot)$ is the beta function.
+
+\subsection{Metropolis-Hastings algorithm}
+
+\section{Beta mixture model}
+
+\subsection{The likelihood}
+
+\subsection{Metropolis-Hastings algorithm}
+
+\section{Population admixture model}
 
 \subsection{The likelihood}
 

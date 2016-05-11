@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  4 MAY 2016 14:24
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  11 MAY 2016 12:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -769,31 +769,32 @@ File: mt-eur.cfg 2006/07/31 v1.1 microtype config. file: AMS Euler Roman (RS)
 {/usr/local/texlive/2014/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 LaTeX Font Info:    Font shape `T1/ppl/bx/n' in size <12> not available
 (Font)              Font shape `T1/ppl/b/n' tried instead on input line 68.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 110.
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.110 \end{document}
+l.114 \end{equation}
                      [1
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 110.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 146.
+ [2]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 146.
  (./ppgtk-notes.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 110.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 110.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 146.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 146.
 Package rerunfilecheck Info: File `ppgtk-notes.out' has not changed.
-(rerunfilecheck)             Checksum: 1D6EC04E5BBD7E33372955CBE9409DE1;389.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 110.
+(rerunfilecheck)             Checksum: CB66504C3CE0B0E570E9CC5E0F79533D;788.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 146.
  ) 
 Here is how much of TeX's memory you used:
- 12701 strings out of 493117
- 188726 string characters out of 6135433
+ 12724 strings out of 493117
+ 188991 string characters out of 6135433
  334282 words of memory out of 5000000
- 15875 multiletter control sequences out of 15000+600000
- 37099 words of font info for 99 fonts, out of 8000000 for 9000
+ 15881 multiletter control sequences out of 15000+600000
+ 37485 words of font info for 104 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,5n,38p,1003b,346s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 41i,6n,38p,1003b,354s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2014/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/te
 xlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/tex
@@ -804,10 +805,10 @@ e/2014/texmf-dist/fonts/type1/public/mathpazo/fplmr.pfb></usr/local/texlive/201
 xmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2014/texmf-dis
 t/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2014/texmf-dist/fonts
 /type1/urw/palatino/uplri8a.pfb>
-Output written on ppgtk-notes.pdf (2 pages, 85381 bytes).
+Output written on ppgtk-notes.pdf (3 pages, 92287 bytes).
 PDF statistics:
- 93 PDF objects out of 1000 (max. 8388607)
- 79 compressed objects within 1 object stream
- 13 named destinations out of 1000 (max. 500000)
- 17457 words of extra memory for PDF output out of 20736 (max. 10000000)
+ 132 PDF objects out of 1000 (max. 8388607)
+ 116 compressed objects within 2 object streams
+ 23 named destinations out of 1000 (max. 500000)
+ 17505 words of extra memory for PDF output out of 20736 (max. 10000000)
 
