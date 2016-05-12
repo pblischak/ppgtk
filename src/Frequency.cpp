@@ -9,7 +9,7 @@
 // Boost headers
 
 #ifdef _OPENMP
-  #include<omp.h>
+  #include <omp.h>
 #endif
 
 // Local headers
@@ -17,10 +17,12 @@
 #include "MbRandom.hpp"
 #include "main.hpp"
 
-//
+/*
+  Member function definitions for Frequency class within the
+  Freqs model namespace.
+*/
 
-
-Frequency::Frequency(int &loci){
+Freqs::Frequency::Frequency(int &loci){
 
   outFile = "frequencies.txt";
   tune = 0.1;
@@ -39,7 +41,7 @@ Frequency::Frequency(int &loci){
 
 }
 
-void Frequency::getLogLiks(std::vector<double> &gLiks, int ind, int loci, int ploidy){
+void Freqs::Frequency::getLogLiks(std::vector<double> &gLiks, int ind, int loci, int ploidy){
 
   double indLik;
   std::vector<double> indLikVec(ploidy+1, 0);
@@ -60,7 +62,7 @@ void Frequency::getLogLiks(std::vector<double> &gLiks, int ind, int loci, int pl
 
 }
 
-std::vector<double> Frequency::calcLogLik(std::vector<double> &gLiks, std::vector<int> &tot, std::vector<int> &ref, int ind, int loci, int ploidy, double f){
+std::vector<double> Freqs::Frequency::calcLogLik(std::vector<double> &gLiks, std::vector<int> &tot, std::vector<int> &ref, int ind, int loci, int ploidy, double f){
 
   std::vector<double> logLiks(loci, 0), indLikVec(ploidy + 1, 0);
   double indLik;
@@ -94,7 +96,7 @@ std::vector<double> Frequency::calcLogLik(std::vector<double> &gLiks, std::vecto
 
 }
 
-std::vector<double> Frequency::calcLogLik(std::vector<int> &tot, std::vector<int> &ref, std::vector<double> &err, int ind, int loci, int ploidy, double f){
+std::vector<double> Freqs::Frequency::calcLogLik(std::vector<int> &tot, std::vector<int> &ref, std::vector<double> &err, int ind, int loci, int ploidy, double f){
 
   double gEpsilon, indLik;
   std::vector<double> logLiks(loci, 0), indLikVec(ploidy + 1, 0);
@@ -137,7 +139,7 @@ std::vector<double> Frequency::calcLogLik(std::vector<int> &tot, std::vector<int
     return logLiks;
 }
 
-void Frequency::mhUpdate(std::vector<double> &gLiks, int ind, int loci, int ploidy){
+void Freqs::Frequency::mhUpdate(std::vector<double> &gLiks, int ind, int loci, int ploidy){
 
   std::vector<double> indLikVec(ploidy+1, 0), newLogLiks(currLogLiks.size());
   std::vector<double> newVals(vals.size(), -1);
@@ -207,50 +209,7 @@ void Frequency::mhUpdate(std::vector<double> &gLiks, int ind, int loci, int ploi
 
 }
 
-/*
-std::vector<double> Frequency::emUpdate(std::vector<double> &gLiks, int ind, int loci, int ploidy){
-
-  std::vector<double> newLogLiks(currLogLiks.size()), indSum(vals.size(), 0);
-  std::vector<double> newVals(vals.size(), -1);
-  double tmpVal1, tmpVal2, tmpLik;
-  int ploidyCount = 0;
-
-  for(int i = 0; i < ind; i++){
-    ploidyCount += ploidy;
-    for(int l = 0; l < loci; l++){
-      for(int a = 0; a <= ploidy; a++){
-
-        if(a == 0){
-          tmpVal1 = 0.0;
-          tmpVal2 = 0.0;
-        }
-
-        tmpVal1 += a * gLiks[i*loci*ploidy + l*ploidy + a] * r->binomPdf(ploidy, a, vals[l]);
-        tmpVal2 += gLiks[i*loci*ploidy + l*ploidy + a] * r->binomPdf(ploidy, a, vals[l]);
-
-      }
-
-      indSum[l] += tmpVal1 / tmpVal2;
-      newLogLiks[l] += log(tmpVal2);
-
-    }
-  }
-
-  for(int l = 0; l < loci; l++){
-    vals[l] = indSum[l] / (double) ploidyCount;
-  }
-
-  return(newLogLiks);
-
-}
-
-void Frequency::brentUpdate(){
-
-}
-*/
-
-
-void Frequency::writeFrequency(const int &iter){
+void Freqs::Frequency::writeFrequency(const int &iter){
 
   std::ofstream outFileStream;
   outFileStream.open(outFile, std::ios::out | std::ios::app);
@@ -272,7 +231,7 @@ void Frequency::writeFrequency(const int &iter){
 
 }
 
-void Frequency::printMeanAcceptRatio(){
+void Freqs::Frequency::printMeanAcceptRatio(){
 
   //double meanAcceptRatio = 0.0;
   std::cout << "Allele frequency acceptance ratio: ";
@@ -283,5 +242,41 @@ void Frequency::printMeanAcceptRatio(){
   //meanAcceptRatio /= (double) acceptRatio.size();
 
   std::cout  << "\n";
+
+}
+
+/*
+  Member function definitions for Frequency class within the
+  Freqs model namespace.
+*/
+
+Diseq::Frequency::Frequency(const int &loci){
+
+  outFile = "frequencies.txt";
+  tune = 0.1;
+  nRow = loci;
+  size = loci;
+  currLogLiks.resize(loci, 0.0);
+  nAccepted.resize(loci, 0);
+  nProposals.resize(loci, 0);
+  acceptRatio.resize(loci, 0.0);
+  double ran, aa = 0.5, bb = 0.5;
+
+  for(int l = 0; l < loci; l++){
+    ran = r->uniformRv();
+    vals.push_back(ran);
+  }
+
+}
+
+void Diseq::Frequency::getLogLiks(std::vector<double> &gLiks, std::vector<double> &phi, int ind, int loci, int ploidy){
+
+}
+
+std::vector<double> Diseq::Frequency::calcLogLikVec(std::vector<double> &gLiks, std::vector<double> &phi, int ind, int loci, int ploidy){
+
+}
+
+double Diseq::Frequency::calcLogLik(std::vector<double> &gLiks, std::vector<double> &phi, int ind, int loc, int ploidy){
 
 }

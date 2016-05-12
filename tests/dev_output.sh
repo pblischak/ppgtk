@@ -4,5 +4,5 @@
 # Need to make sure that reading in data works, and parameter initialization
 # in constructors.
 
-ppgtk --model freqs -n 25 -l 2 -p 4 -t ../example/total.txt -r ../example/reference.txt -e ../example/error.txt \
+ppgtk --model freqs -n 25 -l 2 -p 6 -t ../example/total.txt -r ../example/reference.txt -e ../example/error.txt \
   -m 5000 -b 500 --thin 10 -q

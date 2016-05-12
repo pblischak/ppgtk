@@ -8,7 +8,7 @@ BOOST_LIB = /usr/local/lib
 BOOST_INC = /usr/local/include
 
 EXE = ppgtk
-OBJ = CmdLineParser.o DataParser.o MbRandom.o Frequency.o Phi.o Genotype.o main.o
+OBJ = DataParser.o MbRandom.o Frequency.o Phi.o Genotype.o ModelFreqs.o main.o
 TXT_FILES = frequencies.txt
 
 CXX = g++

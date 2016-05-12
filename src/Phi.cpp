@@ -9,12 +9,21 @@
 // Boost headers
 
 
+// OpenMP
+#ifdef _OPENMP
+  #include <omp.h>
+#endif
+
 // Local headers
 #include "Phi.hpp"
 #include "MbRandom.hpp"
 #include "main.hpp"
 
-Phi::Phi(int &loci){
+/*
+  Defining Phi member functions in the Diseq namespace
+*/
+
+Diseq::Phi::Phi(int &loci){
 
   tune = 0.05;
   outFile = "phi.txt";
@@ -34,10 +43,10 @@ Phi::Phi(int &loci){
 
 }
 
-void Phi::getLogLiks(std::vector<double> &gLiks, std::vector<double> &freqs, int ind, int loci, int ploidy){
+void Diseq::Phi::getLogLiks(std::vector<double> &gLiks, std::vector<double> &freqs, int ind, int loci, int ploidy){
 
   int pos_lia;
-  double indLik;
+  double indLikSum;
   std::vector<double> indLikVec(ploidy+1, 0.0);
 
   for(int l = 0; l < loci; l++){
@@ -50,18 +59,18 @@ void Phi::getLogLiks(std::vector<double> &gLiks, std::vector<double> &freqs, int
 
       }
 
-      indLik = std::accumulate(indLikVec.begin(), indLikVec.end(), 0.0);
-      currLogLiks[l] += log(indLik);
+      indLikSum = std::accumulate(indLikVec.begin(), indLikVec.end(), 0.0);
+      currLogLiks[l] += log(indLikSum);
     }
   }
 
 }
 
-std::vector<double> Phi::calcLogLikVec(std::vector<double> &gLiks, std::vector<double> &freqs, int ind, int loci, int ploidy){
+std::vector<double> Diseq::Phi::calcLogLikVec(std::vector<double> &gLiks, std::vector<double> &freqs, int ind, int loci, int ploidy){
 
   int pos_lia;
-  double indLik;
-  std::vector<double> indLikVec(ploidy+1, 0.0), logLiks(loci, 0.0);
+  double indLikSum;
+  std::vector<double> indLikVec(ploidy+1, 0.0), logLikVec(loci, 0.0);
 
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
@@ -73,20 +82,20 @@ std::vector<double> Phi::calcLogLikVec(std::vector<double> &gLiks, std::vector<d
 
       }
 
-      indLik = std::accumulate(indLikVec.begin(), indLikVec.end(), 0.0);
-      logLiks[l] += log(indLik);
+      indLikSum = std::accumulate(indLikVec.begin(), indLikVec.end(), 0.0);
+      logLikVec[l] += log(indLikSum);
 
     }
   }
 
-  return logLiks;
+  return logLikVec;
 
 }
 
-double Phi::calcLogLik(std::vector<double> &gLiks, std::vector<double> &freqs, int ind, int loc, int ploidy){
+double Diseq::Phi::calcLogLik(std::vector<double> &gLiks, std::vector<double> &freqs, int ind, int loc, int ploidy){
 
   int pos_lia;
-  double indLik, logLik;
+  double indLikSum, logLik;
   std::vector<double> indLikVec(ploidy+1, 0.0);
 
   for(int i = 0; i < ind; i++){
@@ -97,8 +106,8 @@ double Phi::calcLogLik(std::vector<double> &gLiks, std::vector<double> &freqs, i
       indLikVec[a] = exp(gLiks[pos_lia] + r->lnBetaBinomPdf(ploidy, a, vals[loc]*freqs[loc], (1-vals[loc])*freqs[loc]));
     }
 
-    indLik = std::accumulate(indLikVec.begin(), indLikVec.end(), 0.0);
-    logLik += log(indLik);
+    indLikSum = std::accumulate(indLikVec.begin(), indLikVec.end(), 0.0);
+    logLik += log(indLikSum);
 
   }
 
@@ -106,11 +115,11 @@ double Phi::calcLogLik(std::vector<double> &gLiks, std::vector<double> &freqs, i
 
 }
 
-void Phi::mhUpdate(std::vector<double> &gLiks, std::vector<double> &freqs, int ind, int loci, int ploidy){
+void Diseq::Phi::mhUpdate(std::vector<double> &gLiks, std::vector<double> &freqs, int ind, int loci, int ploidy){
 
 }
 
-void Phi::writePhi(const int &iter){
+void Diseq::Phi::writePhi(const int &iter){
 
   std::ofstream outFileStream;
   outFileStream.open(outFile, std::ios::out | std::ios::app);
@@ -129,5 +138,21 @@ void Phi::writePhi(const int &iter){
     std::cout << "Failed to open file: " << outFile << "...\n";
     exit(1);
   }
+
+}
+
+/*
+  Defining Phi member functions in the BetaMix namespace
+*/
+
+BetaMix::Phi::Phi(const int &loci){
+
+}
+
+/*
+  Defining Phi member functions in the PopAdmix namespace
+*/
+
+PopAdmix::Phi::Phi(const int &loci){
 
 }
