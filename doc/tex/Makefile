@@ -1,4 +1,4 @@
-all : ppgtk.pdf ppgtk-notes.pdf
+all : ppgtk.pdf ppgtk-notes.pdf extending-ppgtk.pdf
 
 ppgtk.pdf : ppgtk.tex #ppgtk.bib
 	pdflatex ppgtk
@@ -13,3 +13,10 @@ ppgtk-notes.pdf : ppgtk-notes.tex #ppgtk-notes.bibtex
 	#bibtex ppgtk-notes
 	#pdflatex ppgtk-notes
 	@cp ppgtk-notes.pdf ../
+
+extending-ppgtk.pdf : extending-ppgtk.tex
+	pdflatex extending-ppgtk
+	pdflatex extending-ppgtk
+	#bibtex extending-ppgtk
+	#pdflatex extending-ppgtk
+	@cp extending-ppgtk.pdf ../

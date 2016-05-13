@@ -13,10 +13,10 @@ TXT_FILES = frequencies.txt
 
 CXX = g++
 CXXFLAGS = -I${BOOST_INC} -O3 -g -std=c++11
-LDFLAGS = \
-	-lboost_system \
-	-lboost_program_options \
-	-lboost_filesystem
+LDFLAGS = -lboost_program_options
+	#-lboost_system
+	#-lboost_program_options
+	#-lboost_filesystem
 
 ifeq ($(strip $(OPENMP)), yes)
 	CXXFLAGS += -fopenmp
