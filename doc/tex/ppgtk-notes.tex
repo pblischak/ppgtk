@@ -122,14 +122,28 @@ F = \frac{1}{1 + \phi}
 where $P(r_i|a)$ is the genotype likelihood for genotype $a = 0,\dots,m_i$ (e.g., calculated using GATK), and 
 
 \begin{equation*}
-P(a | p,\phi) = \binom{m_i}{a} \frac{\mathcal{B}(a + \phi{}p, m_i - a + (1 - \phi)p)}{\mathcal{B}(\phi{}p, (1-\phi)p)},
+P(a | p,\phi) = \binom{m_i}{a} \frac{\mathcal{B}(a + p\phi, m_i - a + (1 - p)\phi)}{\mathcal{B}(p\phi, (1 - p)\phi)},
 \end{equation*}
 
-which is the probability density function for the beta-binomial distribution with $\alpha = \phi{}p$ and $\beta = (1 - \phi)p$. Here, $\mathcal{B}(\cdot)$ is the beta function.
+which is the probability density function for the beta-binomial distribution with $n = m_i$, $k = a$, $\alpha = p\phi$, and $\beta = (1 - p)\phi$. Here, $\mathcal{B}()$ is the beta function:
+
+\begin{equation*}
+\mathcal{B}(\alpha,\beta) = \int_0^1 x^{\alpha-1} (1 - x)^{\beta - 1} \text{d}x\, .
+\end{equation*}
 
 \subsection{Metropolis-Hastings algorithm}
 
 \section{Beta mixture model}
+
+\begin{align*}
+P(g=a|p,\phi) &\sim \text{beta-binomial}(n=m_i, k = a, \alpha = p\phi, \beta = (1-p)\phi) \\
+P(p|\gamma, \pi, \theta_1, \theta_2) &\sim \gamma P(p|\pi\theta_1, (1-\pi)\theta_1) + (1-\gamma)P(p|\pi\theta_2, (1-\pi)\theta_2), \\
+P(\pi) &\sim \text{beta}(0.5, 0.5), \\
+P(\gamma) &\sim \text{beta}(1,1), \\
+P(\phi) &\sim \text{gamma}(2,0.1), \\
+P(\theta_1) &\sim \text{gamma}(2,0.1), \\
+P(\theta_2) &\sim \text{gamma}(2,0.1). \\
+\end{align*}
 
 \subsection{The likelihood}
 

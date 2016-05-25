@@ -17,10 +17,12 @@
 #include "MbRandom.hpp"
 #include "main.hpp"
 
-/*
+/***************************************************************
+
   Member function definitions for Frequency class within the
   Freqs model namespace.
-*/
+
+****************************************************************/
 
 Freqs::Frequency::Frequency(int &loci){
 
@@ -43,7 +45,7 @@ Freqs::Frequency::Frequency(int &loci){
 
 void Freqs::Frequency::getLogLiks(std::vector<double> &gLiks, int ind, int loci, int ploidy){
 
-  double indLik;
+  double indLikSum;
   std::vector<double> indLikVec(ploidy+1, 0);
 
   for(int l = 0; l < loci; l++){
@@ -54,8 +56,8 @@ void Freqs::Frequency::getLogLiks(std::vector<double> &gLiks, int ind, int loci,
 
       }
 
-      indLik = std::accumulate(indLikVec.begin(), indLikVec.end(), 0.0);
-      currLogLiks[l] += log(indLik);
+      indLikSum = std::accumulate(indLikVec.begin(), indLikVec.end(), 0.0);
+      currLogLiks[l] += log(indLikSum);
 
     }
   }
@@ -65,7 +67,7 @@ void Freqs::Frequency::getLogLiks(std::vector<double> &gLiks, int ind, int loci,
 std::vector<double> Freqs::Frequency::calcLogLik(std::vector<double> &gLiks, std::vector<int> &tot, std::vector<int> &ref, int ind, int loci, int ploidy, double f){
 
   std::vector<double> logLiks(loci, 0), indLikVec(ploidy + 1, 0);
-  double indLik;
+  double indLikSum;
 
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
@@ -86,8 +88,8 @@ std::vector<double> Freqs::Frequency::calcLogLik(std::vector<double> &gLiks, std
         //std::cout << "----\n";
       }
 
-      indLik = std::accumulate(indLikVec.begin(), indLikVec.end(), 0.0);
-      logLiks[l] += log(indLik);
+      indLikSum = std::accumulate(indLikVec.begin(), indLikVec.end(), 0.0);
+      logLiks[l] += log(indLikSum);
 
     }
   }
@@ -98,7 +100,7 @@ std::vector<double> Freqs::Frequency::calcLogLik(std::vector<double> &gLiks, std
 
 std::vector<double> Freqs::Frequency::calcLogLik(std::vector<int> &tot, std::vector<int> &ref, std::vector<double> &err, int ind, int loci, int ploidy, double f){
 
-  double gEpsilon, indLik;
+  double gEpsilon, indLikSum;
   std::vector<double> logLiks(loci, 0), indLikVec(ploidy + 1, 0);
 
     for(int l = 0; l < loci; l++){
@@ -125,13 +127,13 @@ std::vector<double> Freqs::Frequency::calcLogLik(std::vector<int> &tot, std::vec
 
         }
 
-        indLik = std::accumulate(indLikVec.begin(), indLikVec.end(), 0.0);
+        indLikSum = std::accumulate(indLikVec.begin(), indLikVec.end(), 0.0);
 
         /*if(l == 0){
           std::cout <<std::setw(10) << std::setprecision(10) << indLik << "\n";
         }*/
 
-        logLiks[l] += log(indLik);
+        logLiks[l] += log(indLikSum);
 
       }
     }
@@ -143,7 +145,7 @@ void Freqs::Frequency::mhUpdate(std::vector<double> &gLiks, int ind, int loci, i
 
   std::vector<double> indLikVec(ploidy+1, 0), newLogLiks(currLogLiks.size());
   std::vector<double> newVals(vals.size(), -1);
-  double lnMetropRatio, lnU, indLik;
+  double lnMetropRatio, lnU, indLikSum;
 
   for(int l = 0; l < vals.size(); l++){
 
@@ -164,8 +166,8 @@ void Freqs::Frequency::mhUpdate(std::vector<double> &gLiks, int ind, int loci, i
 
       }
 
-      indLik = std::accumulate(indLikVec.begin(), indLikVec.end(), 0.0);
-      newLogLiks[l] += log(indLik);
+      indLikSum = std::accumulate(indLikVec.begin(), indLikVec.end(), 0.0);
+      newLogLiks[l] += log(indLikSum);
 
     }
   }
@@ -245,15 +247,16 @@ void Freqs::Frequency::printMeanAcceptRatio(){
 
 }
 
-/*
+/***************************************************************
+
   Member function definitions for Frequency class within the
   Freqs model namespace.
-*/
+
+****************************************************************/
 
 Diseq::Frequency::Frequency(const int &loci){
 
   outFile = "frequencies.txt";
-  tune = 0.1;
   nRow = loci;
   size = loci;
   currLogLiks.resize(loci, 0.0);
@@ -271,12 +274,174 @@ Diseq::Frequency::Frequency(const int &loci){
 
 void Diseq::Frequency::getLogLiks(std::vector<double> &gLiks, std::vector<double> &phi, int ind, int loci, int ploidy){
 
+  int pos_lia;
+  double indLikSum;
+  std::vector<double> indLikVec(ploidy+1, 0.0);
+
+  for(int l = 0; l < loci; l++){
+    for(int i = 0; i < ind; i++){
+      for(int a = 0; a <= ploidy; a++){
+
+        pos_lia = l*ind*(ploidy+1) + i*(ploidy+1) + a;
+
+        indLikVec[a] = exp(gLiks[pos_lia] + r->lnBetaBinomPdf(ploidy, a, vals[l]*phi[l], (1-vals[l])*phi[l]));
+
+      }
+
+      indLikSum = std::accumulate(indLikVec.begin(), indLikVec.end(), 0.0);
+      currLogLiks[l] += log(indLikSum);
+
+    }
+  }
+
 }
 
 std::vector<double> Diseq::Frequency::calcLogLikVec(std::vector<double> &gLiks, std::vector<double> &phi, int ind, int loci, int ploidy){
+
+  int pos_lia;
+  double indLikSum;
+  std::vector<double> indLikVec(ploidy+1, 0.0), logLikVec(loci, 0.0);
+
+  for(int l = 0; l < loci; l++){
+    for(int i = 0; i < ind; i++){
+      for(int a = 0; a <= ploidy; a++){
+
+        pos_lia = l*ind*(ploidy+1) + i*(ploidy+1) + a;
+
+        indLikVec[a] = exp(gLiks[pos_lia] + r->lnBetaBinomPdf(ploidy, a, vals[l]*phi[l], (1-vals[l])*phi[l]));
+
+      }
+
+      indLikSum = std::accumulate(indLikVec.begin(), indLikVec.end(), 0.0);
+      logLikVec[l] += log(indLikSum);
+
+    }
+  }
+
+  return logLikVec;
 
 }
 
 double Diseq::Frequency::calcLogLik(std::vector<double> &gLiks, std::vector<double> &phi, int ind, int loc, int ploidy){
 
+  int pos_lia;
+  double indLikSum, logLik;
+  std::vector<double> indLikVec(ploidy+1, 0.0);
+
+  for(int i = 0; i < ind; i++){
+    for(int a = 0; a <= ploidy; a++){
+
+      pos_lia = loc*ind*(ploidy+1) + i*(ploidy+1) + a;
+
+      indLikVec[a] = exp(gLiks[pos_lia] + r->lnBetaBinomPdf(ploidy, a, vals[loc]*phi[loc], (1-vals[loc])*phi[loc]));
+
+    }
+
+    indLikSum = std::accumulate(indLikVec.begin(), indLikVec.end(), 0.0);
+    logLik += log(indLikSum);
+
+  }
+
+  return logLik;
+
 }
+
+void Diseq::Frequency::mhUpdate(std::vector<double> &gLiks, std::vector<double> &phi, int ind, int loci, int ploidy){
+
+  std::vector<double> indLikVec(ploidy+1, 0.0), newLogLiks(currLogLiks.size());
+  std::vector<double> newVals(vals.size(), -1.0);
+  double lnMetropRatio, lnU, indLikSum;
+
+  for(int l = 0; l < vals.size(); l++){
+
+    while(newVals[l] < 0 || newVals[l] > 1){
+      newVals[l] = r->normalRv(vals[l], tune);
+    }
+
+  }
+
+  for(int l = 0; l < loci; l++){
+    for(int i = 0; i < ind; i++){
+      for(int a = 0; a <= ploidy; a++){
+
+        indLikVec[a] = exp(gLiks[l*ind*(ploidy+1) + i*(ploidy+1) + a] + r->lnBetaBinomPdf(ploidy, a, newVals[l]*phi[l], (1-newVals[l])*phi[l]));
+
+      }
+
+      indLikSum = std::accumulate(indLikVec.begin(), indLikVec.end(), 0.0);
+      newLogLiks[l] += log(indLikSum);
+
+    }
+  }
+
+  for(int l = 0; l < loci; l++){
+
+    lnMetropRatio = (newLogLiks[l] + (aa - 1)*log(newVals[l]) + (bb - 1)*log(1 - newVals[l]))
+                    - (currLogLiks[l] + (aa - 1)*log(vals[l]) + (bb - 1)*log(vals[l]));
+
+    lnU = log(r->uniformRv());
+
+    if(lnU < lnMetropRatio){
+      vals[l] = newVals[l];
+      currLogLiks[l] = newLogLiks[l];
+      nAccepted[l]++;
+      nProposals[l]++;
+      acceptRatio[l] = nAccepted[l] / (double) nProposals[l];
+    } else {
+      nProposals[l]++;
+      acceptRatio[l] = nAccepted[l] / (double) nProposals[l];
+    }
+
+  }
+
+}
+
+void Diseq::Frequency::writeFrequency(const int &iter){
+
+  std::ofstream outFileStream;
+  outFileStream.open(outFile, std::ios::out | std::ios::app);
+
+  if(outFileStream.is_open()){
+
+    outFileStream << iter << "\t";
+
+    for(int l = 0; l < vals.size(); l++){
+      outFileStream << std::setw(8) << std::setprecision(8) << vals[l] << "\t";
+    }
+
+    outFileStream << "\n";
+
+  } else {
+    std::cout << "Failed to open file: " << outFile << "...\n";
+    exit(1);
+  }
+
+}
+
+void Diseq::Frequency::printMeanAcceptRatio(){
+
+  //double meanAcceptRatio = 0.0;
+  std::cout << "Allele frequency acceptance ratio: ";
+  for(int l = 0; l < acceptRatio.size(); l++){
+     std::cout << acceptRatio[l] << "\t";
+  }
+
+  //meanAcceptRatio /= (double) acceptRatio.size();
+
+  std::cout  << "\n";
+
+}
+
+/****************************************************************
+
+  Frequency class in the BetaMix namespace.
+
+****************************************************************/
+
+
+
+/****************************************************************
+
+  Frequency class in the BetaMix namespace.
+
+****************************************************************/

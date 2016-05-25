@@ -5,7 +5,7 @@ class ModelDiseq {
 
 public:
 
-  ModelDiseq(int argCount, char **argVar, bool q, bool p);
+  ModelDiseq(std::string cFile, bool q, bool p);
   void run();
 
 private:

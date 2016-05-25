@@ -10,7 +10,7 @@
 // Local headers
 #include "MbRandom.hpp"
 #include "ModelFreqs.hpp"
-//#include "ModelDiseq.hpp"
+#include "ModelDiseq.hpp"
 //#include "ModelBetaMix.hpp"
 //#include "ModelPopAdmix.hpp"
 #include "main.hpp"
@@ -21,7 +21,7 @@ MbRandom *r = new MbRandom;
 
 int main(int argc, char **argv){
 
-  std::string model = "none";
+  std::string model = "none", configFile;
   long int seed = -999;
   bool print = 0, quiet = 0;
 
@@ -31,6 +31,7 @@ int main(int argc, char **argv){
     ("help,h", "Prints help message.")
     ("version,v","Print software version information.")
     ("model", po::value<std::string>(&model)->required(), "the model to be run\n -> freqs\n -> inbreeding\n -> betaMix\n -> popAdmix")
+    ("config,c", po::value<std::string>(&configFile)->required(), "configuration file with model options.")
     ("seed,s", po::value<long int>(&seed), "random number seed.")
     ("quiet,q", "Turn off printing run information to stdout.")
     ("print", "Print updates to screen.");
@@ -50,38 +51,36 @@ int main(int argc, char **argv){
 
         if(vm["model"].as<std::string>() == "freqs") {
 
-          std::cout << "\n\nCommand line arguments for site allele frequency estimation:\n\n"
-                    << "Required arguments:\n\n"
-                    << "  -n [ --num_ind ] arg            The number of individuals.\n"
-                    << "  -l [ --num_loci ] arg           The number of loci.\n"
-                    << "  -p [ --ploidy ] arg             The ploidy level of the population.\n"
-                    << "  -t [ --total_reads ] arg        The name of the total reads file.\n"
-                    << "  -r [ --reference_reads ] arg    The name of the reference reads file.\n"
-                    << "  -e [ --error_file ] arg         The name of the per locus error rate file.\n\n"
-                    << "Additional arguments:\n\n"
-                    << "  -m [ --mcmc_gen ] arg           The number of MCMC generations (default=5000).\n"
-                    << "  -b [ --burn ] arg               The number of burn-in generations (default=2000).\n"
-                    << "  --thin arg                      How often to sample the MCMC chain (default=10).\n"
-                    << "  --freq_tune arg                 Allele frequency tuning parameter for the M-H algorithm (default=0.1).\n"
+          std::cout << "\n\nModel arguments for site allele frequency estimation:\n\n"
+                    << "An example config file (freqs.txt) can be found in the `config-files/` folder.\n\n"
+                    << "  num_ind             The number of individuals.\n"
+                    << "  num_loci            The number of loci.\n"
+                    << "  ploidy              The ploidy level of the population.\n"
+                    << "  total_reads         The name of the total reads file.\n"
+                    << "  reference_reads     The name of the reference reads file.\n"
+                    << "  error_file          The name of the per locus error rate file.\n\n"
+                    << "  mcmc_gen            The number of MCMC generations (default=5000).\n"
+                    << "  burn                The number of burn-in generations (default=1000).\n"
+                    << "  thin                How often to sample the MCMC chain (default=10).\n"
+                    << "  freq_tune           Allele frequency tuning parameter for the M-H algorithm (default=0.1).\n"
                     << "\n\n";
           exit(0);
 
         } else if(vm["model"].as<std::string>() == "diseq") {
 
-          std::cout << "\n\nCommand line arguments for HW disequilibrium:\n\n"
-                    << "Required arguments:\n\n"
-                    << "  -n [ --num_ind ] arg            The number of individuals.\n"
-                    << "  -l [ --num_loci ] arg           The number of loci.\n"
-                    << "  -p [ --ploidy ] arg             The ploidy level of the population.\n"
-                    << "  -t [ --total_reads ] arg        The name of the total reads file.\n"
-                    << "  -r [ --reference_reads ] arg    The name of the reference reads file.\n"
-                    << "  -e [ --error_file ] arg         The name of the per locus error rate file.\n\n"
-                    << "Additional arguments:\n\n"
-                    << "  -m [ --mcmc_gen ] arg           The number of MCMC generations (default=5000).\n"
-                    << "  -b [ --burn ] arg               The number of burn-in generations (default=2000).\n"
-                    << "  --thin arg                      How often to sample the MCMC chain (default=10).\n"
-                    << "  --freq_tune arg                 Allele frequency tuning parameter for M-H algorithm (default=0.1).\n"
-                    << "  --phi_tune arg                  Phi tuning parameter for M-H algorithm (default=0.1).\n"
+          std::cout << "\n\nModel arguments for HW disequilibrium:\n\n"
+                    << "An example config file (diseq.txt) can be found in the `config-files/` folder.\n\n"
+                    << "  num_ind             The number of individuals.\n"
+                    << "  num_loci            The number of loci.\n"
+                    << "  ploidy              The ploidy level of the population.\n"
+                    << "  total_reads         The name of the total reads file.\n"
+                    << "  reference_reads     The name of the reference reads file.\n"
+                    << "  error_file          The name of the per locus error rate file.\n\n"
+                    << "  mcmc_gen            The number of MCMC generations (default=5000).\n"
+                    << "  burn                The number of burn-in generations (default=1000).\n"
+                    << "  thin                How often to sample the MCMC chain (default=10).\n"
+                    << "  freq_tune           Allele frequency tuning parameter for M-H algorithm (default=0.1).\n"
+                    << "  phi_tune            Phi tuning parameter for M-H algorithm (default=0.1).\n"
                     << "\n\n";
           exit(0);
 
@@ -148,20 +147,20 @@ int main(int argc, char **argv){
   }
 
   if(model == "freqs"){
-    ModelFreqs mod(argc, argv, quiet, print);
+    ModelFreqs mod(configFile, quiet, print);
     mod.run();
   } else if(model == "diseq"){
-    //ModelDiseq mod(argc, argv, quiet, print);
-    //mod.run();
+    ModelDiseq mod(configFile, quiet, print);
+    mod.run();
   } else if(model == "betaMix"){
-    //ModelBetaMix mod(argc, argv, quiet, print);
+    //ModelBetaMix mod(configFile, quiet, print);
     //mod.run();
   } else if(model == "popAdmix"){
-    //ModelPopAdmix mod(argc, argv, quiet, print);
+    //ModelPopAdmix mod(configFile, quiet, print);
     //mod.run();
   } else {
-    std::cout << "Not a valid model. Please choose one of the following:\n";
-    std::cout << "\t - freqs\n\t - diseq\n\t - betaMix\n\t - popAdmix\n";
+    std::cout << "\"" << model << "\"" << " is not a valid model. Please choose one of the following:\n";
+    std::cout << "  -> freqs\n  -> diseq\n  -> betaMix\n  -> popAdmix\n";
   }
 
   //DataParser data;

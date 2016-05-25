@@ -1,0 +1,12 @@
+num_ind=25
+num_loci=2
+ploidy=4
+total_reads=../example/total.txt
+reference_reads=../example/reference.txt
+error_file=../example/error.txt
+glikelihoods=none
+mcmc_gen=10000
+burn=2000
+thin=20
+freq_tune=0.075
+phi_tune=25.0

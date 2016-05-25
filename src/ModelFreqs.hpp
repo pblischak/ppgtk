@@ -5,7 +5,7 @@ class ModelFreqs {
 
 public:
 
-  ModelFreqs(int argCount, char **argVar, bool q, bool p);
+  ModelFreqs(std::string cFile, bool q, bool p);
   void run();
 
 private:
