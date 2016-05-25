@@ -1,10 +1,12 @@
 #ifndef Phi_HPP
 #define Phi_HPP
 
-/*
-  Declare Phi class and member variables/functions within the Diseq namespace for
-  the autopolyploid disequilibrium model.
-*/
+/***************************************************************
+
+  Declare Phi class and member variables/functions within the
+  Diseq namespace for the autopolyploid disequilibrium model.
+
+****************************************************************/
 
 namespace Diseq {
 
@@ -38,10 +40,12 @@ namespace Diseq {
 
 }
 
-/*
-  Declare Phi class and member variables/functions within the BetaMix namespace for
-  the allopolyploid beta mixture model.
-*/
+/***************************************************************
+
+  Declare Phi class and member variables/functions within the
+  BetaMix namespace for the allopolyploid beta-mixture model.
+
+****************************************************************/
 
 namespace BetaMix{
 
@@ -55,10 +59,12 @@ namespace BetaMix{
 
 }
 
-/*
-  Declare Phi class and member variables/functions within the PopAdmix namespace for
-  the population level admixture model.
-*/
+/***************************************************************
+
+  Declare Phi class and member variables/functions within the
+  PopAdmix namespace for the population-level admixture model.
+
+****************************************************************/
 
 namespace PopAdmix{
 

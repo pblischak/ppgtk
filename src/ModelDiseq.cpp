@@ -55,7 +55,7 @@ ModelDiseq::ModelDiseq(std::string cFile, bool q, bool p){
     catch(po::error& e){
       std::cout << "\nerror: " << e.what() << std::endl;
       std::cout << "\n\n" << "Usage: ./ppgtk --model <model-name> -c <config-file>" << std::endl;
-      std::cout << "\nFor additional options type: ./pgpsi --model diseq -h\n" << std::endl;
+      std::cout << "\nFor config-file options type: ./ppgtk --model diseq -h\n" << std::endl;
       exit(EXIT_FAILURE);
     }
 

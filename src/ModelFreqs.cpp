@@ -51,7 +51,7 @@ ModelFreqs::ModelFreqs(std::string cFile, bool q, bool p){
     catch(po::error& e){
       std::cout << "\nerror: " << e.what() << std::endl;
       std::cout << "\n\n" << "Usage: ./ppgtk --model <model-name> -c <config-file>" << std::endl;
-      std::cout << "\nFor additional options type: ./pgpsi --model freqs -h\n" << std::endl;
+      std::cout << "\nFor config-file options type: ./ppgtk --model freqs -h\n" << std::endl;
       exit(EXIT_FAILURE);
     }
 
@@ -63,22 +63,19 @@ ModelFreqs::ModelFreqs(std::string cFile, bool q, bool p){
     exit(EXIT_FAILURE);
   }
 
-
-
 }
 
 void ModelFreqs::run(){
 
   DataParser data;
   data.getReadData(totFile, refFile, errFile, nInd, nLoci);
+
   Genotype G(nInd, nLoci, ploidy, data.totMat, data.refMat, data.err);
 
   Freqs::Frequency P(nLoci);
   P.getLogLiks(G.tLiks, nInd, nLoci, ploidy);
 
-  if(freq_tune != -999){
-    P.setTune(freq_tune);
-  }
+  P.setTune(freq_tune);
 
   for(int m = 1; m <= mcmc_gen; m++){
 

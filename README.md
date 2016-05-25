@@ -15,3 +15,14 @@ sudo ./b2 install
 ```
 
 If you want to build all of them, just remove the `--with-libraries=program_options` flag.
+
+## Setting the number of threads
+
+You can set the number of threads that you want to use with the `OMP_NUM_THREADS` environmental variable in your Bash shell.
+
+```
+export OMP_NUM_THREADS=4
+
+# now running with 4 threads
+ppgtk --model freqs --config freqs.txt
+```

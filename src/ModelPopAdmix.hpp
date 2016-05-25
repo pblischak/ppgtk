@@ -5,11 +5,12 @@ class ModelPopAdmix {
 
 public:
 
+  ModelPopAdmix(std::string cFile, bool q, bool p);
   void run();
 
 private:
 
-  void parseCmdLine(int argCount, char** argVar);
+
 
 };
 

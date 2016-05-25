@@ -26,15 +26,15 @@ int main(int argc, char **argv){
   bool print = 0, quiet = 0;
 
   try{
-    po::options_description desc("Global options (for model specific options use `ppgtk --model mod -h`)");
+    po::options_description desc("Global options (for model specific options use `ppgtk --model <model-name> -h`)");
     desc.add_options()
     ("help,h", "Prints help message.")
     ("version,v","Print software version information.")
-    ("model", po::value<std::string>(&model)->required(), "the model to be run\n -> freqs\n -> inbreeding\n -> betaMix\n -> popAdmix")
+    ("model,m", po::value<std::string>(&model)->required(), "the model to be run:\n -> freqs\n -> diseq\n -> betaMix\n -> popAdmix")
     ("config,c", po::value<std::string>(&configFile)->required(), "configuration file with model options.")
     ("seed,s", po::value<long int>(&seed), "random number seed.")
     ("quiet,q", "Turn off printing run information to stdout.")
-    ("print", "Print updates to screen.");
+    ("print,p", "Print updates to screen.");
 
     po::variables_map vm;
     try{
@@ -96,7 +96,8 @@ int main(int argc, char **argv){
 
         } else {
 
-          std::cout << "\n\nError: Invalid model specified (freqs, diseq, betaMix, popAdmix).\n\n";
+          std::cout << "\nError: Invalid model specified (" << vm["model"].as<std::string>()
+                    << "). \nPlease choose one of the following: freqs, diseq, betaMix, popAdmix.\n\n";
           exit(0);
 
         }
@@ -104,11 +105,19 @@ int main(int argc, char **argv){
       }
 
       if(vm.count("version")){
-        std::cout << "\n\n**********************************************************************************" << std::endl;
+
+        // Obligatory figlet logo...
+        std::cout << "\n   ____  ____   ____ _   _    \n"
+                  << "  |  _ \\|  _ \\ / ___| |_| | __\n"
+                  << "  | |_) | |_) | |  _| __| |/ / \n"
+                  << "  |  __/|  __/| |_| | |_|   <  \n"
+                  << "  |_|   |_|    \\____|\\__|_|\\_\\\n\n";
+
+        std::cout << "**************************************************************************************" << std::endl;
         std::cout << "**  This is PPGtk version " << VERSION << " " << VERSION_DATE << std::endl;
-        std::cout << "**  For help using the sofware type: ./ppgtk -h or ./ppgtk --model mod -h" << std::endl;
+        std::cout << "**  For help using the sofware type: ./ppgtk -h or ./ppgtk --model <model-name> -h" << std::endl;
         std::cout << "**  Documentation can be also found online at http://pblischak.github.io/ppgtk/." << std::endl;
-        std::cout << "**********************************************************************************\n\n" << std::endl;
+        std::cout << "**************************************************************************************\n\n" << std::endl;
         exit(0);
       }
 
@@ -129,8 +138,8 @@ int main(int argc, char **argv){
     // catch any errors in boost argument parsing.
     catch(po::error& e){
       std::cout << "\nerror: " << e.what() << std::endl;
-      std::cout << "\n\n" << "Usage: ./ppgtk --model mod -n #taxa -l #loci -p ploidy_level -t total_reads.txt -r ref_reads.txt" << std::endl;
-      std::cout << "\nFor additional options type: ./pgpsi -h\n" << std::endl;
+      std::cout << "\n\n" << "Usage: ./ppgtk --model <model-name> -c <config-file>" << std::endl;
+      std::cout << "\nFor additional options type: ./ppgtk -h\n" << std::endl;
       exit(EXIT_FAILURE);
     }
 

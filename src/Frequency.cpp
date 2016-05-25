@@ -27,7 +27,6 @@
 Freqs::Frequency::Frequency(int &loci){
 
   outFile = "frequencies.txt";
-  tune = 0.1;
   nRow = loci;
   size = loci;
   currLogLiks.resize(loci, 0.0);
@@ -250,7 +249,7 @@ void Freqs::Frequency::printMeanAcceptRatio(){
 /***************************************************************
 
   Member function definitions for Frequency class within the
-  Freqs model namespace.
+  Diseq model namespace.
 
 ****************************************************************/
 
@@ -442,6 +441,6 @@ void Diseq::Frequency::printMeanAcceptRatio(){
 
 /****************************************************************
 
-  Frequency class in the BetaMix namespace.
+  Frequency class in the PopAdmix namespace.
 
 ****************************************************************/
