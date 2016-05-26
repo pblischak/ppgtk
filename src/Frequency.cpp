@@ -1,4 +1,4 @@
-// System headers
+// Standard headers
 #include <vector>
 #include <algorithm>
 #include <string>
@@ -7,7 +7,9 @@
 #include <fstream>
 
 // Boost headers
+// <none>
 
+// OpenMP header
 #ifdef _OPENMP
   #include <omp.h>
 #endif
@@ -138,6 +140,31 @@ std::vector<double> Freqs::Frequency::calcLogLik(std::vector<int> &tot, std::vec
     }
 
     return logLiks;
+
+}
+
+double Freqs::Frequency::calcLogLik(std::vector<double> &gLiks, int ind, int loc, int ploidy, double f){
+
+  int pos_lia;
+  double indLikSum, logLik;
+  std::vector<double> indLikVec(ploidy+1, 0.0);
+
+  for(int i = 0; i < ind; i++){
+    for(int a = 0; a <= ploidy; a++){
+
+      pos_lia = loc*ind*(ploidy+1) + i*(ploidy+1) + a;
+
+      indLikVec[a] = exp(gLiks[pos_lia] + r->lnBinomPdf(ploidy, a, f));
+
+    }
+
+    indLikSum = std::accumulate(indLikVec.begin(), indLikVec.end(), 0.0);
+    logLik += log(indLikSum);
+
+  }
+
+  return logLik;
+
 }
 
 void Freqs::Frequency::mhUpdate(std::vector<double> &gLiks, int ind, int loci, int ploidy){
@@ -206,6 +233,55 @@ void Freqs::Frequency::mhUpdate(std::vector<double> &gLiks, int ind, int loci, i
       acceptRatio[l] = nAccepted[l] / (double) nProposals[l];
     }
 
+  }
+
+}
+
+void Freqs::Frequency::mhUpdateParallel(std::vector<double> &gLiks, int ind, int loci, int ploidy){
+
+  std::vector<double> newVals(loci, -1.0), newLogLiks(loci, 0.0);//, lnMetropRatio(loci, 0.0), lnU(loci, 0.0);
+  double lnMetropRatio, lnU;
+
+  #pragma omp parallel private(lnMetropRatio, lnU)
+  {
+
+    lnMetropRatio = 0.0;
+    lnU = 0.0;
+
+    #pragma omp for
+    for(int l = 0; l < loci; l++){
+
+      #pragma omp critical
+      {
+        while(newVals[l] < 0 || newVals[l] > 1){
+          newVals[l] = r->normalRv(vals[l], tune);
+        }
+      }
+
+      newLogLiks[l] = calcLogLik(gLiks, ind, l, ploidy, newVals[l]);
+
+      //std::cout << "\n";
+
+      lnMetropRatio = (newLogLiks[l] + (aa - 1)*log(newVals[l]) + (bb - 1)*log(1 - newVals[l]))
+                      - (currLogLiks[l]  + (aa - 1)*log(vals[l]) + (bb - 1)*log(1 - vals[l]));
+      //std::cout << lnMetropRatio << " , " << l << "\n";
+      lnU = log(r->uniformRv());
+
+      //#pragma omp critical
+      //{
+      if(lnU < lnMetropRatio){
+        vals[l] = newVals[l];
+        currLogLiks[l] = newLogLiks[l];
+        nAccepted[l]++;
+        nProposals[l]++;
+        acceptRatio[l] = nAccepted[l] / (double) nProposals[l];
+      } else {
+        nProposals[l]++;
+        acceptRatio[l] = nAccepted[l] / (double) nProposals[l];
+      }
+    //}
+
+    }
   }
 
 }
@@ -321,7 +397,7 @@ std::vector<double> Diseq::Frequency::calcLogLikVec(std::vector<double> &gLiks, 
 
 }
 
-double Diseq::Frequency::calcLogLik(std::vector<double> &gLiks, std::vector<double> &phi, int ind, int loc, int ploidy){
+double Diseq::Frequency::calcLogLik(std::vector<double> &gLiks, std::vector<double> &phi, int ind, int loc, int ploidy, double f){
 
   int pos_lia;
   double indLikSum, logLik;
@@ -332,7 +408,7 @@ double Diseq::Frequency::calcLogLik(std::vector<double> &gLiks, std::vector<doub
 
       pos_lia = loc*ind*(ploidy+1) + i*(ploidy+1) + a;
 
-      indLikVec[a] = exp(gLiks[pos_lia] + r->lnBetaBinomPdf(ploidy, a, vals[loc]*phi[loc], (1-vals[loc])*phi[loc]));
+      indLikVec[a] = exp(gLiks[pos_lia] + r->lnBetaBinomPdf(ploidy, a, f*phi[loc], (1-f)*phi[loc]));
 
     }
 
@@ -391,6 +467,50 @@ void Diseq::Frequency::mhUpdate(std::vector<double> &gLiks, std::vector<double> 
       acceptRatio[l] = nAccepted[l] / (double) nProposals[l];
     }
 
+  }
+
+}
+
+void Diseq::Frequency::mhUpdateParallel(std::vector<double> &gLiks, std::vector<double> &phi, int ind, int loci, int ploidy){
+
+  std::vector<double> newVals(loci, -1.0), newLogLiks(loci, 0.0);
+  double lnMetropRatio, lnU;
+
+  #pragma omp parallel private(lnMetropRatio, lnU)
+  {
+
+    lnMetropRatio = 0.0;
+    lnU = 0.0;
+
+    #pragma omp for
+    for(int l = 0; l < loci; l++){
+
+      #pragma omp critical
+      {
+        while(newVals[l] < 0 || newVals[l] > 1){
+          newVals[l] = r->normalRv(vals[l], tune);
+        }
+      }
+
+      newLogLiks[l] = calcLogLik(gLiks, phi, ind, l, ploidy, newVals[l]);
+
+      lnMetropRatio = (newLogLiks[l] + (aa - 1)*log(newVals[l]) + (bb - 1)*log(1 - newVals[l]))
+                      - (currLogLiks[l] + (aa - 1)*log(vals[l]) + (bb - 1)*log(vals[l]));
+
+      lnU = log(r->uniformRv());
+
+      if(lnU < lnMetropRatio){
+        vals[l] = newVals[l];
+        currLogLiks[l] = newLogLiks[l];
+        nAccepted[l]++;
+        nProposals[l]++;
+        acceptRatio[l] = nAccepted[l] / (double) nProposals[l];
+      } else {
+        nProposals[l]++;
+        acceptRatio[l] = nAccepted[l] / (double) nProposals[l];
+      }
+
+    }
   }
 
 }

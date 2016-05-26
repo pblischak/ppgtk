@@ -71,6 +71,12 @@ ModelDiseq::ModelDiseq(std::string cFile, bool q, bool p){
 
 void ModelDiseq::run(){
 
+  bool openmp=0;
+
+  #ifdef _OPENMP
+    openmp=1;
+  #endif
+
   DataParser data;
   data.getReadData(totFile, refFile, errFile, nInd, nLoci);
 
@@ -92,9 +98,21 @@ void ModelDiseq::run(){
     ran = r->sampleInteger(1,2);
 
     if(ran == 1){
-      P.mhUpdate(G.tLiks, F.vals, nInd, nLoci, ploidy);
+
+      if(openmp){
+        P.mhUpdateParallel(G.tLiks, F.vals, nInd, nLoci, ploidy);
+      } else {
+        P.mhUpdate(G.tLiks, F.vals, nInd, nLoci, ploidy);
+      }
+
     } else if(ran == 2){
-      F.mhUpdate(G.tLiks, P.vals, nInd, nLoci, ploidy);
+
+      if(openmp){
+        F.mhUpdateParallel(G.tLiks, P.vals, nInd, nLoci, ploidy);
+      } else {
+        F.mhUpdate(G.tLiks, P.vals, nInd, nLoci, ploidy);
+      }
+
     } else {
       std::cout << "Invalid integer in Diseq model M-H algorithm...\n";
       exit(1);

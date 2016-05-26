@@ -1,0 +1,11 @@
+num_ind=100
+num_loci=1000
+ploidy=4
+total_reads=../example/tot_reads_1000_loci.txt
+reference_reads=../example/ref_reads_1000_loci.txt
+error_file=../example/error_1000_loci.txt
+glikelihoods=none
+mcmc_gen=5000
+burn=1000
+thin=10
+freq_tune=0.1

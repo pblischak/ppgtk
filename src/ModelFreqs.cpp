@@ -67,6 +67,14 @@ ModelFreqs::ModelFreqs(std::string cFile, bool q, bool p){
 
 void ModelFreqs::run(){
 
+  bool openmp=0;
+
+  #ifdef _OPENMP
+    openmp=1;
+  #endif
+
+  std::cout << openmp << "\n";
+
   DataParser data;
   data.getReadData(totFile, refFile, errFile, nInd, nLoci);
 
@@ -79,7 +87,11 @@ void ModelFreqs::run(){
 
   for(int m = 1; m <= mcmc_gen; m++){
 
-    P.mhUpdate(G.tLiks, nInd, nLoci, ploidy);
+    if(openmp){
+      P.mhUpdateParallel(G.tLiks, nInd, nLoci, ploidy);
+    } else {
+      P.mhUpdate(G.tLiks, nInd, nLoci, ploidy);
+    }
 
     if(m % thin == 0 && m > burn){
 
