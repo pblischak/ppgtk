@@ -1,6 +1,6 @@
 // Standard headers
 #include <vector>
-#include <algorithm>
+#include <numeric>
 #include <string>
 #include <iostream>
 #include <iomanip>

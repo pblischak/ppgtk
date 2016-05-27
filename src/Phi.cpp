@@ -1,7 +1,7 @@
 // Standard headers
 #include <iostream>
 #include <iomanip>
-#include <algorithm>
+#include <numeric>
 #include <vector>
 #include <string>
 #include <fstream>
@@ -196,7 +196,7 @@ void Diseq::Phi::mhUpdateParallel(std::vector<double> &gLiks, std::vector<double
 
       lnMetropRatio = (newLogLiks[l] + r->lnGammaPdf(aa, bb, newVals[l]))
                       - (currLogLiks[l] + r->lnGammaPdf(aa, bb, vals[l]));
-                      
+
       lnU = log(r->uniformRv());
 
       if(lnU < lnMetropRatio){
