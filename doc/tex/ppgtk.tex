@@ -20,6 +20,7 @@
 \usepackage{datetime}
 \frenchspacing
 \usepackage[table]{xcolor}
+\usepackage{framed}
 \setcounter{secnumdepth}{2}
 \setcounter{tocdepth}{2}
 
@@ -33,7 +34,9 @@
 \renewcommand{\familydefault}{ppl}
 
 \newcommand{\ppgtk}{PPGtk}
-\newcommand{\code}[1]{\hspace{15pt} \texttt{#1}}
+\newcommand{\code}[1]{\hspace{5pt} \texttt{\$ #1}}
+\newcommand{\rcode}[1]{\hspace{5pt} \texttt{[R]> #1}}
+\newcommand{\makefile}[1]{\hspace{5pt} \texttt{#1}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -73,7 +76,7 @@
 
 \ppgtk{} is a set of tools written in C++ for population genetic/genomic analyses with polyploids using high-throughput sequencing data. It was designed for research in non-model taxa (i.e., no reference genome), and provides a number of functions for conducting population genomics analyses in these taxa.
 
-\section{Installation}
+\section{Installing from source}
 
 Installing \ppgtk{} follows the typical workflow for Unix-based operating systems using a Makefile and the commands \texttt{`make \&\& sudo make install'}.
 
@@ -81,13 +84,13 @@ Installing \ppgtk{} follows the typical workflow for Unix-based operating system
 
 A ``bleeding edge'' version of the source code for \ppgtk{} can be cloned from GitHub using:
 
-\code{\$ git clone https://github.com/pblischak/ppgtk.git}
+\code{git clone https://github.com/pblischak/ppgtk.git}
 
 from the command line. You can also download the latest stable release from GitHub by following the \textbf{releases} link in the \ppgtk{} repository.
 
-\code{\$ cd ppgtk-v1.0.0}
+\code{cd ppgtk-v1.0.0}
 
-\code{[R]> dat <- read.table("tot-reads.txt")}
+\rcode{dat <- read.table("tot-reads.txt")}
 
 \subsection{Boost C++ Libraries}
 
@@ -102,21 +105,81 @@ can be used for parallelization.
 
 To enable parallelization with OpenMP, you will need to change the \texttt{OPENMP} variable in the Makefile to \texttt{yes}, like so:
 
-\code{OPENMP ?= yes}
+\makefile{OPENMP ?= yes}
 
 If you installed Boost in \texttt{/usr/local/bin}, then the paths to the header files and libraries should already be correctly specified in the Makefile. If you installed it somewhere else, then you will need to change the \texttt{BOOST\_LIB} and \texttt{BOOST\_INC} variables to point to where it was installed.
 
 If you are on a Mac, type:
 
-\code{\$ make darwin}
+\code{make darwin}
 
 If you are on a Linux computer, type:
 
-\code{\$ make linux}
+\code{make linux}
+
+\section{PPGtk Docker image}
+
+If you would like to run PPGtk, but don't want to go through the processing of compiling it from source, we have built a Docker image of a Ubuntu-based environment with the PPGtk program already installed. If you are unfaniliar with Docker, please read over some of the introductory documentation on their website. We will cover the basic steps that will be necessary to use PPGtk in this way.
+
+\subsection{Downloading Docker}
+
+\subsection{Obtaining the PPGtk image}
+
+Launch the Docker Quickstart Terminal and type the following command:
+
+\code{docker pull pblischak/ppgtk}
+
+To run an instance of the image as a container, type:
+
+\code{docker run -it pblischak/ppgtk}
+
+Now that you are operating within the container, you can check to see if PPGtk is working by typing:
+
+\code{ppgtk -v}
+
+This should result in the following output (the version number may be different):
+
+\begin{framed}
+
+\begin{verbatim}
+   ____  ____   ____ _   _    
+  |  _ \|  _ \ / ___| |_| | __
+  | |_) | |_) | |  _| __| |/ / 
+  |  __/|  __/| |_| | |_|   <  
+  |_|   |_|    \____|\__|_|\_\
+
+********************************************************************************
+**  This is PPGtk version 0.1.0 (May 2016)
+**  For help using the sofware type: ppgtk -h or ppgtk --model <model-name> -h
+**  Documentation can be also found online at http://pblischak.github.io/ppgtk/
+********************************************************************************
+\end{verbatim}
+
+\end{framed}
+
+\subsection{Making your data accessible within a container}
+
+\code{docker run -it -v /Users/path/to/data:/home/analysis pblischak/ppgtk}
+
+This step will launch a Bash shell within a Docker container running a basic Ubuntu operating system. You will enter the container in a folder named \texttt{/home/analysis}, which is also the folder that you attached your data to. If you type \texttt{ls}, you should see the data files that you had on you own machine. With the docker container running, you can analyze the data that you attached just like you would run it from any other terminal window.
+
+\code{ppgtk -{}-model freqs -c config.txt -q}
+
+\subsection{Creating a multicore Docker Machine}
+
+\code{docker-machine create -{}-driver virtualbox -{}-virtualbox-cpu-count <\#cpus> <name>}
+
+\code{docker-machine create -{}-driver virtualbox -{}-virtualbox-cpu-count 4 multicore}
+
+\code{docker-machine env multicore}
+
+Whenever you start a Docker Quickstart Terminal, you will be using the default machine. To switch to the new \texttt{multicore} machine run the following
+
+\code{eval \$(docker-machine env multicore)}
 
 \section{Getting Started}
 
-\code{\$ ppgtk -n 100 -l 2000 -p 4 -t total.txt -r reference.txt -q}
+\code{ppgtk -n 100 -l 2000 -p 4 -t total.txt -r reference.txt -q}
 
 \texttt{total.txt}:
 

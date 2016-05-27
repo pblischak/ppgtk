@@ -105,6 +105,12 @@ P(p|r) \propto P(r|p)P(p) = \left(\sum_a P(r|a)P(a|p)\right)P(p)
 \alpha = \text{min} \left\{1, \frac{P(r|p^*)P(p^*)}{P(r|p)P(p)} \right\}
 \end{equation}
 
+\subsection{Genotype estimation}
+
+\begin{equation}
+P(g_i = a|r_i) = \frac{P(r_i|g_i = a)P(g_i = a|\hat{p})}{\sum_{j=0}^{m_i}P(r_i|g_i = j)P(g_i = j|\hat{p})}
+\end{equation}
+
 \section{Inbreeding}
 
 We introduce another parameter, $\phi$, that is related to the inbreeding coefficient ($F$) through the following equation:

@@ -1,4 +1,4 @@
-// System headers
+// Standard headers
 #include <string>
 #include <vector>
 #include <iostream>

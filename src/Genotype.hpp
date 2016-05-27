@@ -2,6 +2,7 @@
 #define Genotype_HPP
 
 class Genotype {
+
 public:
   Genotype(int ind, int loci, int ploidy, std::vector<int> &tot, std::vector<int> &ref, std::vector<double> &err);
   ~Genotype(){};
@@ -10,6 +11,15 @@ public:
 
 private:
   void t(const int ii, const int ll, const int pp);
+
 };
+
+namespace Freqs {
+
+}
+
+namespace Diseq {
+
+}
 
 #endif

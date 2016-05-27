@@ -1,4 +1,4 @@
-// System headers
+// Standard headers
 #include <iostream>
 #include <iomanip>
 #include <fstream>

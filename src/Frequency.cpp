@@ -198,23 +198,6 @@ void Freqs::Frequency::mhUpdate(std::vector<double> &gLiks, int ind, int loci, i
     }
   }
 
-  /*#pragma omp parallel for collapse(3)
-  for(int i = 0; i < ind; i++){
-    for(int l = 0; l < loci; l++){
-      for(int a = 0; a <= ploidy; a++){
-
-        if(a == 0) tmpLik = 0.0;
-
-        tmpVal1 = log(r->binomPdf(ploidy, a, newVals[l]));
-        tmpVal2 = log(gLiks[i*loci*ploidy + l*ploidy + a]);
-        tmpLik +=  exp(tmpVal1 + tmpVal2);
-
-        if(a == ploidy) newLogLiks[l] += log(tmpLik);
-
-      }
-    }
-  }*/
-
   for(int l = 0; l < loci; l++){
 
     lnMetropRatio = (newLogLiks[l] + (aa - 1)*log(newVals[l]) + (bb - 1)*log(1 - newVals[l]))
