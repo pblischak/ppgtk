@@ -38,6 +38,7 @@
 \newcommand{\makefile}[1]{\hspace{5pt} \texttt{#1}}
 
 \hypersetup{linkcolor=Cerulean,
+		      urlcolor=OrangeRed,
 		      breaklinks=true
 		      }
 
@@ -85,9 +86,9 @@ PPGtk is a set of tools written in C++ for population genetic/genomic analyses o
 
 \section{Installing from source}
 
-Installing PPGtk from source requires the Boost C++ Libraries. PPGtk also has multithreading capabilities through the OpenMP libraries, which will require an OpenMP compatible C++ compiler (such as the GNU g++ compiler). As a special note for Mac OSX users, the ``g++ compiler'' that comes with a Mac is a symbolic link to the Apple LLVM Clang C++ compiler (i.e., it is not actually the GNU g++ compiler). Typing \texttt{g++ -v} in a terminal window should confirm this. These native Apple/Mac compilers do not support OpenMP threading, so you will need to get the GNU versions. This link ({\url{http://hpc.sourceforge.net/}}) has instructions for downloading and installing gcc on a Mac. Alternatively, you could use Homebrew ({\url{http://brew.sh/}}).
+Installing PPGtk from source requires the Boost C++ Libraries. PPGtk also has multithreading capabilities through the OpenMP libraries, which will require an OpenMP compatible C++ compiler (such as the GNU g++ compiler). As a special note for Mac OSX users, the ``g++ compiler'' that comes with a Mac is not actually the GNU g++ compiler. Typing \texttt{g++ -v} in a terminal window should confirm this. The native Apple/Mac compilers do not support OpenMP threading, so you will need to get the GNU versions. This link ({\url{http://hpc.sourceforge.net/}}) has instructions for downloading and installing gcc on a Mac. Alternatively, you could use Homebrew ({\url{http://brew.sh/}}).
 
-\hspace{15pt} If you would like to use PPGtk but don't want to have to compile it from source, we have built a Docker image with the software and dependencies already installed. Information for using PPGtk with Docker can be found in the the next section: \hyperref[ppgtk-docker]{PPGtk Docker image}.
+\hspace{15pt} If you would like to use PPGtk but don't want to compile it from source, we have built a Docker image with the software and dependencies already installed. Information for using PPGtk with Docker can be found in the the next section: \hyperref[ppgtk-docker]{PPGtk Docker image}.
 
 \subsection{Boost C++ Libraries}
 
