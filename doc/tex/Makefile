@@ -1,5 +1,7 @@
 all : ppgtk.pdf ppgtk-notes.pdf extending-ppgtk.pdf
 
+.PHONY: copy
+
 ppgtk.pdf : ppgtk.tex #ppgtk.bib
 	pdflatex ppgtk
 	pdflatex ppgtk
@@ -19,4 +21,9 @@ extending-ppgtk.pdf : extending-ppgtk.tex
 	pdflatex extending-ppgtk
 	#bibtex extending-ppgtk
 	#pdflatex extending-ppgtk
+	@cp extending-ppgtk.pdf ../
+
+copy :
+	@cp ppgtk.pdf ../manual.pdf
+	@cp ppgtk-notes.pdf ../
 	@cp extending-ppgtk.pdf ../

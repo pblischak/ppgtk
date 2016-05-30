@@ -7,7 +7,7 @@
 \usepackage[T1]{fontenc}
 \DisableLigatures[f]{encoding=T1}
 \usepackage[skip=2pt]{caption}
-\usepackage{hyperref}
+\usepackage[colorlinks]{hyperref}
 \usepackage{setspace,array,float}
 \usepackage{bm,upgreek}
 \usepackage[compact]{titlesec}
@@ -19,7 +19,7 @@
 \usepackage{babel}
 \usepackage{datetime}
 \frenchspacing
-\usepackage[table]{xcolor}
+\usepackage[dvipsnames,table]{xcolor}
 \usepackage{framed}
 \setcounter{secnumdepth}{2}
 \setcounter{tocdepth}{2}
@@ -33,10 +33,13 @@
 
 \renewcommand{\familydefault}{ppl}
 
-\newcommand{\ppgtk}{PPGtk}
 \newcommand{\code}[1]{\hspace{5pt} \texttt{\$ #1}}
 \newcommand{\rcode}[1]{\hspace{5pt} \texttt{[R]> #1}}
 \newcommand{\makefile}[1]{\hspace{5pt} \texttt{#1}}
+
+\hypersetup{linkcolor=Cerulean,
+		      breaklinks=true
+		      }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -47,16 +50,18 @@
 \vspace*{1.5in}
 \begin{center}
 
-	{\huge \ppgtk: the polyploid pop-gen toolkit}
+	{\huge PPGtk: the polyploid pop-gen toolkit}
 	\vspace{0.5in}
 
 	Written and maintained by Paul Blischak
 
-	E-mail: \href{mailto:blischak.4@osu.edu}{blischak.4@osu.edu}
+	E-mail: {\href{mailto:blischak.4@osu.edu}{blischak.4@osu.edu}}
 
-	Source code: \url{https://github.com/pblischak/ppgtk}
+	Source code: {\url{https://github.com/pblischak/ppgtk}}
+	
+	Docker image: {\url{https://hub.docker.com/r/pblischak/ppgtk}}
 
-	Online docs: \url{http://pblischak.github.io/ppgtk}
+	Online docs: {\url{http://pblischak.github.io/ppgtk}}
 
 \end{center}
 
@@ -66,7 +71,7 @@
 
 \newpage
 
-\tableofcontents
+{ \tableofcontents }
 
 \newpage
 
@@ -74,32 +79,46 @@
 \pagestyle{plain}
 \setcounter{page}{1}
 
-\ppgtk{} is a set of tools written in C++ for population genetic/genomic analyses with polyploids using high-throughput sequencing data. It was designed for research in non-model taxa (i.e., no reference genome), and provides a number of functions for conducting population genomics analyses in these taxa.
+PPGtk is a set of tools written in C++ for population genetic/genomic analyses of high-throughput sequencing (HTS) data collected in polyploid organisms. It was designed for research in non-model polyploids (i.e., no reference genome), and aims to provide models that facilitate the discovery of patterns of genetic diversity. 
+
+
 
 \section{Installing from source}
 
-Installing \ppgtk{} follows the typical workflow for Unix-based operating systems using a Makefile and the commands \texttt{`make \&\& sudo make install'}.
+Installing PPGtk from source requires the Boost C++ Libraries. PPGtk also has multithreading capabilities through the OpenMP libraries, which will require an OpenMP compatible C++ compiler (such as the GNU g++ compiler). As a special note for Mac OSX users, the ``g++ compiler'' that comes with a Mac is a symbolic link to the Apple LLVM Clang C++ compiler (i.e., it is not actually the GNU g++ compiler). Typing \texttt{g++ -v} in a terminal window should confirm this. These native Apple/Mac compilers do not support OpenMP threading, so you will need to get the GNU versions. This link ({\url{http://hpc.sourceforge.net/}}) has instructions for downloading and installing gcc on a Mac. Alternatively, you could use Homebrew ({\url{http://brew.sh/}}).
 
-\subsection{Obtaining \ppgtk}
-
-A ``bleeding edge'' version of the source code for \ppgtk{} can be cloned from GitHub using:
-
-\code{git clone https://github.com/pblischak/ppgtk.git}
-
-from the command line. You can also download the latest stable release from GitHub by following the \textbf{releases} link in the \ppgtk{} repository.
-
-\code{cd ppgtk-v1.0.0}
-
-\rcode{dat <- read.table("tot-reads.txt")}
+\hspace{15pt} If you would like to use PPGtk but don't want to have to compile it from source, we have built a Docker image with the software and dependencies already installed. Information for using PPGtk with Docker can be found in the the next section: \hyperref[ppgtk-docker]{PPGtk Docker image}.
 
 \subsection{Boost C++ Libraries}
 
 %\citep{boostCPP}
 
+\code{cd boost\_1\_60\_0}
+
+\code{./bootstrap.sh -{}-help}
+
+\code{./bootstrap.sh -{}-prefix=/usr/local -{}-with-libraries=program\_options}
+
+\code{sudo ./b2 install}
+
 \subsection{OpenMP}
 
 %\citep{openMP}
 can be used for parallelization.
+
+\code{export OMP\_NUM\_THREADS=4}
+
+\subsection{Obtaining PPGtk}
+
+A ``bleeding edge'' version of the source code for PPGtk can be cloned from GitHub using:
+
+\code{git clone https://github.com/pblischak/ppgtk.git}
+
+from the command line. You can also download the latest stable release from GitHub by following the \textbf{releases} link in the PPGtk repository.
+
+\code{cd ppgtk-v1.0.0}
+
+\rcode{dat <- read.table("tot-reads.txt")}
 
 \subsection{Compiling the executable}
 
@@ -109,15 +128,9 @@ To enable parallelization with OpenMP, you will need to change the \texttt{OPENM
 
 If you installed Boost in \texttt{/usr/local/bin}, then the paths to the header files and libraries should already be correctly specified in the Makefile. If you installed it somewhere else, then you will need to change the \texttt{BOOST\_LIB} and \texttt{BOOST\_INC} variables to point to where it was installed.
 
-If you are on a Mac, type:
+Then type \texttt{make} to compile the executable. After successfully compiling the program, typing \texttt{sudo make install} will install the \texttt{ppgtk} executable to be used from anywhere on your computer by copying it into \texttt{/usr/local/bin} (this is why you need to use \texttt{sudo}).
 
-\code{make darwin}
-
-If you are on a Linux computer, type:
-
-\code{make linux}
-
-\section{PPGtk Docker image}
+\section{PPGtk Docker image}\label{ppgtk-docker}
 
 If you would like to run PPGtk, but don't want to go through the processing of compiling it from source, we have built a Docker image of a Ubuntu-based environment with the PPGtk program already installed. If you are unfaniliar with Docker, please read over some of the introductory documentation on their website. We will cover the basic steps that will be necessary to use PPGtk in this way.
 
@@ -173,13 +186,27 @@ This step will launch a Bash shell within a Docker container running a basic Ubu
 
 \code{docker-machine env multicore}
 
-Whenever you start a Docker Quickstart Terminal, you will be using the default machine. To switch to the new \texttt{multicore} machine run the following
+Whenever you start a Docker Quickstart Terminal, you will be using the default machine. To switch to the new \texttt{multicore} machine run the following:
 
 \code{eval \$(docker-machine env multicore)}
 
 \section{Getting Started}
 
-\code{ppgtk -n 100 -l 2000 -p 4 -t total.txt -r reference.txt -q}
+For a general help message:
+
+\code{ppgtk -h}
+
+For a help message specific to a particular model:
+
+\code{ppgtk -{}-model <model-name> -h}
+
+To specify and run an analysis, supply the \texttt{model} and \texttt{config} arguments:
+
+\code{ppgtk -{}-model freqs -{}-config freqs.txt}
+
+The full \texttt{model} and \texttt{config} argument flags can also be shortened to just the first letter:
+
+\code{ppgtk -m freqs -c freqs.txt}
 
 \texttt{total.txt}:
 
