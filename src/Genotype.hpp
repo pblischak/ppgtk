@@ -11,6 +11,7 @@ public:
 
 private:
   void t(const int ii, const int ll, const int pp);
+  std::vector<std::string> split(const std::string &inString, const std::string &delim);
 
 };
 

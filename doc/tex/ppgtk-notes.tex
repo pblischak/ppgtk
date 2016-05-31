@@ -111,7 +111,7 @@ P(p|r) \propto P(r|p)P(p) = \left(\sum_a P(r|a)P(a|p)\right)P(p)
 P(g_i = a|r_i) = \frac{P(r_i|g_i = a)P(g_i = a|\hat{p})}{\sum_{j=0}^{m_i}P(r_i|g_i = j)P(g_i = j|\hat{p})}
 \end{equation}
 
-\section{Inbreeding}
+\section{Disequilirium}
 
 We introduce another parameter, $\phi$, that is related to the inbreeding coefficient ($F$) through the following equation:
 
@@ -138,6 +138,30 @@ which is the probability density function for the beta-binomial distribution wit
 \end{equation*}
 
 \subsection{Metropolis-Hastings algorithm}
+
+
+
+\section{Allopolyploid mixture model}
+
+\begin{equation}
+P(g_i = a|p_1, p_2, m_{i,1}, m_{i,2}) = \sum_{j=0}^a \sum_{r=0}^{a-j} P(g_{i,1} = j|p_1, m_{i,1})P(g_{i,2} = r | p_2, m_{i,2})\,.
+\end{equation}
+
+Here $m_{i,1} + m_{i,2} = m_i$ (e.g., 2:4 inheritance in an allopolyploid corresponds to $m_{i,1}=2$ and $m_{i,2}=4$)\,.
+
+\begin{equation}
+P(g_i = a|p_1, p_2, m_{i,1}, m_{i,2}) = \sum_{j=0}^a \left(  \sum_{r=0}^{a-j} \left[ \binom{m_{i,1}}{j} p_1^j (1 - p_1)^{m_{i,1} - j} \times \binom{m_{i,2}}{r} p_2^r (1 - p_2)^{m_{i,2} - r} \right] \right).
+\end{equation}
+
+This is a special case of the Poisson-Binomial probability distribution where we have two different probabilities of success. The most general case would be where the probability of success for every allele is different.
+
+\begin{equation}
+\mathcal{L}(p_1,p_2) = \sum_{a=0}^{m_i} \mathcal{L}(g_i = a) P(g_i = a|p_1, p_2, m_{i,1}, m_{i,2})\,.
+\end{equation}
+
+\begin{equation}
+p_{\ell,k} \sim \text{Beta}(\alpha = \pi \theta_k, \beta = (1 - \pi) \theta_k), \qquad \text{where } \ell = 1,\ldots,L \text{,  and  } k = 1,2.
+\end{equation}
 
 \section{Beta mixture model}
 

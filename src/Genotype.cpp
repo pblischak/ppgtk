@@ -1,10 +1,12 @@
 // Standard headers
 #include <vector>
 #include <iostream>
+#include <string>
+#include <fstream>
 //#include <iomanip>
 
 // Boost headers
-
+// <none>
 
 // Local headers
 #include "Genotype.hpp"
@@ -84,4 +86,25 @@ void Genotype::t(const int ii, const int ll, const int pp){
       }
     }
   }
+}
+
+// Many thanks to this Stack Overflow post:
+// http://stackoverflow.com/questions/599989/is-there-a-built-in-way-to-split-strings-in-c
+// and http://oopweb.com/CPP/Documents/CPPHOWTO/Volume/C++Programming-HOWTO-7.html
+std::vector<std::string> Genotype::split(const std::string &inString, const std::string &delim){
+
+  std::vector<std::string> outStringVec;
+  std::string::size_type lastPos = inString.find_first_not_of(delim, 0);
+  std::string::size_type pos = inString.find_first_of(delim, lastPos);
+
+  while(std::string::npos != pos || std::string::npos != lastPos){
+
+    outStringVec.push_back(inString.substr(lastPos, pos - lastPos));
+    lastPos = inString.find_first_not_of(delim, pos);
+    pos = inString.find_first_of(delim, lastPos);
+
+  }
+
+  return outStringVec;
+
 }
