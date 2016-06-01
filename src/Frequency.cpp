@@ -35,10 +35,11 @@ Freqs::Frequency::Frequency(int &loci){
   nAccepted.resize(loci, 0);
   nProposals.resize(loci, 0);
   acceptRatio.resize(loci, 0.0);
-  double ran, aa = 0.5, bb = 0.5;
+  double ran = 0.0;
+  aa = 0.5, bb = 0.5;
 
   for(int l = 0; l < loci; l++){
-    ran = r->uniformRv();
+    ran = r->betaRv(aa, bb);
     vals.push_back(ran);
   }
 
@@ -47,7 +48,7 @@ Freqs::Frequency::Frequency(int &loci){
 void Freqs::Frequency::getLogLiks(std::vector<double> &gLiks, int ind, int loci, int ploidy){
 
   double indLikSum;
-  std::vector<double> indLikVec(ploidy+1, 0);
+  std::vector<double> indLikVec(ploidy+1, 0.0);
 
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
@@ -321,10 +322,11 @@ Diseq::Frequency::Frequency(const int &loci){
   nAccepted.resize(loci, 0);
   nProposals.resize(loci, 0);
   acceptRatio.resize(loci, 0.0);
-  double ran, aa = 0.5, bb = 0.5;
+  double ran = 0.0;
+  aa = 0.5, bb = 0.5;
 
   for(int l = 0; l < loci; l++){
-    ran = r->uniformRv();
+    ran = r->betaRv(aa, bb);
     vals.push_back(ran);
   }
 
@@ -536,11 +538,153 @@ void Diseq::Frequency::printMeanAcceptRatio(){
 
 /****************************************************************
 
-  Frequency class in the BetaMix namespace.
+  Frequency class in the AlloSNP namespace.
 
 ****************************************************************/
 
+AlloSNP::Frequency::Frequency(const int &loci, std::vector<double> &theta, double anc){
 
+  outFile1 = "frequencies1.txt";
+  outFile2 = "frequencies2.txt";
+  nRow = loci;
+  size = loci;
+  currLogLiks.resize(loci, 0.0);
+  nAccepted1.resize(loci, 0);
+  nAccepted2.resize(loci, 0);
+  nProposals1.resize(loci, 0);
+  nProposals2.resize(loci, 0);
+  acceptRatio.resize(loci, 0.0);
+  double ran1 = 0.0, ran2 = 0.0;
+
+  for(int l = 0; l < loci; l++){
+    ran1 = r->betaRv(anc * theta[0], (1 - anc) * theta[0]);
+    vals1.push_back(ran1);
+
+    ran2 = r->betaRv(anc * theta[1], (1 - anc) * theta[1]);
+    vals2.push_back(ran2);
+  }
+
+
+}
+
+void AlloSNP::Frequency::getLogLiks(std::vector<double> &gLiks, std::vector<double> &theta, double anc, int ind, int loci, int ploidy1, int ploidy2){
+
+  int pos_lia, ploidy = ploidy1 + ploidy2;
+  double indLikSum;
+  std::vector<double> indLikVec(ploidy+1, 0.0);
+
+  for(int l = 0; l < loci; l++){
+    for(int i = 0; i < ind; i++){
+      for(int a = 0; a <= ploidy; a++){
+
+        pos_lia = l*ind*(ploidy+1) + i*(ploidy+1) + a;
+
+        indLikVec[a] = exp(gLiks[pos_lia] + r->lnTwoCatPoissBinomPdf(ploidy1, ploidy2, a, vals1[l], vals2[l]));
+
+      }
+
+      indLikSum = std::accumulate(indLikVec.begin(), indLikVec.end(), 0.0);
+      currLogLiks[l] += log(indLikSum);
+
+    }
+
+    currLogLiks[l] += r->lnBetaPdf(anc * theta[0], (1 - anc) * theta[0], vals1[l]) + r->lnBetaPdf(anc * theta[1], (1 - anc) * theta[1], vals2[l]);
+
+  }
+
+}
+
+std::vector<double> AlloSNP::Frequency::calcLogLikVec(std::vector<double> &gLiks, std::vector<double> &theta, double anc, int ind, int loci, int ploidy1, int ploidy2){
+
+  int pos_lia, ploidy = ploidy1 + ploidy2;
+  double indLikSum;
+  std::vector<double> indLikVec(ploidy+1, 0.0), logLikVec(loci, 0.0);
+
+  for(int l = 0; l < loci; l++){
+    for(int i = 0; i < ind; i++){
+      for(int a = 0; a <= ploidy; a++){
+
+        pos_lia = l*ind*(ploidy+1) + i*(ploidy+1) + a;
+
+        indLikVec[a] = exp(gLiks[pos_lia] + r->lnTwoCatPoissBinomPdf(ploidy1, ploidy2, a, vals1[l], vals2[l]));
+      }
+
+      indLikSum = std::accumulate(indLikVec.begin(), indLikVec.end(), 0.0);
+      logLikVec[l] += log(indLikSum);
+
+    }
+
+    logLikVec[l] += r->lnBetaPdf(anc * theta[0], (1 - anc) * theta[0], vals1[l]) + r->lnBetaPdf(anc * theta[1], (1 - anc) * theta[1], vals2[l]);
+
+  }
+
+  return logLikVec;
+
+}
+
+double AlloSNP::Frequency::calcLogLik(std::vector<double> &gLiks, std::vector<double> &theta, double anc, int ind, int loc, int ploidy1, int ploidy2, double f1, double f2){
+
+  int pos_lia, ploidy = ploidy1 + ploidy2;
+  double indLikSum, logLik;
+  std::vector<double> indLikVec(ploidy+1, 0.0);
+
+  for(int i = 0; i < ind; i++){
+    for(int a = 0; a <= ploidy; a++){
+
+      pos_lia = loc*ind*(ploidy+1) + i*(ploidy+1) + a;
+
+      indLikVec[a] = exp(gLiks[pos_lia] + r->lnTwoCatPoissBinomPdf(ploidy1, ploidy2, a, f1, f2));
+
+    }
+
+    indLikSum = std::accumulate(indLikVec.begin(), indLikVec.end(), 0.0);
+    logLik += log(indLikSum);
+
+  }
+
+  logLik += r->lnBetaPdf(anc * theta[0], (1 - anc) * theta[0], f1) + r->lnBetaPdf(anc * theta[1], (1 - anc) * theta[1], f2);
+
+  return logLik;
+
+}
+
+void AlloSNP::Frequency::mhUpdate(std::vector<double> &gLiks, std::vector<double> &theta, double anc, int ind, int loci, int ploidy1, int ploidy2){
+
+}
+
+void AlloSNP::Frequency::mhUpdateParallel(std::vector<double> &gLiks, std::vector<double> &theta, double anc, int ind, int loci, int ploidy1, int ploidy2){
+
+}
+
+void AlloSNP::Frequency::writeFrequency(const int &iter){
+
+  std::ofstream outFileStream1, outFileStream2;
+  outFileStream1.open(outFile1, std::ios::out | std::ios::app);
+  outFileStream2.open(outFile2, std::ios::out | std::ios::app);
+
+  if(outFileStream1.is_open() && outFileStream2.is_open()){
+
+    outFileStream1 << iter << "\t";
+    outFileStream2 << iter << "\t";
+
+    for(int l = 0; l < vals1.size(); l++){
+      outFileStream1 << std::setw(8) << std::setprecision(8) << vals1[l] << "\t";
+      outFileStream2 << std::setw(8) << std::setprecision(8) << vals2[l] << "\t";
+    }
+
+    outFileStream1 << "\n";
+    outFileStream2 << "\n";
+
+  } else {
+    std::cout << "Failed to open files: " << outFile1 << " and " << outFile2 << "...\n";
+    exit(1);
+  }
+
+}
+
+void AlloSNP::Frequency::printMeanAcceptRatio(){
+
+}
 
 /****************************************************************
 

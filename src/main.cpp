@@ -11,7 +11,7 @@
 #include "MbRandom.hpp"
 #include "ModelFreqs.hpp"
 #include "ModelDiseq.hpp"
-//#include "ModelBetaMix.hpp"
+//#include "ModelAlloSNP.hpp"
 //#include "ModelPopAdmix.hpp"
 #include "main.hpp"
 
@@ -30,7 +30,7 @@ int main(int argc, char **argv){
     desc.add_options()
     ("help,h", "Prints help message.")
     ("version,v","Print software version information.")
-    ("model,m", po::value<std::string>(&model)->required(), "the model to be run:\n -> freqs\n -> diseq\n -> betaMix\n -> popAdmix")
+    ("model,m", po::value<std::string>(&model)->required(), "the model to be run:\n -> freqs\n -> diseq\n -> alloSNP")
     ("config,c", po::value<std::string>(&configFile)->required(), "configuration file with model options.")
     ("seed,s", po::value<long int>(&seed), "random number seed.")
     ("quiet,q", "Turn off printing run information to stdout.")
@@ -84,7 +84,7 @@ int main(int argc, char **argv){
                     << "\n\n";
           exit(0);
 
-        } else if(vm["model"].as<std::string>() == "betaMix") {
+        } else if(vm["model"].as<std::string>() == "alloSNP") {
 
           std::cout << "\n\nThis model is still in the works...\n\n";
           exit(0);
@@ -97,7 +97,7 @@ int main(int argc, char **argv){
         } else {
 
           std::cout << "\nError: Invalid model specified (" << vm["model"].as<std::string>()
-                    << "). \nPlease choose one of the following: freqs, diseq, betaMix, popAdmix.\n\n";
+                    << "). \nPlease choose one of the following: freqs, diseq, alloSNP, betaMix, popAdmix.\n\n";
           exit(0);
 
         }
@@ -161,15 +161,21 @@ int main(int argc, char **argv){
   } else if(model == "diseq"){
     ModelDiseq mod(configFile, quiet, print);
     mod.run();
+  } else if (model == "alloSNP"){
+    std::cout << "\n\nStill working on this one...\n\n";
+    //ModelAlloSNP mod(configFile, quiet, print);
+    //mod.run();
   } else if(model == "betaMix"){
+    std::cout << "\n\nStill working on this one...\n\n";
     //ModelBetaMix mod(configFile, quiet, print);
     //mod.run();
   } else if(model == "popAdmix"){
+    std::cout << "\n\nStill working on this one...\n\n";
     //ModelPopAdmix mod(configFile, quiet, print);
     //mod.run();
   } else {
     std::cout << "\"" << model << "\"" << " is not a valid model. Please choose one of the following:\n";
-    std::cout << "  -> freqs\n  -> diseq\n  -> betaMix\n  -> popAdmix\n";
+    std::cout << "  -> freqs\n  -> diseq\n  -> alloSNP\n  -> betaMix\n  -> popAdmix\n";
   }
 
   //DataParser data;

@@ -2,7 +2,7 @@
 
 PPGtk is a C++ program for the analysis of population genomic data collected in polyploids (or mixtures of ploidies). It uses genotype likelihoods to integrate over genotype uncertainty. It relies on the Boost C++ libraries.
 
-<a href="http://www.boost.org/" target="_blank">Boost</a> and <a href="http://openmp.org/wp/" target="_blank">OpenMP</a>.
+[Boost](http://www.boost.org/) and [OpenMP](http://openmp.org/wp/).
 
 ## Installing Boost
 

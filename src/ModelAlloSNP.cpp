@@ -9,17 +9,16 @@
 #include <boost/program_options.hpp>
 
 // Local headers
-#include "ModelDiseq.hpp"
-#include "MbRandom.hpp"
-#include "main.hpp"
+#include "ModelAlloSNP.hpp"
 #include "Frequency.hpp"
-#include "Phi.hpp"
 #include "Genotype.hpp"
+#include "Theta.hpp"
+#include "AncFreq.hpp"
 #include "DataParser.hpp"
 
 namespace po = boost::program_options;
 
-ModelDiseq::ModelDiseq(std::string cFile, bool q, bool p){
+ModelAlloSNP::ModelAlloSNP(std::string cFile, bool q, bool p){
 
   quiet = q;
   print = p;
@@ -31,7 +30,8 @@ ModelDiseq::ModelDiseq(std::string cFile, bool q, bool p){
     desc.add_options()
     ("num_ind", po::value<int>(&nInd)->required(), "the number of individuals.")
     ("num_loci", po::value<int>(&nLoci)->required(), "the number of loci.")
-    ("ploidy", po::value<int>(&ploidy)->required(), "the ploidy level of the individuals.")
+    ("ploidy1", po::value<int>(&ploidy1)->required(), "the ploidy level of subgenome 1.")
+    ("ploidy2", po::value<int>(&ploidy2)->required(), "the ploidy level of subgenome 2 (ploidy2 >= ploidy1).")
     ("mcmc_gen", po::value<int>(&mcmc_gen)->required(), "number of MCMC generations.")
     ("thin", po::value<int>(&thin)->required(), "how often to thin/sample the chain.")
     ("burn", po::value<int>(&burn)->required(), "the number of burn-in generations before samples are saved.")
@@ -40,7 +40,8 @@ ModelDiseq::ModelDiseq(std::string cFile, bool q, bool p){
     ("error_file", po::value<std::string>(&errFile)->required(), "file name containing per locus read error rates.")
     ("glikelihoods", po::value<std::string>(&glFile)->required(), "file name with genotype likelihoods.")
     ("freq_tune", po::value<double>(&freq_tune)->required(), "allele frequency tuning parameter for M-H algorithm.")
-    ("phi_tune", po::value<double>(&phi_tune)->required(), "phi tuning parameter for M-H algorithm");
+    ("theta_tune", po::value<double>(&theta_tune)->required(), "theta tuning parameter for M-H algorithm.")
+    ("anc_tune", po::value<double>(&anc_tune)->required(), "ancestral allele frequency tuning parameter for M-H algorithm.");
 
     po::variables_map vm;
     try{
@@ -55,7 +56,7 @@ ModelDiseq::ModelDiseq(std::string cFile, bool q, bool p){
     catch(po::error& e){
       std::cout << "\nerror: " << e.what() << std::endl;
       std::cout << "\n\n" << "Usage: ./ppgtk --model <model-name> -c <config-file>" << std::endl;
-      std::cout << "\nFor config-file options type: ./ppgtk --model diseq -h\n" << std::endl;
+      std::cout << "\nFor config-file options type: ./ppgtk --model alloSNP -h\n" << std::endl;
       exit(EXIT_FAILURE);
     }
 
@@ -69,12 +70,16 @@ ModelDiseq::ModelDiseq(std::string cFile, bool q, bool p){
 
 }
 
-void ModelDiseq::run(){
+}
 
-  bool openmp=0;
+void ModelAlloSNP::run(){
+
+  int ploidy = ploidy1 + ploidy2;
+
+  bool openmp = 0;
 
   #ifdef _OPENMP
-    openmp=1;
+    openmp = 1;
   #endif
 
   DataParser data;
@@ -82,53 +87,50 @@ void ModelDiseq::run(){
 
   Genotype G(nInd, nLoci, ploidy, data.totMat, data.refMat, data.err);
 
-  Diseq::Frequency P(nLoci);
-  Diseq::Phi F(nLoci);
-
-  P.getLogLiks(G.tLiks, F.vals, nInd, nLoci, ploidy);
-  F.getLogLiks(G.tLiks, P.vals, nInd, nLoci, ploidy);
-
+  AlloSNP::Frequency P(nLoci);
+  P.getLogLiks(G.tLiks, nInd, nLoci, ploidy1);
   P.setTune(freq_tune);
-  F.setTune(phi_tune);
+
+  AlloSNP::Theta T;
+  T.getLogLiks();
+  T.setTune(theta_tune);
+
+  AlloSNP::AncFreq A;
+  A.getLogLiks();
+  A.setTune(anc_tune);
 
   int ran;
 
-  for(int m = 1; m <= mcmc_gen; m++){
+  if(openmp){
 
-    ran = r->sampleInteger(1,2);
+    ran = r->sampleInteger(1,3);
 
     if(ran == 1){
-
-      if(openmp){
-        P.mhUpdateParallel(G.tLiks, F.vals, nInd, nLoci, ploidy);
-      } else {
-        P.mhUpdate(G.tLiks, F.vals, nInd, nLoci, ploidy);
-      }
-
-    } else if(ran == 2){
-
-      if(openmp){
-        F.mhUpdateParallel(G.tLiks, P.vals, nInd, nLoci, ploidy);
-      } else {
-        F.mhUpdate(G.tLiks, P.vals, nInd, nLoci, ploidy);
-      }
-
+      P.mhUpdateParallel();
+    } else if(ran == 2) {
+      T.mhUpdateParallel();
+    } else if(ran ==3) {
+      A.mhUpdateParallel();
     } else {
-      std::cout << "Invalid integer in Diseq model M-H algorithm...\n";
+      std::cout << "Invalid random integer during M-H algorithm for alloSNP model...\n";
       exit(1);
     }
 
-    if(m % thin == 0 && m > burn){
+  } else {
 
-      P.writeFrequency(m);
-      F.writePhi(m);
+    ran = r->sampleInteger(1,3);
 
-      if(quiet != 1){
-        P.printMeanAcceptRatio();
-        F.printMeanAcceptRatio();
-      }
-
+    if(ran == 1){
+      P.mhUpdate();
+    } else if(ran == 2) {
+      T.mhUpdate();
+    } else if(ran ==3) {
+      A.mhUpdate();
+    } else {
+      std::cout << "Invalid random integer during M-H algorithm for alloSNP model...\n";
+      exit(1);
     }
+
   }
 
 }

@@ -131,6 +131,7 @@ class MbRandom {
              inline double   binomPdf(int size, int x, double prob);
              inline double   lnBinomPdf(int size, int x, double prob);
              inline double   lnBetaBinomPdf(int size, int x, double a, double b);
+                    double   lnTwoCatPoissBinomPdf(int size1, int size2, int x, double prob1, double prob2);
 
 
     private:

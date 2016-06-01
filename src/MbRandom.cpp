@@ -1578,3 +1578,43 @@ int MbRandom::sampleInteger(int min, int max){
     int sampled = min + (int)rnd;
     return sampled;
 }
+
+/*
+
+lnTwoCatPoissBinomPdf
+Returns the log probability of observing x successes as the sum
+of two binomial experiments with different probabilities of successes
+and different numbers of trials. Considers all combinations of successes
+to get x. Special case of the Poisson Binomial distribution.
+
+size1 must be less than size2
+
+*/
+
+double MbRandom::lnTwoCatPoissBinomPdf(int size1, int size2, int x, double prob1, double prob2){
+
+  double res = 0.0;
+
+  if(x <= size1){
+
+    for(int j = 0; j <= x; j++){
+      res += lnBinomPdf(size1, j, prob1) + lnBinomPdf(size2, x - j, prob2);
+    }
+
+  } else if(x > size1 && x <= size2){
+
+    for(int j = 0; j <= size1; j++){
+      res += lnBinomPdf(size1, j, prob1) + lnBinomPdf(size2, x - j, prob2);
+    }
+
+  } else {
+
+    for(int j = x - size2; j <= size1; j++){
+      res += lnBinomPdf(size1, j, prob1) + lnBinomPdf(size2, x - j, prob2);
+    }
+
+  }
+
+  return res;
+
+}

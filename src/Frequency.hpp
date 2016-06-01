@@ -67,4 +67,33 @@ namespace Diseq {
 
 }
 
+namespace AlloSNP {
+
+  class Frequency {
+    Frequency(const int &loci, std::vector<double> &theta, double anc);
+    ~Frequency(){};
+
+    void getLogLiks(std::vector<double> &gLiks, std::vector<double> &theta, double anc, int ind, int loci, int ploidy1, int ploidy2);
+    std::vector<double> calcLogLikVec(std::vector<double> &gLiks, std::vector<double> &theta, double anc, int ind, int loci, int ploidy1, int ploidy2);
+    double calcLogLik(std::vector<double> &gLiks, std::vector<double> &theta, double anc, int ind, int loc, int ploidy1, int ploidy2, double f1, double f2);
+    void mhUpdate(std::vector<double> &gLiks, std::vector<double> &theta, double anc, int ind, int loci, int ploidy1, int ploidy2);
+    void mhUpdateParallel(std::vector<double> &gLiks, std::vector<double> &theta, double anc, int ind, int loci, int ploidy1, int ploidy2);
+    void writeFrequency(const int &iter);
+    void printMeanAcceptRatio();
+    void setTune(const double &newTune){ tune = newTune; }
+
+
+    std::vector<double> vals1, vals2;
+
+  private:
+    double tune, aa, bb;
+    int nRow, size;
+    std::vector<int> nAccepted1, nProposals1, nAccepted2, nProposals2;
+    std::string outFile1, outFile2;
+    std::vector<double> currLogLiks, acceptRatio;
+
+  };
+
+}
+
 #endif

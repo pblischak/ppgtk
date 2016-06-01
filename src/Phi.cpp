@@ -34,7 +34,7 @@ Diseq::Phi::Phi(int &loci){
   nAccepted.resize(loci, 0);
   nProposals.resize(loci, 0);
   acceptRatio.resize(loci, 0.0);
-  double ran;
+  double ran = 0.0;
   aa = 2, bb = 0.1;
 
   for(int l = 0; l < loci; l++){

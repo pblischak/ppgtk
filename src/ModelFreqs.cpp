@@ -26,17 +26,17 @@ ModelFreqs::ModelFreqs(std::string cFile, bool q, bool p){
   try{
     po::options_description desc("Allowed options");
     desc.add_options()
-    ("num_ind", po::value<int>(&nInd)->required(), "REQUIRED: the number of individuals.")
-    ("num_loci", po::value<int>(&nLoci)->required(), "REQUIRED: the number of loci.")
-    ("ploidy", po::value<int>(&ploidy)->required(), "REQUIRED: the ploidy level of the individuals.")
-    ("mcmc_gen", po::value<int>(&mcmc_gen)->required(), "Number of MCMC generations.")
-    ("thin", po::value<int>(&thin)->required(), "How often to thin/sample the chain.")
-    ("burn", po::value<int>(&burn)->required(), "The number of burn-in generations before samples are saved.")
-    ("total_reads", po::value<std::string>(&totFile)->required(), "REQUIRED: file name with total read counts.")
-    ("reference_reads", po::value<std::string>(&refFile)->required(), "REQUIRED: file name with reference read counts.")
-    ("error_file", po::value<std::string>(&errFile)->required(), "REQUIRED: file name containing per locus read error rates.")
-    ("glikelihoods", po::value<std::string>(&glFile)->required(), "File name with genotype likelihoods.")
-    ("freq_tune", po::value<double>(&freq_tune)->required(), "Allele frequency tuning parameter for M-H algorithm.");
+    ("num_ind", po::value<int>(&nInd)->required(), "the number of individuals.")
+    ("num_loci", po::value<int>(&nLoci)->required(), "the number of loci.")
+    ("ploidy", po::value<int>(&ploidy)->required(), "the ploidy level of the individuals.")
+    ("mcmc_gen", po::value<int>(&mcmc_gen)->required(), "number of MCMC generations.")
+    ("thin", po::value<int>(&thin)->required(), "how often to thin/sample the chain.")
+    ("burn", po::value<int>(&burn)->required(), "the number of burn-in generations before samples are saved.")
+    ("total_reads", po::value<std::string>(&totFile)->required(), "file name with total read counts.")
+    ("reference_reads", po::value<std::string>(&refFile)->required(), "file name with reference read counts.")
+    ("error_file", po::value<std::string>(&errFile)->required(), "file name containing per locus read error rates.")
+    ("glikelihoods", po::value<std::string>(&glFile)->required(), "file name with genotype likelihoods.")
+    ("freq_tune", po::value<double>(&freq_tune)->required(), "allele frequency tuning parameter for M-H algorithm.");
 
     po::variables_map vm;
     try{
@@ -73,7 +73,7 @@ void ModelFreqs::run(){
     openmp=1;
   #endif
 
-  std::cout << openmp << "\n";
+  //std::cout << openmp << "\n";
 
   DataParser data;
   data.getReadData(totFile, refFile, errFile, nInd, nLoci);
