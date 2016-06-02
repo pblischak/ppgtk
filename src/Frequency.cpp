@@ -650,6 +650,65 @@ double AlloSNP::Frequency::calcLogLik(std::vector<double> &gLiks, std::vector<do
 
 void AlloSNP::Frequency::mhUpdate(std::vector<double> &gLiks, std::vector<double> &theta, double anc, int ind, int loci, int ploidy1, int ploidy2){
 
+  std::vector<double> indLikVec(ploidy+1, 0.0), newLogLiks(currLogLiks.size());
+  std::vector<double> newVals1(vals1.size(), -1), newVals2(vals2.size(),-1);
+  double lnMetropRatio, lnU, indLikSum;
+
+  for(int l = 0; l < loci; l++){
+
+    while(newVals1[l] < 0 || newVals1[l] > 1){
+      newVals1[l] = r->normalRv(vals1[l], tune);
+    }
+
+    while(newVals2[l] < 0 || newVals2[l] > 1){
+      newVals2[l] = r->normalRv(vals2[l], tune);
+    }
+
+  }
+
+  for(int l = 0; l < loci; l++){
+    for(int i = 0; i < ind; i++){
+      for(int a = 0; a <= ploidy; a++){
+
+        pos_lia = l*ind*(ploidy+1) + i*(ploidy+1) + a;
+
+        indLikVec[a] = exp(gLiks[pos_lia] + r->lnTwoCatPoissBinomPdf(ploidy1, ploidy2, a, newVals1[l], newVals2[l]));
+
+      }
+
+      indLikSum = std::accumulate(indLikVec.begin(), indLikVec.end(), 0.0);
+      newLogLiks[l] += log(indLikSum);
+
+    }
+
+    //newLogLiks[l] += r->lnBetaPdf(anc * theta[0], (1 - anc) * theta[0], vals1[l]) + r->lnBetaPdf(anc * theta[1], (1 - anc) * theta[1], vals2[l]);
+
+  }
+
+  for(int l = 0; l < loci; l++){
+
+    lnMetropRatio = (newLogLiks[l] + r->lnBetaPdf(anc * theta[0], (1 - anc) * theta[0], newVals1[l]) + r->lnBetaPdf(anc * theta[1], (1 - anc) * theta[1], newVals2[l]))
+                    - (currLogLiks[l] + r->lnBetaPdf(anc * theta[0], (1 - anc) * theta[0], vals1[l]) + r->lnBetaPdf(anc * theta[1], (1 - anc) * theta[1], vals2[l]));
+
+    lnU = log(r->uniformRv());
+
+    if(lnU < lnMetropRatio){
+      vals1[l] = newVals1[l];
+      vals2[l] = newVals2[l];
+      currLogLiks[l] = newLogLiks[l];
+      nAccepted1[l]++;
+      nAccepted2[l]++;
+      nProposals1[l]++;
+      nProposals2[l]++;
+      acceptRatio[l] = nAccepted1[l] / (double) nProposals1[l];
+    } else {
+      nProposals1[l]++;
+      nProposals2[l]++;
+      acceptRatio[l] = nAccepted1[l] / (double) nProposals1[l];
+    }
+
+  }
+
 }
 
 void AlloSNP::Frequency::mhUpdateParallel(std::vector<double> &gLiks, std::vector<double> &theta, double anc, int ind, int loci, int ploidy1, int ploidy2){

@@ -5,3 +5,5 @@
 *.txt
 .Rhistory
 old
+sim
+stats
