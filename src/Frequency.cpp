@@ -650,6 +650,7 @@ double AlloSNP::Frequency::calcLogLik(std::vector<double> &gLiks, std::vector<do
 
 void AlloSNP::Frequency::mhUpdate(std::vector<double> &gLiks, std::vector<double> &theta, double anc, int ind, int loci, int ploidy1, int ploidy2){
 
+  int pos_lia, ploidy = ploidy1 + ploidy2;
   std::vector<double> indLikVec(ploidy+1, 0.0), newLogLiks(currLogLiks.size());
   std::vector<double> newVals1(vals1.size(), -1), newVals2(vals2.size(),-1);
   double lnMetropRatio, lnU, indLikSum;
