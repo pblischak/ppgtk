@@ -25,7 +25,7 @@ ul {
 
 </style>
 
-### the polyploid pop-gen toolkit
+### **the polyploid pop-gen toolkit**
 
 <div class="space"></div>
 
@@ -33,7 +33,7 @@ ul {
 
 <div class="space"></div>
 
-[[View on GitHub](https://github.com/pblischak/ppgtk) :: [Download latest release](https://github.com/pblischak/ppgtk/releases) :: [Get Docker image](https://hub.docker.com/r/pblischak/ppgtk/)]
+[**[View on GitHub](https://github.com/pblischak/ppgtk) :: [Download latest release](https://github.com/pblischak/ppgtk/releases) :: [Get Docker image](https://hub.docker.com/r/pblischak/ppgtk/)**]
 
 <div class="space"></div>
 
