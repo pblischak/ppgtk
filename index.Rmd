@@ -1,0 +1,59 @@
+---
+title: '**PPGtk**'
+output:
+  html_document:
+    highlight: pygments
+    theme: lumen
+#    toc: yes
+#    toc_depth: 2
+#    toc_float:
+#      collapsed: no
+---
+
+<style>
+.space {
+  margin-bottom: 2em;
+}
+
+p {
+  font-size: 125%
+}
+
+ul {
+  font-size: 125%
+}
+
+</style>
+
+### the polyploid pop-gen toolkit
+
+<div class="space"></div>
+
+----
+
+<div class="space"></div>
+
+[[View on GitHub](https://github.com/pblischak/ppgtk) :: [Download latest release](https://github.com/pblischak/ppgtk/releases) :: [Get Docker image](https://hub.docker.com/r/pblischak/ppgtk/)]
+
+<div class="space"></div>
+
+<div class="space"></div>
+
+<p style="font-size:200%; color:blue">Site under construction...</p>
+
+<div class="space"></div>
+
+**PPGtk is a suite of tools for the analysis of population genomic data collected for polyploid species.**
+
+You can use the links above to view the source code, download the latest stable release, or obtain the software image for use with [Docker](https://docs.docker.com/).
+
+<div class="space"></div>
+
+### **Documentation**
+
+ - [Installation](http://pblischak.github.io/ppgtk/installation.html): instructions for installing PPGtk from source, or for using the Docker image.
+ - [Getting started](http://pblischak.github.io/ppgtk/getting-started.html): a quick guide to running an analysis with PPGtk.
+ - [Manual](http://pblischak.github.io/ppgtk/ppgtk-manual.html): detailed documentation on the different options and methods implemented in PPGtk.
+ - [Report a bug](https://github.com/pblischak/ppgtk/issues): if you find a bug in the code, please feel free to contact me (blischak.4@osu.edu) or file an issue on GitHub.
+ - [Google Users Group](http://pblischak.github.io/ppgtk): **TO DO**.
+

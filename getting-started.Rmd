@@ -1,0 +1,47 @@
+---
+title: "**Getting started**"
+output:
+  html_document:
+    highlight: pygments
+    theme: lumen
+    toc: yes
+    toc_depth: 2
+    toc_float:
+      collapsed: yes
+---
+
+<style>
+
+.space {
+  margin-bottom: 2em;
+}
+
+.bigger-font {
+  font-size: 125%;
+}
+
+</style>
+
+----
+
+<p style="font-size:200%; color:blue">Site under construction...</p>
+
+<div class="space"></div>
+
+# **Compiling from source**
+
+## Boost C++ libraries
+
+## OpenMP
+
+# **Docker image**
+
+## Getting Docker
+
+## Getting the PPGtk image
+
+# **Running an analysis**
+
+```bash
+ppgtk -m freqs -c config.txt -q
+```
