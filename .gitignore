@@ -2,3 +2,8 @@
 *~
 .*~
 .Rhistory
+bin
+src
+doc
+config-files
+example
