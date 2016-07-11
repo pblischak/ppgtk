@@ -119,11 +119,31 @@ We introduce another parameter, $\phi$, that is related to the inbreeding coeffi
 F = \frac{1}{1 + \phi}
 \end{equation}
 
+\subsection{Derivative of the log beta-binomial function}
+
+The beta function is defined as: $\mathcal{B}(\alpha,\beta) = \int_0^1 t^{(\alpha-1)}(1-t)^{(\beta-1)}\text{d}t$.
+
+
+
+\begin{equation}
+\alpha(p) = p\phi, \text{  and  } \beta(p) = (1-p)\phi\,.
+\end{equation}
+
+\begin{equation}
+\frac{\partial}{\partial p} \alpha(p) = \phi\,, \text{  and  } \frac{\partial}{\partial p} \beta(p)  = -\phi\,.
+\end{equation}
+
+\begin{equation}
+\frac{\partial}{\partial p} \mathcal{B}(\alpha(p), \beta(p)) = \int_0^1 \frac{\partial}{\partial p} \left\{t^{(\alpha(p)-1)}(1-t)^{(\beta(p)-1)}\right\} \text{d}t
+\end{equation}
+
 \subsection{The likelihood}
 
 \begin{equation}
 \mathcal{L}_i(p,\phi) = P(r_i|p,\phi) = \sum_{a=0}^{m_i} P(r_i|a)P(a|p,\phi)
 \end{equation}
+
+
 
 where $P(r_i|a)$ is the genotype likelihood for genotype $a = 0,\dots,m_i$ (e.g., calculated using GATK), and 
 
