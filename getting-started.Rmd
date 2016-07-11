@@ -16,8 +16,23 @@ output:
   margin-bottom: 2em;
 }
 
-.bigger-font {
+h1 {
+  padding-bottom: 0.5em;
+}
+
+h2 {
+  padding-bottom: 0.5em;
+}
+
+p {
   font-size: 125%;
+}
+
+.footer {
+  position: fixed;
+  background: white;
+  bottom: 0;
+  right: 0;
 }
 
 </style>
@@ -30,7 +45,11 @@ output:
 
 # **Compiling from source**
 
+Text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text.
+
 ## Boost C++ libraries
+
+Text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text.
 
 ## OpenMP
 
@@ -45,3 +64,9 @@ output:
 ```bash
 ppgtk -m freqs -c config.txt -q
 ```
+
+<div class="footer">
+
+[[Home](http://pblischak.github.io/ppgtk)]
+
+</div>

@@ -16,8 +16,15 @@ output:
   margin-bottom: 2em;
 }
 
-.bigger-font {
+p {
   font-size: 125%;
+}
+
+.footer {
+  position: fixed;
+  background: white;
+  bottom: 0;
+  right: 0;
 }
 
 </style>
@@ -27,3 +34,9 @@ output:
 <p style="font-size:200%; color:blue">Site under construction...</p>
 
 <div class="space"></div>
+
+<div class="footer">
+
+[[Home](http://pblischak.github.io/ppgtk)]
+
+</div>
