@@ -16,6 +16,14 @@ output:
   margin-bottom: 2em;
 }
 
+h1 {
+  padding-bottom: 0.5em;
+}
+
+h2 {
+  padding-bottom: 0.5em;
+}
+
 p {
   font-size: 125%;
 }
@@ -38,6 +46,48 @@ div.footer p {
 <p style="font-size:200%; color:blue">Site under construction...</p>
 
 <div class="space"></div>
+
+
+PPGtk is written in C++ and needs to be compiled into in executable for you to be able to run it. If you are not familiar with the process of compiling programs from source, the section on [using PPGtk with Docker](http://pblischak.github.io/ppgtk/installation.html#with_docker) should get you up and running without the need for you to compile any code. The only mandatory requirements for PPGtk are a C++ compiler and the [Boost](http://www.boost.org/) libraries. We have written sections of the code to take advantage of multithreading using [OpenMP](http://openmp.org/wp/) as well, but this is not a requirement to get the software to run.
+
+In our experience, a good place to start is to figure out what compiler you have and to see if it is OpenMP compliant. This simply means that it can compile code that has OpenMP multithreading commands. A good example of a commonly used, OpenMP compliant C++ compiler is **GNU g++**. Apple/Mac computers do not use GNU compilers, and the compilers that they do have are not OpenMP compliant. GNU compilers for Macs can be obtained, however, using Homebrew (Googling "GNU compilers for Mac" gives a slew of Stack Overflow discussions as well). Regardless of whether or not you use OpenMP, it is important that you use the same compiler for both Boost and PPGtk.
+
+**Note**: the Docker image for PPGtk allows multithreading without the need for you to worry about compilers. 
+
+<div class="space"></div>
+
+# Compiling from source
+
+
+
+## Getting Boost
+
+Boost is a set of C++ libraries 
+
+```bash
+cd boost_1_60_0
+./bootstrap.sh --prefix=/usr/local --with-libraries=program_options
+sudo ./b2 install
+```
+
+## OpenMP
+
+
+
+## Obtaining PPGtk
+
+Stable releases of PPGtk can be downloaded from GitHub via the [Releases](https://github.com/pblischak/ppgtk/releases) page.
+
+```bash
+cd ppgtk-v0.1.0/src
+make && sudo make install
+```
+
+<div class="space"></div>
+
+# With Docker
+
+
 
 <div class="footer">
 

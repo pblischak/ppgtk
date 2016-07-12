@@ -47,18 +47,6 @@ div.footer p {
 
 <div class="space"></div>
 
-# **Compiling from source**
-
-## Boost C++ libraries
-
-## OpenMP
-
-# **Docker image**
-
-## Getting Docker
-
-## Getting the PPGtk image
-
 # **Running an analysis**
 
 ```bash
