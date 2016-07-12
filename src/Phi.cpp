@@ -52,6 +52,11 @@ void Diseq::Phi::getLogLiks(std::vector<double> &gLiks, std::vector<double> &fre
 
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
+
+      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+        continue;
+      }
+
       for(int a = 0; a <= ploidy; a++){
 
         pos_lia = l*ind*(ploidy+1) + i*(ploidy+1) + a;
@@ -76,6 +81,11 @@ std::vector<double> Diseq::Phi::calcLogLikVec(std::vector<double> &gLiks, std::v
 
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
+
+      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+        continue;
+      }
+
       for(int a = 0; a <= ploidy; a++){
 
         pos_lia = l*ind*(ploidy+1) + i*(ploidy+1) + a;
@@ -101,6 +111,11 @@ double Diseq::Phi::calcLogLik(std::vector<double> &gLiks, std::vector<double> &f
   std::vector<double> indLikVec(ploidy+1, 0.0);
 
   for(int i = 0; i < ind; i++){
+
+    if(gLiks[loc*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+      continue;
+    }
+
     for(int a = 0; a <= ploidy; a++){
 
       pos_lia = loc*ind*(ploidy+1) + i*(ploidy+1) + a;
@@ -138,6 +153,11 @@ void Diseq::Phi::mhUpdate(std::vector<double> &gLiks, std::vector<double> &freqs
 
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
+
+      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+        continue;
+      }
+
       for(int a = 0; a <= ploidy; a++){
 
         indLikVec[a] = exp(gLiks[l*ind*(ploidy+1) + i*(ploidy+1) + a] + r->lnBetaBinomPdf(ploidy, a, freqs[l]*newVals[l], (1-freqs[l])*newVals[l]));
@@ -248,25 +268,5 @@ void Diseq::Phi::printMeanAcceptRatio(){
   //meanAcceptRatio /= (double) acceptRatio.size();
 
   std::cout  << "\n";
-
-}
-
-/***************************************************************
-
-  Defining Phi member functions in the BetaMix namespace.
-
-****************************************************************/
-
-BetaMix::Phi::Phi(const int &loci){
-
-}
-
-/***************************************************************
-
-  Defining Phi member functions in the PopAdmix namespace.
-
-****************************************************************/
-
-PopAdmix::Phi::Phi(const int &loci){
 
 }

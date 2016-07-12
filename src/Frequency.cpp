@@ -52,6 +52,11 @@ void Freqs::Frequency::getLogLiks(std::vector<double> &gLiks, int ind, int loci,
 
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
+
+      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+        continue;
+      }
+
       for(int a = 0; a <= ploidy; a++){
 
         indLikVec[a] = exp(gLiks[l*ind*(ploidy+1) + i*(ploidy+1) + a] + r->lnBinomPdf(ploidy, a, vals[l]));
@@ -73,6 +78,11 @@ std::vector<double> Freqs::Frequency::calcLogLik(std::vector<double> &gLiks, std
 
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
+
+      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+        continue;
+      }
+
       for(int a = 0; a <= ploidy; a++){
 
         /*tmpVal1 = log(gLiks[l*ind*ploidy + i*ploidy + a]);
@@ -151,6 +161,11 @@ double Freqs::Frequency::calcLogLik(std::vector<double> &gLiks, int ind, int loc
   std::vector<double> indLikVec(ploidy+1, 0.0);
 
   for(int i = 0; i < ind; i++){
+
+    if(gLiks[loc*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+      continue;
+    }
+
     for(int a = 0; a <= ploidy; a++){
 
       pos_lia = loc*ind*(ploidy+1) + i*(ploidy+1) + a;
@@ -187,6 +202,11 @@ void Freqs::Frequency::mhUpdate(std::vector<double> &gLiks, int ind, int loci, i
 
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
+
+      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+        continue;
+      }
+
       for(int a = 0; a <= ploidy; a++){
 
         indLikVec[a] = exp(gLiks[l*ind*(ploidy+1) + i*(ploidy+1) + a] + r->lnBinomPdf(ploidy, a, newVals[l]));
@@ -340,6 +360,11 @@ void Diseq::Frequency::getLogLiks(std::vector<double> &gLiks, std::vector<double
 
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
+
+      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+        continue;
+      }
+
       for(int a = 0; a <= ploidy; a++){
 
         pos_lia = l*ind*(ploidy+1) + i*(ploidy+1) + a;
@@ -364,6 +389,11 @@ std::vector<double> Diseq::Frequency::calcLogLikVec(std::vector<double> &gLiks, 
 
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
+
+      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+        continue;
+      }
+
       for(int a = 0; a <= ploidy; a++){
 
         pos_lia = l*ind*(ploidy+1) + i*(ploidy+1) + a;
@@ -389,6 +419,11 @@ double Diseq::Frequency::calcLogLik(std::vector<double> &gLiks, std::vector<doub
   std::vector<double> indLikVec(ploidy+1, 0.0);
 
   for(int i = 0; i < ind; i++){
+
+    if(gLiks[loc*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+      continue;
+    }
+
     for(int a = 0; a <= ploidy; a++){
 
       pos_lia = loc*ind*(ploidy+1) + i*(ploidy+1) + a;
@@ -422,6 +457,11 @@ void Diseq::Frequency::mhUpdate(std::vector<double> &gLiks, std::vector<double> 
 
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
+
+      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+        continue;
+      }
+
       for(int a = 0; a <= ploidy; a++){
 
         indLikVec[a] = exp(gLiks[l*ind*(ploidy+1) + i*(ploidy+1) + a] + r->lnBetaBinomPdf(ploidy, a, newVals[l]*phi[l], (1-newVals[l])*phi[l]));
@@ -575,6 +615,11 @@ void AlloSNP::Frequency::getLogLiks(std::vector<double> &gLiks, std::vector<doub
 
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
+
+      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+        continue;
+      }
+
       for(int a = 0; a <= ploidy; a++){
 
         pos_lia = l*ind*(ploidy+1) + i*(ploidy+1) + a;
@@ -602,6 +647,11 @@ std::vector<double> AlloSNP::Frequency::calcLogLikVec(std::vector<double> &gLiks
 
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
+
+      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+        continue;
+      }
+
       for(int a = 0; a <= ploidy; a++){
 
         pos_lia = l*ind*(ploidy+1) + i*(ploidy+1) + a;
@@ -629,6 +679,11 @@ double AlloSNP::Frequency::calcLogLik(std::vector<double> &gLiks, std::vector<do
   std::vector<double> indLikVec(ploidy+1, 0.0);
 
   for(int i = 0; i < ind; i++){
+
+    if(gLiks[loc*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+      continue;
+    }
+
     for(int a = 0; a <= ploidy; a++){
 
       pos_lia = loc*ind*(ploidy+1) + i*(ploidy+1) + a;
@@ -669,6 +724,11 @@ void AlloSNP::Frequency::mhUpdate(std::vector<double> &gLiks, std::vector<double
 
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
+
+      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+        continue;
+      }
+
       for(int a = 0; a <= ploidy; a++){
 
         pos_lia = l*ind*(ploidy+1) + i*(ploidy+1) + a;
@@ -745,9 +805,3 @@ void AlloSNP::Frequency::writeFrequency(const int &iter){
 void AlloSNP::Frequency::printMeanAcceptRatio(){
 
 }
-
-/****************************************************************
-
-  Frequency class in the PopAdmix namespace.
-
-****************************************************************/

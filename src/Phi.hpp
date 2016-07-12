@@ -41,42 +41,4 @@ namespace Diseq {
 
 }
 
-/***************************************************************
-
-  Declare Phi class and member variables/functions within the
-  BetaMix namespace for the allopolyploid beta-mixture model.
-
-****************************************************************/
-
-namespace BetaMix{
-
-  class Phi {
-
-  public:
-    Phi(const int &loci);
-    ~Phi(){};
-
-  };
-
-}
-
-/***************************************************************
-
-  Declare Phi class and member variables/functions within the
-  PopAdmix namespace for the population-level admixture model.
-
-****************************************************************/
-
-namespace PopAdmix{
-
-  class Phi {
-
-  public:
-    Phi(const int &loci);
-    ~Phi(){};
-
-  };
-
-}
-
 #endif

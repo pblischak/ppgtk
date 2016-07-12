@@ -33,7 +33,7 @@ int main(int argc, char **argv){
     desc.add_options()
     ("help,h", "Prints help message.")
     ("version,v","Print software version information.")
-    ("model,m", po::value<std::string>(&model)->required(), "the model to be run:\n -> freqs\n -> diseq\n -> alloSNP")
+    ("model,m", po::value<std::string>(&model)->required(), "the model to be run:\n -> freqs\n -> diseq\n -> alloSNP (not yet available)")
     ("config,c", po::value<std::string>(&configFile)->required(), "configuration file with model options.")
     ("seed,s", po::value<long int>(&seed), "random number seed.")
     ("quiet,q", "Turn off printing run information to stdout.");
