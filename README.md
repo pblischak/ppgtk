@@ -1,28 +1,20 @@
 # PPGtk: the polyploid pop-gen toolkit
 
-PPGtk is a C++ program for the analysis of population genomic data collected in polyploids (or mixtures of ploidies). It uses genotype likelihoods to integrate over genotype uncertainty. It relies on the Boost C++ libraries.
+PPGtk is a program for the analysis of population genomic data collected in polyploids.
 
-[Boost](http://www.boost.org/) and [OpenMP](http://openmp.org/wp/).
+Information for installing and running PPGtk can be found [here](http://pblischak.github.io/ppgtk).
 
-## Installing Boost
+### Current features:
+ - Estimate per-site allele frequency under Hardy-Weinberg equilibrium [`freqs` model].
+ - Estimate per-site inbreeding/diseqiulibrium coefficient and allele frequency [`diseq` model].
 
-The only Boost library that the PPGtk uses is the Program Options library for command line parsing. Boost is a very large set of libraries for C++ programming and can take a long time to install everything. Since we only need Program Options, use the following commands to build the libraries.
 
-```
-cd boost_1_60/
-./bootstrap.sh --prefix=/usr/local --with-libraries=program_options
-sudo ./b2 install
-```
+### To do:
 
-If you want to build all of them, just remove the `--with-libraries=program_options` flag.
+In the near future, I hope to add these models to the software:
 
-## Setting the number of threads
+ - [ ] Estimate subgenome allele frequencies for allopolyploids [`alloSNP` model]. See my Evolution 2016 slides for a description of the model: [link](https://dx.doi.org/10.6084/m9.figshare.3436619.v1).
 
-You can set the number of threads that you want to use with the `OMP_NUM_THREADS` environmental variable in your Bash shell.
+ - [ ] Genotype estimation.
 
-```
-export OMP_NUM_THREADS=4
-
-# now running with 4 threads
-ppgtk --model freqs --config freqs.txt
-```
+ - [ ] Use genotype likelihoods instead of read counts.
