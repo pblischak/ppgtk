@@ -47,6 +47,8 @@ ul {
 
 You can use the links above to view the source code, download the latest stable release, or obtain the software image for use with [Docker](https://docs.docker.com/).
 
+Please note that PPGtk is currently in alpha-testing mode and is likeliy to change quite a bit while we continue with development. Because of this, we advise using the releases that we provide rather than the "master" GitHub branch.
+
 <div class="space"></div>
 
 ### **Documentation**

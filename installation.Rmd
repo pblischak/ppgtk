@@ -24,6 +24,10 @@ h2 {
   padding-bottom: 0.5em;
 }
 
+h4 {
+  padding-top: 0.5em;
+}
+
 p {
   font-size: 125%;
 }
@@ -47,47 +51,69 @@ div.footer p {
 
 <div class="space"></div>
 
+PPGtk is written in C++ and needs to be compiled into in executable for you to be able to run it. If you are not familiar with the process of compiling programs from source, the section on **using PPGtk with Docker** should get you up and running without the need for you to compile any code. The only mandatory requirements for PPGtk are a C++ compiler and the [Boost](http://www.boost.org/) libraries. We have written sections of the code to take advantage of multithreading using [OpenMP](http://openmp.org/wp/) as well, but this is not a requirement to get the software to run.
 
-PPGtk is written in C++ and needs to be compiled into in executable for you to be able to run it. If you are not familiar with the process of compiling programs from source, the section on [using PPGtk with Docker](http://pblischak.github.io/ppgtk/installation.html#with_docker) should get you up and running without the need for you to compile any code. The only mandatory requirements for PPGtk are a C++ compiler and the [Boost](http://www.boost.org/) libraries. We have written sections of the code to take advantage of multithreading using [OpenMP](http://openmp.org/wp/) as well, but this is not a requirement to get the software to run.
+#### **A quick aside on OpenMP**
 
-In our experience, a good place to start is to figure out what compiler you have and to see if it is OpenMP compliant. This simply means that it can compile code that has OpenMP multithreading commands. A good example of a commonly used, OpenMP compliant C++ compiler is **GNU g++**. Apple/Mac computers do not use GNU compilers, and the compilers that they do have are not OpenMP compliant. GNU compilers for Macs can be obtained, however, using Homebrew (Googling "GNU compilers for Mac" gives a slew of Stack Overflow discussions as well). Regardless of whether or not you use OpenMP, it is important that you use the same compiler for both Boost and PPGtk.
+In our experience, a good place to start when compiling PPGtk is to figure out what compiler you have and to see if it is OpenMP compliant. This simply means that it can compile code that has OpenMP multithreading commands. A good example of a commonly used, OpenMP compliant C++ compiler is **GNU g++**. Apple/Mac computers do not use GNU compilers, and the compilers that they do have are not OpenMP compliant. GNU compilers for Macs can be obtained, however, using Homebrew (Googling "GNU compilers for Mac" gives a slew of Stack Overflow discussions as well). Regardless of whether or not you use OpenMP, it is important that you use the same compiler for both Boost and PPGtk.
 
-**Note**: the Docker image for PPGtk allows multithreading without the need for you to worry about compilers. 
+**Note**: the Docker image for PPGtk allows multithreading without the need for you to worry about compilers.
+
+We have successfully compiled and run PPGtk with Boost and OpenMP on Mac OSX 10.9 and 10.10 (using GNU g++, not the Apple compilers), as well as Ubuntu 14.04 and 16.04 (comes with GNU g++). If you are working on a Windows computer, we suggest using the Docker image.
 
 <div class="space"></div>
 
-# Compiling from source
+# **Compiling from source**
 
-
+Below are basic instructions for each of the steps that are necessary for compiling PPGtk from source. The main issues that we had when working out how to get everything talking was linking errors (computer couldn't find the libraries the program needed to link to). The instructions below should hopefully help to prevent such headaches (but, as always, there is no guarantee).
 
 ## Getting Boost
 
-Boost is a set of C++ libraries 
+The Boost libraries can be downloaded from [http://www.boost.org/](http://www.boost.org/). They provide detailed instructions for building the libraries in the ["Getting Started"](http://www.boost.org/doc/libs/1_61_0/more/getting_started/index.html) section of their website. However, we do not use many of the tools provided by Boost, so a full install is not necessary. Once you have the libraries downloaded, navigate to the Boost folder in a terminal (`cd path/to/boost_1_60_0`) and run the two commands below:
 
 ```bash
-cd boost_1_60_0
 ./bootstrap.sh --prefix=/usr/local --with-libraries=program_options
 sudo ./b2 install
 ```
 
+We have used Boost v1.59.0 and v1.60.0 successfully. More recent versions may work as well but you will have to test them to make sure.
+
 ## OpenMP
 
+The OpenMP libraries are usually shipped with the compiler that you have so there are no additional files that you need to download. To compile PPGtk with OpenMP multithreading enabled, all you have to do is change a single line in the Makefile (in the `src/` directory). Change the `OPENMP` variable from `no` to `yes`, like so:
 
+```
+# set this to 'yes' is you want multithreading. 'no' otherwise.
+OPENMP=yes
+```
 
 ## Obtaining PPGtk
 
-Stable releases of PPGtk can be downloaded from GitHub via the [Releases](https://github.com/pblischak/ppgtk/releases) page.
+Stable releases of PPGtk can be downloaded from GitHub via the [Releases](https://github.com/pblischak/ppgtk/releases) page. Once you have the software, navigate to the `src/` folder in a terminal, make the necessary changes to the Makefile for using OpenMP (if you want to use it), and then compile the program using `make`.
 
 ```bash
+# Navigate to the 'src' folder
 cd ppgtk-v0.1.0/src
+
+# Make necessary changes to Makefile, then run next line
 make && sudo make install
 ```
 
+## Troubleshooting
+
+
+
 <div class="space"></div>
 
-# With Docker
+# **Docker image**
 
+## Downloading Docker
 
+## A multicore machine
+
+## The PPGtk image
+
+## Linking a local folder
 
 <div class="footer">
 

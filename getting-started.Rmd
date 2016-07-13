@@ -47,10 +47,17 @@ div.footer p {
 
 <div class="space"></div>
 
-# **Running an analysis**
+# **Running PPGtk**
+
+## Formatting data
+
+## Configuration files
+
+## Starting an analysis
 
 ```bash
-ppgtk -m freqs -c config.txt -q
+# A test analysis
+ppgtk -m freqs -c ../config-files/freqs.txt -q
 ```
 
 <div class="footer">
