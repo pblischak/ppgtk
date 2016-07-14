@@ -257,17 +257,16 @@ div.footer {
   background: white;
   bottom: 0;
   width: 100%;
+  border-top: 0.1em solid grey;
 }
 
 div.footer p {
-  font-weight: bold;
+  padding-left: 0.5em;
 }
 
 </style>
 <hr />
-<p style="font-size:200%; color:blue">
-Site under construction…
-</p>
+<!-- <p style="font-size:200%; color:blue">Site under construction...</p> -->
 <div class="space">
 
 </div>
@@ -293,21 +292,20 @@ Site under construction…
 </div>
 <div id="openmp" class="section level2">
 <h2>OpenMP</h2>
-<p>The OpenMP libraries are usually shipped with the compiler that you have so there are no additional files that you need to download. To compile PPGtk with OpenMP multithreading enabled, all you have to do is change a single line in the Makefile (in the <code>src/</code> directory). Change the <code>OPENMP</code> variable from <code>no</code> to <code>yes</code>, like so:</p>
+<p>The OpenMP libraries are usually shipped with the compiler that you have so there are no additional files that you need to download. To compile PPGtk with OpenMP multithreading enabled, all you have to do is change a single line in the PPGtk Makefile (in the <code>src/</code> directory). Change the <code>OPENMP</code> variable from <code>no</code> to <code>yes</code>, like so:</p>
 <pre><code># set this to 'yes' is you want multithreading. 'no' otherwise.
 OPENMP=yes</code></pre>
 </div>
 <div id="obtaining-ppgtk" class="section level2">
 <h2>Obtaining PPGtk</h2>
-<p>Stable releases of PPGtk can be downloaded from GitHub via the <a href="https://github.com/pblischak/ppgtk/releases">Releases</a> page. Once you have the software, navigate to the <code>src/</code> folder in a terminal, make the necessary changes to the Makefile for using OpenMP (if you want to use it), and then compile the program using <code>make</code>.</p>
+<p>Stable releases of PPGtk can be downloaded from GitHub via the <a href="https://github.com/pblischak/ppgtk/releases">Releases</a> page. Once you have the software, navigate to the <code>src/</code> folder in a terminal, make the necessary changes to the Makefile for using OpenMP (see above), and then compile the program using <code>make</code>.</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Navigate to the 'src' folder</span>
 <span class="kw">cd</span> ppgtk-v0.1.0/src
 
-<span class="co"># Make necessary changes to Makefile, then run next line</span>
-<span class="kw">make</span> <span class="kw">&amp;&amp;</span> <span class="kw">sudo</span> make install</code></pre></div>
-</div>
-<div id="troubleshooting" class="section level2">
-<h2>Troubleshooting</h2>
+<span class="co"># Make necessary changes to Makefile (set OPENMP=yes), then run next two line</span>
+<span class="kw">make</span>
+<span class="kw">sudo</span> make install</code></pre></div>
+<p>The <code>make</code> command will compile the PPGtk executable and the <code>make install</code> command will copy it to <code>/usr/local/bin</code> so that you can run it from anywhere on your computer. We add <code>sudo</code> to the <code>make install</code> command because adding things to <code>/usr/local/bin</code> usually requires special permission (you’ll be prompted to enter your password).</p>
 <div class="space">
 
 </div>
@@ -328,7 +326,7 @@ OPENMP=yes</code></pre>
 <h2>Linking a local folder</h2>
 <div class="footer">
 <p style="position:relative">
-[<a href="http://pblischak.github.io/ppgtk">Home</a> :: <a href="http://pblischak.github.io/ppgtk/installation.html">Installation</a> :: <a href="http://pblischak.github.io/ppgtk/getting-started.html">Getting started</a> :: <a href="http://pblischak.github.io/ppgtk/ppgtk-manual.html">Manual</a>]
+<a href="http://pblischak.github.io/ppgtk"><strong>Home</strong></a> :: <a href="http://pblischak.github.io/ppgtk/installation.html"><strong>Installation</strong></a> :: <a href="http://pblischak.github.io/ppgtk/getting-started.html"><strong>Getting started</strong></a> :: <a href="http://pblischak.github.io/ppgtk/ppgtk-manual.html"><strong>Manual</strong></a>
 </p>
 </div>
 </div>

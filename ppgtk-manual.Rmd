@@ -25,10 +25,11 @@ div.footer {
   background: white;
   bottom: 0;
   width: 100%;
+  border-top: 0.1em solid grey;
 }
 
 div.footer p {
-  font-weight: bold;
+  padding-left: 0.5em;
 }
 
 </style>
@@ -41,6 +42,6 @@ div.footer p {
 
 <div class="footer">
 
-<p style="position:relative">[[Home](http://pblischak.github.io/ppgtk) :: [Installation](http://pblischak.github.io/ppgtk/installation.html) :: [Getting started](http://pblischak.github.io/ppgtk/getting-started.html) ::  [Manual](http://pblischak.github.io/ppgtk/ppgtk-manual.html)]</p>
+<p style="position:relative"> [**Home**](http://pblischak.github.io/ppgtk) :: [**Installation**](http://pblischak.github.io/ppgtk/installation.html) :: [**Getting started**](http://pblischak.github.io/ppgtk/getting-started.html) ::  [**Manual**](http://pblischak.github.io/ppgtk/ppgtk-manual.html) </p>
 
 </div>

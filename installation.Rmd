@@ -37,17 +37,18 @@ div.footer {
   background: white;
   bottom: 0;
   width: 100%;
+  border-top: 0.1em solid grey;
 }
 
 div.footer p {
-  font-weight: bold;
+  padding-left: 0.5em;
 }
 
 </style>
 
 ----
 
-<p style="font-size:200%; color:blue">Site under construction...</p>
+<!-- <p style="font-size:200%; color:blue">Site under construction...</p> -->
 
 <div class="space"></div>
 
@@ -80,7 +81,7 @@ We have used Boost v1.59.0 and v1.60.0 successfully. More recent versions may wo
 
 ## OpenMP
 
-The OpenMP libraries are usually shipped with the compiler that you have so there are no additional files that you need to download. To compile PPGtk with OpenMP multithreading enabled, all you have to do is change a single line in the Makefile (in the `src/` directory). Change the `OPENMP` variable from `no` to `yes`, like so:
+The OpenMP libraries are usually shipped with the compiler that you have so there are no additional files that you need to download. To compile PPGtk with OpenMP multithreading enabled, all you have to do is change a single line in the PPGtk Makefile (in the `src/` directory). Change the `OPENMP` variable from `no` to `yes`, like so:
 
 ```
 # set this to 'yes' is you want multithreading. 'no' otherwise.
@@ -89,19 +90,18 @@ OPENMP=yes
 
 ## Obtaining PPGtk
 
-Stable releases of PPGtk can be downloaded from GitHub via the [Releases](https://github.com/pblischak/ppgtk/releases) page. Once you have the software, navigate to the `src/` folder in a terminal, make the necessary changes to the Makefile for using OpenMP (if you want to use it), and then compile the program using `make`.
+Stable releases of PPGtk can be downloaded from GitHub via the [Releases](https://github.com/pblischak/ppgtk/releases) page. Once you have the software, navigate to the `src/` folder in a terminal, make the necessary changes to the Makefile for using OpenMP (see above), and then compile the program using `make`.
 
 ```bash
 # Navigate to the 'src' folder
 cd ppgtk-v0.1.0/src
 
-# Make necessary changes to Makefile, then run next line
-make && sudo make install
+# Make necessary changes to Makefile (set OPENMP=yes), then run next two line
+make
+sudo make install
 ```
 
-## Troubleshooting
-
-
+The `make` command will compile the PPGtk executable and the `make install` command will copy it to `/usr/local/bin` so that you can run it from anywhere on your computer. We add `sudo` to the `make install` command because adding things to `/usr/local/bin` usually requires special permission (you'll be prompted to enter your password).
 
 <div class="space"></div>
 
@@ -117,6 +117,6 @@ make && sudo make install
 
 <div class="footer">
 
-<p style="position:relative">[[Home](http://pblischak.github.io/ppgtk) :: [Installation](http://pblischak.github.io/ppgtk/installation.html) :: [Getting started](http://pblischak.github.io/ppgtk/getting-started.html) ::  [Manual](http://pblischak.github.io/ppgtk/ppgtk-manual.html)]</p>
+<p style="position:relative"> [**Home**](http://pblischak.github.io/ppgtk) :: [**Installation**](http://pblischak.github.io/ppgtk/installation.html) :: [**Getting started**](http://pblischak.github.io/ppgtk/getting-started.html) ::  [**Manual**](http://pblischak.github.io/ppgtk/ppgtk-manual.html) </p>
 
 </div>
