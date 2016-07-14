@@ -44,6 +44,14 @@ void DataParser::getReadData(const std::string &totFilename, const std::string &
   }
 
   checkReadMats(ind, loci);
+
+  if(err.size() != loci){
+    std::cout << "\nERROR: The number of error values in " << errFilename << " is not equal to num_loci.\n\n";
+    std::cout << "    Number of entries in " << errFilename << ": " << err.size() << ".\n"
+              << "    Number of loci specified by num_loci: " << loci << ".\n\n";
+    exit(EXIT_FAILURE);
+  }
+
   t(ind, loci);
 
 }
@@ -78,7 +86,7 @@ void DataParser::t(const int a, const int b){
 void DataParser::checkReadMats(const int a, const int b){
  int prod = a * b;
   if(totMat.size() != prod || refMat.size() != prod){
-    std::cout << "\nThe size of the read matrices is not equal to nInd * nLoci.\n\n";
+    std::cout << "\nThe size of the read matrices is not equal to num_ind * num_loci.\n\n";
     exit(EXIT_FAILURE);
   }
 }
