@@ -53,7 +53,7 @@ void Freqs::Frequency::getLogLiks(std::vector<double> &gLiks, int ind, int loci,
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
 
-      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == BADLIK){
         continue;
       }
 
@@ -79,7 +79,7 @@ std::vector<double> Freqs::Frequency::calcLogLik(std::vector<double> &gLiks, std
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
 
-      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == BADLIK){
         continue;
       }
 
@@ -162,7 +162,7 @@ double Freqs::Frequency::calcLogLik(std::vector<double> &gLiks, int ind, int loc
 
   for(int i = 0; i < ind; i++){
 
-    if(gLiks[loc*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+    if(gLiks[loc*ind*(ploidy+1) + i*(ploidy+1)] == BADLIK){
       continue;
     }
 
@@ -203,7 +203,7 @@ void Freqs::Frequency::mhUpdate(std::vector<double> &gLiks, int ind, int loci, i
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
 
-      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == BADLIK){
         continue;
       }
 
@@ -361,7 +361,7 @@ void Diseq::Frequency::getLogLiks(std::vector<double> &gLiks, std::vector<double
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
 
-      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == BADLIK){
         continue;
       }
 
@@ -390,7 +390,7 @@ std::vector<double> Diseq::Frequency::calcLogLikVec(std::vector<double> &gLiks, 
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
 
-      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == BADLIK){
         continue;
       }
 
@@ -420,7 +420,7 @@ double Diseq::Frequency::calcLogLik(std::vector<double> &gLiks, std::vector<doub
 
   for(int i = 0; i < ind; i++){
 
-    if(gLiks[loc*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+    if(gLiks[loc*ind*(ploidy+1) + i*(ploidy+1)] == BADLIK){
       continue;
     }
 
@@ -458,7 +458,7 @@ void Diseq::Frequency::mhUpdate(std::vector<double> &gLiks, std::vector<double> 
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
 
-      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == BADLIK){
         continue;
       }
 
@@ -616,7 +616,7 @@ void AlloSNP::Frequency::getLogLiks(std::vector<double> &gLiks, std::vector<doub
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
 
-      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == BADLIK){
         continue;
       }
 
@@ -648,7 +648,7 @@ std::vector<double> AlloSNP::Frequency::calcLogLikVec(std::vector<double> &gLiks
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
 
-      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == BADLIK){
         continue;
       }
 
@@ -680,7 +680,7 @@ double AlloSNP::Frequency::calcLogLik(std::vector<double> &gLiks, std::vector<do
 
   for(int i = 0; i < ind; i++){
 
-    if(gLiks[loc*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+    if(gLiks[loc*ind*(ploidy+1) + i*(ploidy+1)] == BADLIK){
       continue;
     }
 
@@ -725,7 +725,7 @@ void AlloSNP::Frequency::mhUpdate(std::vector<double> &gLiks, std::vector<double
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
 
-      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == BADLIK){
         continue;
       }
 

@@ -53,7 +53,7 @@ void Diseq::Phi::getLogLiks(std::vector<double> &gLiks, std::vector<double> &fre
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
 
-      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == BADLIK){
         continue;
       }
 
@@ -82,7 +82,7 @@ std::vector<double> Diseq::Phi::calcLogLikVec(std::vector<double> &gLiks, std::v
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
 
-      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == BADLIK){
         continue;
       }
 
@@ -112,7 +112,7 @@ double Diseq::Phi::calcLogLik(std::vector<double> &gLiks, std::vector<double> &f
 
   for(int i = 0; i < ind; i++){
 
-    if(gLiks[loc*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+    if(gLiks[loc*ind*(ploidy+1) + i*(ploidy+1)] == BADLIK){
       continue;
     }
 
@@ -154,7 +154,7 @@ void Diseq::Phi::mhUpdate(std::vector<double> &gLiks, std::vector<double> &freqs
   for(int l = 0; l < loci; l++){
     for(int i = 0; i < ind; i++){
 
-      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == -9999.0){
+      if(gLiks[l*ind*(ploidy+1) + i*(ploidy+1)] == BADLIK){
         continue;
       }
 

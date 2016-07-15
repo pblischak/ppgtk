@@ -18,7 +18,15 @@ void DataParser::getReadData(const std::string &totFilename, const std::string &
 
   if(totStream.is_open()){
     while(totStream >> val){
-      totMat.push_back(val);
+
+      if(val == 0){
+        std::cout << "\n  Values of 0 in the total read matrix are not allowed.\n"
+                  << "  Missing data should be marked as -9.\n\n";
+        exit(1);
+      } else {
+        totMat.push_back(val);
+      }
+
     }
   } else {
     std::cout << "Could not open total reads file: " << totFilename << "...\n";
