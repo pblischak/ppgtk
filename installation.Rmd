@@ -10,8 +10,6 @@ output:
       collapsed: yes
 ---
 
-<link rel="icon" type="image/png" href="allopolyploid-chromosomes3.png" sizes="16x16" />
-
 <style>
 
 .space {
@@ -113,6 +111,61 @@ The `make` command will compile the PPGtk executable and the `make install` comm
 
 ## Downloading Docker
 
+Start by downloading the [Docker Toolbox](https://www.docker.com/products/docker-toolbox). Run the the installation program and choose the defaults when prompted. The only thing you might want to change is which programs are actually installed. You really don't need **Kitematic**, and it is also one of the bigger programs that comes with the toolbox.
+
+The main program that you will be using is the **Docker Quickstart Terminal**. Selecting this program will launch into a Unix-like terminal window, which is where you'll be executing all of the commands to obtain and run PPGtk.
+
+## The PPGtk image
+
+After launching the Docker Quickstart Terminal, getting the PPGtk image is straightforward. All you need to do is pull the image from Docker Hub using the following command:
+
+```bash
+docker pull pblischak/ppgtk
+```
+
+Now that you have the image, you can run it as a container (a particular instance of an image) and use PPGtk from within an Ubuntu-like environment.
+
+```bash
+docker run -it pblischak/ppgtk
+```
+
+To test that everything is working in the container that you just launched, run this command:
+
+```bash
+ppgtk -m freqs -c ../config-files/freqs.txt
+```
+
+You should get a bunch of output printed to the screen that is reporting acceptance rates for the MCMC analysis that just ran.
+
+## Linking a local folder
+
+one of the files from your own computer are available within the Docker container 
+
+```bash
+docker run -it -v $(pwd):home/analysis pblischak/ppgtk
+```
+
+<div class="space"></div>
+
+ > WARNING: do not link your entire `Home` folder or `root` directory because it will make the container huge.
+
+The PPGtk image starts you off in the `src/` directory of the PPGtk software folder, so you will first need to move to the dedicated analysis folder. The commands below will get you into the proper directory, let you check and see if your files are present, and then run and analysis on your data with PPGtk.
+
+```bash
+# Change to the analysis/ directory in the home folder
+cd home/analysis
+
+# Check that your files are there
+ls
+
+# Then run your analysis (substitute the values you want)
+ppgtk -m <model> -c <your-config-file>
+```
+
+You can suppress the printing of acceptance rates using the `-q` (quiet) flag.
+ 
+<div class="space"></div>
+
 ## A multicore machine
 
 ```bash
@@ -137,23 +190,7 @@ To switch Docker from the `default` machine, just run:
 ```bash
 eval $(docker-machine env multicore)
 ```
-
-## The PPGtk image
-
-```bash
-docker pull pblischak/ppgtk
-```
-
-```bash
-docker run -it pblischak/ppgtk
-```
-
-## Linking a local folder
-
-```bash
-docker run -it -v $(pwd):home/analysis pblischak/ppgtk
-```
-
+ 
 <div class="footer">
 
 <p style="position:relative"> [**Home**](http://pblischak.github.io/ppgtk) :: [**Installation**](http://pblischak.github.io/ppgtk/installation.html) :: [**Getting started**](http://pblischak.github.io/ppgtk/getting-started.html) ::  [**Manual**](http://pblischak.github.io/ppgtk/ppgtk-manual.html) </p>
