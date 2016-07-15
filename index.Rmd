@@ -10,6 +10,8 @@ output:
 #      collapsed: no
 ---
 
+<link rel="icon" type="image/png" href="allopolyploid-chromosomes3.png" sizes="16x16" />
+
 <style>
 .space {
   margin-bottom: 2em;
@@ -47,7 +49,7 @@ ul {
 
 You can use the links above to view the source code, download the latest stable release, or obtain the software image for use with [Docker](https://docs.docker.com/).
 
-Please note that PPGtk is currently in alpha-testing mode and is likeliy to change quite a bit while we continue with development. Because of this, we advise using the releases that we provide rather than the "master" GitHub branch.
+Please note that PPGtk is currently in alpha-testing mode and is likely to change quite a bit while we continue with development. Because of this, we advise using the releases that we provide rather than the "master" GitHub branch.
 
 <div class="space"></div>
 
@@ -58,4 +60,3 @@ Please note that PPGtk is currently in alpha-testing mode and is likeliy to chan
  - [Manual](http://pblischak.github.io/ppgtk/ppgtk-manual.html): detailed documentation on the different options and methods implemented in PPGtk.
  - [Report a bug](https://github.com/pblischak/ppgtk/issues): if you find a bug in the code, please feel free to contact me (blischak.4@osu.edu) or file an issue on GitHub.
  - [Google Users Group](http://pblischak.github.io/ppgtk): **TO DO**.
-

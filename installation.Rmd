@@ -10,6 +10,8 @@ output:
       collapsed: yes
 ---
 
+<link rel="icon" type="image/png" href="allopolyploid-chromosomes3.png" sizes="16x16" />
+
 <style>
 
 .space {
@@ -52,7 +54,7 @@ div.footer p {
 
 <div class="space"></div>
 
-PPGtk is written in C++ and needs to be compiled into in executable for you to be able to run it. If you are not familiar with the process of compiling programs from source, the section on **using PPGtk with Docker** should get you up and running without the need for you to compile any code. The only mandatory requirements for PPGtk are a C++ compiler and the [Boost](http://www.boost.org/) libraries. We have written sections of the code to take advantage of multithreading using [OpenMP](http://openmp.org/wp/) as well, but this is not a requirement to get the software to run.
+PPGtk is written in C++ and needs to be compiled into in executable for you to be able to run it. If you are not familiar with the process of compiling programs from source, the section on **the PPGtk Docker image** should get you up and running without the need for you to compile any code. The only mandatory requirements for PPGtk are a C++ compiler and the [Boost](http://www.boost.org/) libraries. We have written sections of the code to take advantage of multithreading using [OpenMP](http://openmp.org/wp/) as well, but this is not a requirement to get the software to run.
 
 #### **A quick aside on OpenMP**
 
@@ -107,13 +109,50 @@ The `make` command will compile the PPGtk executable and the `make install` comm
 
 # **Docker image**
 
+
+
 ## Downloading Docker
 
 ## A multicore machine
 
+```bash
+docker-machine create --driver virtualbox --virtualbox-cpu-count <#cpus> <new-machine-name>
+```
+
+So, for example, if you wanted to create a new machine called `multicore` with access to 4 CPUs you would run:
+
+```bash
+docker-machine create --driver virtualbox --virtualbox-cpu-count 4 multicore
+```
+
+After you run this, part of the output will tell you to run this command:
+
+```bash
+docker-machine env multicore
+```
+
+This tells you how to set the Docker Environment variables to use the `multicore` machine that you just made.
+To switch Docker from the `default` machine, just run:
+
+```bash
+eval $(docker-machine env multicore)
+```
+
 ## The PPGtk image
 
+```bash
+docker pull pblischak/ppgtk
+```
+
+```bash
+docker run -it pblischak/ppgtk
+```
+
 ## Linking a local folder
+
+```bash
+docker run -it -v $(pwd):home/analysis pblischak/ppgtk
+```
 
 <div class="footer">
 

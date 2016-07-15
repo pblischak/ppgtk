@@ -10,6 +10,8 @@ output:
       collapsed: yes
 ---
 
+<link rel="icon" type="image/png" href="allopolyploid-chromosomes3.png" sizes="16x16" />
+
 <style>
 
 .space {
