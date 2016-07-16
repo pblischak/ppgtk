@@ -103,7 +103,7 @@ $(document).ready(function ()  {
       ignoreSelector: "h1.title, .toc-ignore",
       scrollTo: 0
     };
-    options.showAndHide = true;
+    options.showAndHide = false;
     options.smoothScroll = true;
 
     // tocify
@@ -164,6 +164,13 @@ div.tocify {
   border-radius: 0px;
 }
 
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+  padding-left: 10px;
+}
 
 </style>
 
@@ -214,6 +221,26 @@ div.footer p {
 <p style="font-size:200%; color:blue">
 Site under construction…
 </p>
+<div id="the-models" class="section level1">
+<h1><strong>The models</strong></h1>
+<div id="freqs" class="section level2">
+<h2><code>freqs</code></h2>
+<p><span class="math display">\[
+\mathcal{L}(\mathbf{p}) = \prod_i \prod_\ell \left( \sum_{a=0}^{m_i}P(R_{i\ell}|G_{i\ell}=a)P(G_{i\ell}=a|p_\ell) \right).
+\]</span></p>
+</div>
+<div id="diseq" class="section level2">
+<h2><code>diseq</code></h2>
+<p><span class="math display">\[
+\mathcal{L}(\mathbf{p},\Phi) = \prod_i \prod_\ell \left( \sum_{a=0}^{m_i}P(R_{i\ell}|G_{i\ell}=a)P(G_{i\ell}=a|p_\ell,\phi_\ell) \right).
+\]</span></p>
+</div>
+<div id="allosnp" class="section level2">
+<h2><code>alloSNP</code></h2>
+</div>
+</div>
+<div id="mcmc-algorithm" class="section level1">
+<h1>MCMC algorithm</h1>
 <div class="space">
 
 </div>
@@ -221,6 +248,7 @@ Site under construction…
 <p style="position:relative">
 <a href="http://pblischak.github.io/ppgtk"><strong>Home</strong></a> :: <a href="http://pblischak.github.io/ppgtk/installation.html"><strong>Installation</strong></a> :: <a href="http://pblischak.github.io/ppgtk/getting-started.html"><strong>Getting started</strong></a> :: <a href="http://pblischak.github.io/ppgtk/ppgtk-manual.html"><strong>Manual</strong></a>
 </p>
+</div>
 </div>
 
 

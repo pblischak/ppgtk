@@ -7,7 +7,7 @@ output:
     toc: yes
     toc_depth: 2
     toc_float:
-      collapsed: yes
+      collapsed: no
 ---
 
 <style>

@@ -7,7 +7,7 @@ output:
     toc: yes
     toc_depth: 2
     toc_float:
-      collapsed: yes
+      collapsed: no
 ---
 
 <style>
@@ -37,6 +37,24 @@ div.footer p {
 ----
 
 <p style="font-size:200%; color:blue">Site under construction...</p>
+
+# **The models**
+
+## `freqs`
+
+$$
+\mathcal{L}(\mathbf{p}) = \prod_i \prod_\ell \left( \sum_{a=0}^{m_i}P(R_{i\ell}|G_{i\ell}=a)P(G_{i\ell}=a|p_\ell) \right).
+$$
+
+## `diseq`
+
+$$
+\mathcal{L}(\mathbf{p},\Phi) = \prod_i \prod_\ell \left( \sum_{a=0}^{m_i}P(R_{i\ell}|G_{i\ell}=a)P(G_{i\ell}=a|p_\ell,\phi_\ell) \right).
+$$
+
+## `alloSNP`
+
+# MCMC algorithm
 
 <div class="space"></div>
 
