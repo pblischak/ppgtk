@@ -320,16 +320,27 @@ OPENMP=yes</code></pre>
 </div>
 <div id="docker-image" class="section level1">
 <h1><strong>Docker image</strong></h1>
+<p>In an attempt to make PPGtk more accessible across operating systems, and to lessen the burden of installing dependencies (Boost and OpenMP), we have built an image of PPGtk using Docker, allowing users with the Docker software to more easily run our program.</p>
+<p>A full discussion of Docker is beyond the scope of this installation guide, but interested users can check out more details on the <a href="https://docs.docker.com/">Docker website</a>.</p>
+<div class="space">
+
+</div>
+<blockquote>
+<p><strong>Note</strong>: getting Docker and using it to run PPGtk is done almost exclusively with commands issued in a terminal window. If you are unfamiliar/uncomfortable with using the command line, we suggest trying the following tutorials at <a href="http://swcarpentry.github.io/shell-novice/" target="_blank">Software Carpentry</a> and/or <a href="https://www.codecademy.com/learn/learn-the-command-line" target="_blank">Codecademy</a>.</p>
+</blockquote>
+<div class="space">
+
+</div>
 <div id="downloading-docker" class="section level2">
 <h2>Downloading Docker</h2>
-<p>Start by downloading the <a href="https://www.docker.com/products/docker-toolbox">Docker Toolbox</a>. Run the the installation program and choose the defaults when prompted. The only thing you might want to change is which programs are actually installed. You really don’t need <strong>Kitematic</strong>, and it is also one of the bigger programs that comes with the toolbox.</p>
+<p>Start by downloading the <a href="https://www.docker.com/products/docker-toolbox">Docker Toolbox</a>. Run the the installation program and choose the defaults when prompted. The only thing you might want to change is which programs are actually installed. You really don’t need <strong>Kitematic</strong>.</p>
 <p>The main program that you will be using is the <strong>Docker Quickstart Terminal</strong>. Selecting this program will launch into a Unix-like terminal window, which is where you’ll be executing all of the commands to obtain and run PPGtk.</p>
 </div>
 <div id="the-ppgtk-image" class="section level2">
 <h2>The PPGtk image</h2>
 <p>After launching the Docker Quickstart Terminal, getting the PPGtk image is straightforward. All you need to do is pull the image from Docker Hub using the following command:</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">docker</span> pull pblischak/ppgtk</code></pre></div>
-<p>Now that you have the image, you can run it as a container (a particular instance of an image) and use PPGtk from within an Ubuntu-like environment.</p>
+<p>Now that you have the image, you can run it in a <strong>Docker container</strong> (a particular instance of an image). This will launch a bash shell running a minimal install of Ubuntu 14.04 with a percompiled version of PPGtk already installed. Interacting</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">docker</span> run -it pblischak/ppgtk</code></pre></div>
 <p>To test that everything is working in the container that you just launched, run this command:</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">ppgtk</span> -m freqs -c ../config-files/freqs.txt</code></pre></div>
@@ -345,7 +356,7 @@ OPENMP=yes</code></pre>
 <blockquote>
 <p>WARNING: do not link your entire <code>Home</code> folder or <code>root</code> directory because it will make the container huge.</p>
 </blockquote>
-<p>The PPGtk image starts you off in the <code>src/</code> directory of the PPGtk software folder, so you will first need to move to the dedicated analysis folder. The commands below will get you into the proper directory, let you check and see if your files are present, and then run and analysis on your data with PPGtk.</p>
+<p>The PPGtk image starts you off in the <code>src/</code> directory of the PPGtk software folder, so you will first need to move to the dedicated analysis folder. The commands below will get you into the proper directory, let you check and see if your files are present, and then run an analysis on your data with PPGtk.</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Change to the analysis/ directory in the home folder</span>
 <span class="kw">cd</span> home/analysis
 

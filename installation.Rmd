@@ -107,11 +107,19 @@ The `make` command will compile the PPGtk executable and the `make install` comm
 
 # **Docker image**
 
+In an attempt to make PPGtk more accessible across operating systems, and to lessen the burden of installing dependencies (Boost and OpenMP), we have built an image of PPGtk using Docker, allowing users with the Docker software to more easily run our program. 
 
+A full discussion of Docker is beyond the scope of this installation guide, but interested users can check out more details on the [Docker website](https://docs.docker.com/).
+
+<div class="space"></div>
+
+ > **Note**: getting Docker and using it to run PPGtk is done almost exclusively with commands issued in a terminal window. If you are unfamiliar/uncomfortable with using the command line, we suggest trying the following tutorials at <a href="http://swcarpentry.github.io/shell-novice/" target="_blank">Software Carpentry</a> and/or <a href="https://www.codecademy.com/learn/learn-the-command-line" target="_blank">Codecademy</a>.
+
+<div class="space"></div>
 
 ## Downloading Docker
 
-Start by downloading the [Docker Toolbox](https://www.docker.com/products/docker-toolbox). Run the the installation program and choose the defaults when prompted. The only thing you might want to change is which programs are actually installed. You really don't need **Kitematic**, and it is also one of the bigger programs that comes with the toolbox.
+Start by downloading the [Docker Toolbox](https://www.docker.com/products/docker-toolbox). Run the the installation program and choose the defaults when prompted. The only thing you might want to change is which programs are actually installed. You really don't need **Kitematic**.
 
 The main program that you will be using is the **Docker Quickstart Terminal**. Selecting this program will launch into a Unix-like terminal window, which is where you'll be executing all of the commands to obtain and run PPGtk.
 
@@ -123,7 +131,7 @@ After launching the Docker Quickstart Terminal, getting the PPGtk image is strai
 docker pull pblischak/ppgtk
 ```
 
-Now that you have the image, you can run it as a container (a particular instance of an image) and use PPGtk from within an Ubuntu-like environment.
+Now that you have the image, you can run it in a **Docker container** (a particular instance of an image). This will launch a bash shell running a minimal install of Ubuntu 14.04 with a percompiled version of PPGtk already installed. Interacting 
 
 ```bash
 docker run -it pblischak/ppgtk
@@ -149,7 +157,7 @@ docker run -it -v $(pwd):home/analysis pblischak/ppgtk
 
  > WARNING: do not link your entire `Home` folder or `root` directory because it will make the container huge.
 
-The PPGtk image starts you off in the `src/` directory of the PPGtk software folder, so you will first need to move to the dedicated analysis folder. The commands below will get you into the proper directory, let you check and see if your files are present, and then run and analysis on your data with PPGtk.
+The PPGtk image starts you off in the `src/` directory of the PPGtk software folder, so you will first need to move to the dedicated analysis folder. The commands below will get you into the proper directory, let you check and see if your files are present, and then run an analysis on your data with PPGtk.
 
 ```bash
 # Change to the analysis/ directory in the home folder

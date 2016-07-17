@@ -33,13 +33,11 @@ ul {
 
 <div class="space"></div>
 
-[**View on GitHub**](https://github.com/pblischak/ppgtk) :: [**Download latest release**](https://github.com/pblischak/ppgtk/releases) :: [**Get Docker image**](https://hub.docker.com/r/pblischak/ppgtk/)
-
-<div class="space"></div>
-
-<div class="space"></div>
-
 <p style="font-size:200%; color:blue">Site under construction...</p>
+
+<div class="space"></div>
+
+<a href="https://github.com/pblischak/ppgtk" target="_blank">**View on GitHub**</a> :: <a href="https://github.com/pblischak/ppgtk/releases" target="_blank">**Download latest release**</a> :: <a href="https://hub.docker.com/r/pblischak/ppgtk/" target="_blank">**Get Docker image**</a>
 
 <div class="space"></div>
 
