@@ -52,14 +52,51 @@ div.footer p {
 
 ## Formatting data
 
+Examples for each of the input files required by PPGtk are provided in the `examples/` folder.
+
+### Read count files
+
+The read count files are tab delimited text files with one line per individual and one column per locus. Missing data are specified by a `-9` in the total reads matrix.
+
+**Example read file**:
+
+```
+24  33  -9  ...
+12   1   8  ...
+.
+.
+.
+2   14  -9  ...
+```
+
+### Error file
+
+The error file is where the per-locus sequencing error is recorded. Each locus needs to have its own error value (even if they are all the same). You could also use, for example, the average Phred score for each locus as the error value.
+
+**Example error file**:
+
+```
+0.001 0.012 0.0005  ...
+```
+
 ## Configuration files
 
+Example configuration files are provided in the `configuration_files/` folder in the PPGtk distribution.
+
 ## Starting an analysis
+
+A PPGtk analysis can be run by typing the name of the executable, providing the name of the model you want to run, and providing the name of the configuration file that specifies all of the options for the chosen model.
 
 ```bash
 # A test analysis
 ppgtk -m freqs -c ../config-files/freqs.txt -q
 ```
+
+ - Typing `ppgtk -h` will give a general help message for running the software.
+
+ - Typing `ppgtk -m <model-name> -h` will give specific information on the chosen model.
+ 
+ - The `-q` option suppresses output to the screen.
 
 <div class="footer">
 
