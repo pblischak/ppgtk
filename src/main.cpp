@@ -148,6 +148,11 @@ int main(int argc, char **argv){
     r->setSeed(seed);
   }
 
+  std::cout << "\nThis is an alpha version of PPGtk.\n"
+            << "The source code is changing frequently and bugs may still be present.\n"
+            << "If you find one, please report it via email (blischak.4@osu.edu)\n"
+            << "or by filing an issue on GitHub (https://github.com/pblischak/ppgtk/issues).\n\n";
+
   if(model == "freqs"){
     ModelFreqs mod(configFile, quiet, print);
     mod.run();
