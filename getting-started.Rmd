@@ -52,11 +52,11 @@ div.footer p {
 
 ## Formatting data
 
-Examples for each of the input files required by PPGtk are provided in the `examples/` folder.
+Examples for each of the input files required by PPGtk are provided in the `example/` folder.
 
 ### Read count files
 
-The read count files are tab delimited text files with one line per individual and one column per locus. Missing data are specified by a `-9` in the total reads matrix.
+The read count files (**total reads** and **reference reads**) are tab delimited text files with one line per individual and one column per locus. Missing data are specified by a `-9` in the total reads matrix.
 
 **Example read file**:
 
@@ -81,7 +81,7 @@ The error file is where the per-locus sequencing error is recorded. Each locus n
 
 ## Configuration files
 
-Example configuration files are provided in the `configuration_files/` folder in the PPGtk distribution.
+Example configuration files are provided in the `config-files/` folder in the PPGtk distribution.
 
 ## Starting an analysis
 
@@ -92,11 +92,13 @@ A PPGtk analysis can be run by typing the name of the executable, providing the 
 ppgtk -m freqs -c ../config-files/freqs.txt -q
 ```
 
+<div class="space"></div>
+
  - Typing `ppgtk -h` will give a general help message for running the software.
 
  - Typing `ppgtk -m <model-name> -h` will give specific information on the chosen model.
  
- - The `-q` option suppresses output to the screen.
+ - The `-q` option suppresses output to the terminal.
 
 <div class="footer">
 

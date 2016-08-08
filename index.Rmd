@@ -54,5 +54,5 @@ Please note that PPGtk is currently in alpha-testing mode and is likely to chang
  - [Installation](http://pblischak.github.io/ppgtk/installation.html): instructions for installing PPGtk from source, or for using the Docker image.
  - [Getting started](http://pblischak.github.io/ppgtk/getting-started.html): a quick guide to running an analysis with PPGtk.
  - [Manual](http://pblischak.github.io/ppgtk/ppgtk-manual.html): detailed documentation on the different options and methods implemented in PPGtk.
- - [Report a bug](https://github.com/pblischak/ppgtk/issues): if you find a bug in the code, please feel free to contact me (blischak.4@osu.edu) or file an issue on GitHub.
+ - <a href="https://github.com/pblischak/ppgtk/issues" target="_blank">Report a bug</a>: if you find a bug in the code, please feel free to contact me (blischak.4@osu.edu) or file an issue on GitHub.
  - [Google Users Group](http://pblischak.github.io/ppgtk): **TO DO**.
