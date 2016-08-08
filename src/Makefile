@@ -43,7 +43,7 @@ clean :
 install :
 	@printf "\nCopying ppgtk to /usr/local/bin...\n\n"
 	@cp ../bin/$(EXE) /usr/local/bin
-	@print "\nTo uninstall, type: sudo make uninstall\n\n"
+	@printf "\nTo uninstall, type: sudo make uninstall\n\n"
 
 uninstall :
 	@printf "\nRemoving ppgtk from /usr/local/bin...\n\n"
